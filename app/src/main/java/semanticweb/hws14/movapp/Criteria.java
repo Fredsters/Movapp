@@ -117,7 +117,7 @@ public class Criteria extends Activity {
         EditText editText = (EditText) findViewById(R.id.actor_name);
         String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);
-//dasge
+//dasgehhh
         //WORKAROUND TODO: PUT in assync method
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
