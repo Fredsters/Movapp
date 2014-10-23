@@ -4,7 +4,7 @@
     android:layout_height="fill_parent" android:background="#FFFFFFFF"
     android:layout_weight="1" android:orientation="vertical">
     <Button android:id="@+id/btnProfile" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="Profile"
+        android:layout_height="wrap_content" android:text="Actor"
         android:textColor="#FFFFFFFF" />
     <LinearLayout android:id="@+id/panelProfile"
         android:orientation="vertical" android:layout_width="fill_parent"
@@ -16,16 +16,7 @@
             android:background="#FFFFFFFF">
             <TextView android:id="@+id/strName" android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="Name" />
-            <EditText android:id="@+id/txtName" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout android:id="@+id/panelProfile2"
-            android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#FFFFFFFF">
-            <TextView android:id="@+id/strSurname" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Surname" />
-            <EditText android:id="@+id/txtSurname" android:layout_width="fill_parent"
+            <EditText android:id="@+id/actor_name" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
@@ -74,5 +65,17 @@
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_weight="1" android:text="Twitter" android:textColor="#ff355689">
         </CheckBox>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:id="@+id/submit_button"
+            android:onClick="submitSearch" />
+            android:layout_gravity="center_horizontal"/>
+
     </LinearLayout>
+
+
 </LinearLayout>
