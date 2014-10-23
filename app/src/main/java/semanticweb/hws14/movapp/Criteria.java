@@ -4,21 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class Criteria extends Activity {
@@ -114,41 +109,18 @@ public class Criteria extends Activity {
 
     public void submitSearch(View view) {
         Intent intent = new Intent(this, list.class);
-        EditText editText = (EditText) findViewById(R.id.actor_name);
-        String message = editText.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, message);
-//dasgehhh
-        //WORKAROUND TODO: PUT in assync method
+    //    EditText editText = (EditText) findViewById(R.id.actor_name);
+    //    String message = editText.getText().toString();
+
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
-        String sparqlQueryString1=
-                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
-                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
-                        "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> "+
-                        "SELECT ?m ?t ?d WHERE { "+
-                        "?a movie:actor_name 'Edward Norton'. " +
-                        "?m movie:actor ?a; "+
-                        "rdfs:label ?t; "+
-                        "} LIMIT 10 ";
+        EditText editText = (EditText) findViewById(R.id.actor_name);
 
-        Query query = QueryFactory.create(sparqlQueryString1);
-        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
-        ResultSet results = qexec.execSelect();
+        ArrayList<HashMap<String,String>> result = QueryEngine.runListQuery(editText.getText().toString());
 
-        int i = 1;
-        for ( ; results.hasNext() ; )
-        {
-            QuerySolution soln = results.nextSolution() ;
-            RDFNode x = soln.get("m") ;       // Get a result variable by name.
-            Resource r = soln.getResource("m") ; // Get a result variable - must be a resource
-            Literal l = soln.getLiteral("t") ;   // Get a result variable - must be a literal
-            Log.d("SPARQLRESULT", i++ + " : " + x);
-            Log.d("SPARQLRESULT",i++ + " : " + r);
-            Log.d("SPARQLRESULT",i++ + " : " + l);
-
-        }
-        qexec.close() ;
+        intent.putExtra("result", result);
         startActivity(intent);
     }
 }

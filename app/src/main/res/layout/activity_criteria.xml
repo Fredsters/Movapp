@@ -3,6 +3,7 @@
     android:id="@+id/root_layout" android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:background="#FFFFFFFF"
     android:layout_weight="1" android:orientation="vertical">
+
     <Button android:id="@+id/btnProfile" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="Actor"
         android:textColor="#FFFFFFFF" />
@@ -20,6 +21,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
     <Button android:id="@+id/btnSettings" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="Settings"
         android:textColor="#FFFFFFFF" />
@@ -46,6 +48,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
     <Button android:id="@+id/btnPrivacy" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="Privacy"
         android:textColor="#FFFFFFFF" />
@@ -65,17 +68,20 @@
             android:layout_width="fill_parent" android:layout_height="wrap_content"
             android:layout_weight="1" android:text="Twitter" android:textColor="#ff355689">
         </CheckBox>
+    </LinearLayout>
+
+    <RelativeLayout android:layout_width="fill_parent"
+        android:layout_height="fill_parent" android:gravity="bottom">
 
         <Button
             android:layout_width="fill_parent"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submit_button"
             android:onClick="submitSearch" />
-            android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>
