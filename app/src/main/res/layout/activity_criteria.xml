@@ -69,19 +69,13 @@
             android:layout_weight="1" android:text="Twitter" android:textColor="#ff355689">
         </CheckBox>
     </LinearLayout>
-
-    <RelativeLayout android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:gravity="bottom">
-
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
             android:id="@+id/submit_button"
             android:onClick="submitSearch" />
-        android:layout_gravity="center_horizontal"/>
 
-    </RelativeLayout>
 
 
 </LinearLayout>
