@@ -28,36 +28,69 @@ public class QueryEngine {
     //TODO: Input bereinigen
     protected static ArrayList<HashMap<String,String>> runListQuery(String actorName) {//Extend more parameters
         ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
-        String sparqlQueryString1 =
+        String sparqlQueryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
                         "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
                         "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
-                        "SELECT ?m ?t ?d WHERE { " +
+                        "SELECT ?m ?t WHERE { " +
                         "?a movie:actor_name '"+actorName+"'. " +
                         "?m movie:actor ?a; " +
                         "rdfs:label ?t; " +
-                        "} LIMIT 10 ";
+                        "}";
 
-        Query query = QueryFactory.create(sparqlQueryString1);
+        Query query = QueryFactory.create(sparqlQueryString);
         QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
         ResultSet results = qexec.execSelect();
 
-
-
         for (; results.hasNext(); ) {
             QuerySolution soln = results.nextSolution();
-          //  RDFNode x = soln.get("m");       // Get a result variable by name.
-           // Resource r = soln.getResource("m"); // Get a result variable - must be a resource
+            //  RDFNode x = soln.get("m");       // Get a result variable by name.
+            // Resource r = soln.getResource("m"); // Get a result variable - must be a resource
             Literal title = soln.getLiteral("t");   // Get a result variable - must be a literal
-          //  Log.d("SPARQLRESULT", i++ + " : " + x);
-          //  Log.d("SPARQLRESULT", i++ + " : " + r);
-           // Log.d("SPARQLRESULT", i++ + " : " + l);
+            //  Log.d("SPARQLRESULT", i++ + " : " + x);
+            //  Log.d("SPARQLRESULT", i++ + " : " + r);
+            // Log.d("SPARQLRESULT", i++ + " : " + l);
+
             HashMap<String, String> movieDataMap = new HashMap<String, String>();
             movieDataMap.put("title", title.toString());
             //TODO: NEED NAME, Id and some data only for list view URI ? DBPEDIA USES TITLE OR LABEL OR WHAT?
             result.add(movieDataMap);
         }
         qexec.close();
+
+/*
+        sparqlQueryString =
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+            "PREFIX dbpprop: <http://dbpedia.org/property/> "+
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
+            "SELECT ?t WHERE { "+
+            "?actor rdfs:label 'Jim Carrey'@en. "+
+            "?movies dbpprop:starring ?actor; "+
+            "foaf:name ?t.}";
+
+
+        query = QueryFactory.create(sparqlQueryString);
+        qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
+        results = qexec.execSelect();
+
+
+
+        for (; results.hasNext(); ) {
+            QuerySolution soln = results.nextSolution();
+            //  RDFNode x = soln.get("m");       // Get a result variable by name.
+            // Resource r = soln.getResource("m"); // Get a result variable - must be a resource
+            Literal title = soln.getLiteral("t");   // Get a result variable - must be a literal
+            //  Log.d("SPARQLRESULT", i++ + " : " + x);
+            //  Log.d("SPARQLRESULT", i++ + " : " + r);
+            // Log.d("SPARQLRESULT", i++ + " : " + l);
+            HashMap<String, String> movieDataMap = new HashMap<String, String>();
+            movieDataMap.put("title", title.toString());
+            //TODO: NEED NAME, Id and some data only for list view URI ? DBPEDIA USES TITLE OR LABEL OR WHAT?
+            result.add(movieDataMap);
+        }
+        qexec.close();
+*/
+
         return result;
     }
 }
