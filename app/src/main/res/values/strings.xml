@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Movapp</string>
     <string name="hello_world">Hello Movapp!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_list">list</string>
     <string name="title_activity_result">result</string>
-
+    <string-array name="year_array">
+        <item>1925</item>
+        <item>1930</item>
+        <item>1935</item>
+        <item>1940</item>
+        <item>1945</item>
+        <item>1950</item>
+        <item>1955</item>
+        <item>1960</item>
+        <item>1965</item>
+        <item>1970</item>
+        <item>1975</item>
+        <item>1980</item>
+        <item>1985</item>
+        <item>1990</item>
+        <item>1995</item>
+        <item>2000</item>
+        <item>2005</item>
+        <item>2010</item>
+        <item>2015</item>
+    </string-array>
+    <string-array name="genre_array">
+        <item>Action</item>
+        <item>Horror</item>
+        <item>Comedy</item>
+        <item>Science-Fiction</item>
+        <item>Western</item>
+        <item>Liebe</item>
+        <item>Erotik</item>
+        <item>Drama</item>
+    </string-array>
 </resources>

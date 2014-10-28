@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="semanticweb.hws14.movapp" >
+    package="semanticweb.hws14.movapp" android:installLocation="preferExternal" >
 
     <application
         android:allowBackup="true"

@@ -7,83 +7,100 @@ import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
-public class Criteria extends Activity {
+public class Criteria extends Activity implements AdapterView.OnItemSelectedListener {
+
+    String selectedActorName;
+    int selectedFromDate;
+    int selctedToDate;
+    String selectedGenre;
+
+    Spinner yearFrom;
+    Spinner yearTo;
+    Spinner genre;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria);
 
-        Button btnProfile = (Button) findViewById(R.id.btnProfile);
-        Button btnSettings = (Button) findViewById(R.id.btnSettings);
-        Button btnPrivacy = (Button) findViewById(R.id.btnPrivacy);
+        Button btnActor = (Button) findViewById(R.id.btnActor);
+        Button btnYear = (Button) findViewById(R.id.btnYear);
+        Button btnGenre = (Button) findViewById(R.id.btnGenre);
 
-        View panelProfile = findViewById(R.id.panelProfile);
+        View panelProfile = findViewById(R.id.panelActor);
         panelProfile.setVisibility(View.GONE);
 
-        View panelSettings = findViewById(R.id.panelSettings);
+        View panelSettings = findViewById(R.id.panelYear);
         panelSettings.setVisibility(View.GONE);
 
-        View panelPrivacy = findViewById(R.id.panelPrivacy);
+        View panelPrivacy = findViewById(R.id.panelGenre);
         panelPrivacy.setVisibility(View.GONE);
 
-        btnProfile.setOnClickListener(new View.OnClickListener() {
+        btnActor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelProfile);
+                View panelProfile = findViewById(R.id.panelActor);
                 panelProfile.setVisibility(View.VISIBLE);
 
-                View panelSettings = findViewById(R.id.panelSettings);
+                View panelSettings = findViewById(R.id.panelYear);
                 panelSettings.setVisibility(View.GONE);
 
-                View panelPrivacy = findViewById(R.id.panelPrivacy);
+                View panelPrivacy = findViewById(R.id.panelGenre);
                 panelPrivacy.setVisibility(View.GONE);
 
             }
         });
 
-        btnSettings.setOnClickListener(new View.OnClickListener() {
+        btnYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelProfile);
+                View panelProfile = findViewById(R.id.panelActor);
                 panelProfile.setVisibility(View.GONE);
 
-                View panelSettings = findViewById(R.id.panelSettings);
+                View panelSettings = findViewById(R.id.panelYear);
                 panelSettings.setVisibility(View.VISIBLE);
 
-                View panelPrivacy = findViewById(R.id.panelPrivacy);
+                View panelPrivacy = findViewById(R.id.panelGenre);
                 panelPrivacy.setVisibility(View.GONE);
 
             }
         });
 
-        btnPrivacy.setOnClickListener(new View.OnClickListener() {
+        btnGenre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelProfile);
+                View panelProfile = findViewById(R.id.panelActor);
                 panelProfile.setVisibility(View.GONE);
 
-                View panelSettings = findViewById(R.id.panelSettings);
+                View panelSettings = findViewById(R.id.panelYear);
                 panelSettings.setVisibility(View.GONE);
 
-                View panelPrivacy = findViewById(R.id.panelPrivacy);
+                View panelPrivacy = findViewById(R.id.panelGenre);
                 panelPrivacy.setVisibility(View.VISIBLE);
 
             }
         });
 
+        setupSpinnerYearFrom();
+        setupSpinnerYearTo();
+        setupSpinnerGenre();
         }
 
 
@@ -116,11 +133,62 @@ public class Criteria extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
-        EditText editText = (EditText) findViewById(R.id.actor_name);
+        EditText editText = (EditText) findViewById(R.id.tfActorName);
 
         ArrayList<HashMap<String,String>> result = QueryEngine.runListQuery(editText.getText().toString());
 
         intent.putExtra("result", result);
         startActivity(intent);
+    }
+
+    public void setupSpinnerYearFrom(){
+        yearFrom = (Spinner) findViewById(R.id.spYearFrom);
+        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
+        adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearFrom.setAdapter(adapterFrom);
+        yearFrom.setOnItemSelectedListener(this);
+    }
+
+    public void setupSpinnerYearTo(){
+        yearTo = (Spinner) findViewById(R.id.spYearTo);
+        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this,R.array.year_array,android.R.layout.simple_spinner_item);
+        adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        yearTo.setAdapter(adapterTo);
+        yearTo.setOnItemSelectedListener(this);
+    }
+
+    public void setupSpinnerGenre(){
+        genre = (Spinner) findViewById(R.id.spGenre);
+        ArrayAdapter<CharSequence> adapterGenre = ArrayAdapter.createFromResource(this,R.array.genre_array,android.R.layout.simple_spinner_item);
+        adapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genre.setAdapter(adapterGenre);
+        genre.setOnItemSelectedListener(this);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        String item =  adapterView.getItemAtPosition(i).toString();
+
+        if(adapterView.getId() == genre.getId()){
+            selectedGenre=item;
+        }
+        else if(adapterView.getId() == yearFrom.getId()){
+            selectedFromDate=Integer.parseInt(item);
+        }
+        else if (adapterView.getId() == yearTo.getId()){
+            selctedToDate=Integer.parseInt(item);
+        }
+
+        System.out.println();
+        System.out.println("selectedActorName: " + selectedActorName);
+        System.out.println("selectedFromDate: " +selectedFromDate);
+        System.out.println("selctedToDate: " + selctedToDate);
+        System.out.println("selectedGenre: " +selectedGenre);
+        System.out.println();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
