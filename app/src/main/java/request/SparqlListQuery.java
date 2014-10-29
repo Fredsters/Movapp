@@ -1,8 +1,9 @@
-package semanticweb.hws14.movapp;
+package request;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.volley.Response;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -21,22 +22,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import model.Movie;
+
 /**
  * Created by Frederik on 23.10.2014.
  */
-public class QueryEngine {
+public class SparqlListQuery {
     //TODO: Input bereinigen
-    protected static ArrayList<HashMap<String,String>> runListQuery(String actorName) {//Extend more parameters
-        ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String,String>>();
+    //TODO: AsyncTask
+    public static ArrayList<Movie> runListQuery(String actorName) {//Extend more parameters
+        ArrayList<Movie> movieList = new ArrayList<Movie>();
         String sparqlQueryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
-                        "SELECT ?m ?t WHERE { " +
-                        "?a movie:actor_name '"+actorName+"'. " +
-                        "?m movie:actor ?a; " +
-                        "rdfs:label ?t; " +
-                        "}";
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
+                "SELECT ?t ?i ?p WHERE { " +
+                "?a movie:actor_name '"+actorName+"'. " +
+                "?m movie:actor ?a; " +
+                "movie:filmid ?i;" +
+                "rdfs:label ?t; " +
+                "foaf:page ?p. " +
+                "FILTER (REGEX(STR(?p), 'imdb.com/title'))"+
+                "}";
 
         Query query = QueryFactory.create(sparqlQueryString);
         QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
@@ -44,17 +52,18 @@ public class QueryEngine {
 
         for (; results.hasNext(); ) {
             QuerySolution soln = results.nextSolution();
-            //  RDFNode x = soln.get("m");       // Get a result variable by name.
-            // Resource r = soln.getResource("m"); // Get a result variable - must be a resource
-            Literal title = soln.getLiteral("t");   // Get a result variable - must be a literal
-            //  Log.d("SPARQLRESULT", i++ + " : " + x);
-            //  Log.d("SPARQLRESULT", i++ + " : " + r);
-            // Log.d("SPARQLRESULT", i++ + " : " + l);
+            //  RDFNode x = soln.get("m");       // Get a movieList variable by name.
+            // Resource r = soln.getResource("m"); // Get a movieList variable - must be a resource
+            //TODO: Check if page to imdb is needed because of imdb film id
+            Literal title = soln.getLiteral("t");
+            Literal movieId = soln.getLiteral("i");
+            Resource page = soln.getResource("p");
+            String uri = page.getURI();
+            uri.toString();
+            String imdbId = uri.substring(26);
 
-            HashMap<String, String> movieDataMap = new HashMap<String, String>();
-            movieDataMap.put("title", title.toString());
-            //TODO: NEED NAME, Id and some data only for list view URI ? DBPEDIA USES TITLE OR LABEL OR WHAT?
-            result.add(movieDataMap);
+            Movie movie = new Movie(title.getString(), movieId.getInt(), imdbId);
+            movieList.add(movie);
         }
         qexec.close();
 
@@ -77,20 +86,20 @@ public class QueryEngine {
 
         for (; results.hasNext(); ) {
             QuerySolution soln = results.nextSolution();
-            //  RDFNode x = soln.get("m");       // Get a result variable by name.
-            // Resource r = soln.getResource("m"); // Get a result variable - must be a resource
-            Literal title = soln.getLiteral("t");   // Get a result variable - must be a literal
+            //  RDFNode x = soln.get("m");       // Get a movieList variable by name.
+            // Resource r = soln.getResource("m"); // Get a movieList variable - must be a resource
+            Literal title = soln.getLiteral("t");   // Get a movieList variable - must be a literal
             //  Log.d("SPARQLRESULT", i++ + " : " + x);
             //  Log.d("SPARQLRESULT", i++ + " : " + r);
             // Log.d("SPARQLRESULT", i++ + " : " + l);
             HashMap<String, String> movieDataMap = new HashMap<String, String>();
             movieDataMap.put("title", title.toString());
             //TODO: NEED NAME, Id and some data only for list view URI ? DBPEDIA USES TITLE OR LABEL OR WHAT?
-            result.add(movieDataMap);
+            movieList.add(movieDataMap);
         }
         qexec.close();
 */
 
-        return result;
+        return movieList;
     }
 }

@@ -3,6 +3,7 @@ package semanticweb.hws14.movapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -11,6 +12,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import model.Movie;
 
 
 public class list extends Activity {
@@ -23,14 +26,21 @@ public class list extends Activity {
         Intent intent = getIntent();
 
 
-        ArrayList<HashMap<String,String>> result = (ArrayList<HashMap<String, String>>) intent.getSerializableExtra("result");
+        ArrayList<Movie> movieList = intent.getParcelableArrayListExtra("movieList");
 
 
         ListView listView = (ListView) findViewById(R.id.resultList);
 
+        for(Movie movie : movieList) {
+            Log.d("Title: ",movie.getTitle());
+            Log.d("MdbId: ",""+movie.getMdbId());
+            Log.d("ImdbRating: ",""+movie.getImdbRating());
+        }
+
+
         // Convert ArrayList to array
        // HashMap<String, String>[] lv_arr = (HashMap<String,String>[]) result.toArray();
-        ArrayAdapter adapter = new ArrayAdapter<HashMap<String,String>>(list.this,android.R.layout.simple_list_item_1, result);
+        ArrayAdapter adapter = new ArrayAdapter<Movie>(list.this,android.R.layout.simple_list_item_1, movieList);
         listView.setAdapter(adapter);
         //TODO: Cach the data or just query if the list does not have items
     }

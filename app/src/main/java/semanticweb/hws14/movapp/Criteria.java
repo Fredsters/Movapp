@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +14,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+import model.Movie;
+import request.HttpRequestQueueSingleton;
+import request.HttpRequester;
+import request.SparqlListQuery;
 
 
 public class Criteria extends Activity implements AdapterView.OnItemSelectedListener {
@@ -28,15 +41,53 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     Spinner yearTo;
     Spinner genre;
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria);
 
+        initCriteriaView();
+        }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.criteria, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void submitSearch(View view) {
+        Intent intent = new Intent(this, list.class);
+
+        //TODO: Remove and make the query async
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        EditText editText = (EditText) findViewById(R.id.tfActorName);
+
+        ArrayList<Movie> movieList = SparqlListQuery.runListQuery(editText.getText().toString());
+
+        HttpRequester.addImdbRating(this, movieList);
+
+        intent.putParcelableArrayListExtra("movieList", movieList);
+        startActivity(intent);
+    }
+
+    private void initCriteriaView(){
         Button btnActor = (Button) findViewById(R.id.btnActor);
         Button btnYear = (Button) findViewById(R.id.btnYear);
         Button btnGenre = (Button) findViewById(R.id.btnGenre);
@@ -101,44 +152,6 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         setupSpinnerYearFrom();
         setupSpinnerYearTo();
         setupSpinnerGenre();
-        }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.criteria, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public void submitSearch(View view) {
-        Intent intent = new Intent(this, list.class);
-    //    EditText editText = (EditText) findViewById(R.id.actor_name);
-    //    String message = editText.getText().toString();
-
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        EditText editText = (EditText) findViewById(R.id.tfActorName);
-
-        ArrayList<HashMap<String,String>> result = QueryEngine.runListQuery(editText.getText().toString());
-
-        intent.putExtra("result", result);
-        startActivity(intent);
     }
 
     public void setupSpinnerYearFrom(){
