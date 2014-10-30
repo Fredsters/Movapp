@@ -81,10 +81,15 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
         ArrayList<Movie> movieList = SparqlListQuery.runListQuery(editText.getText().toString());
 
+        // TODO : Work this shit
+        //adds ImdbRating to the movieList. Since the Http Request to get the imdb Rating is
+        // asynchronous. The next activity can only started, after the response is received.
+        // Therefore the next activity is started within this method
+        // It would be much nicer if i could make the Http Request synchronous --> Does not work for now
+        // The best would be if everything is async again, but for now its ok like this.
+        // The whole damn thing is so extraordinary ugly. It would not get laid.
+        // IN SHORT: This methods add ImdbRating and starts next Activity
         HttpRequester.addImdbRating(this, movieList);
-
-        intent.putParcelableArrayListExtra("movieList", movieList);
-        startActivity(intent);
     }
 
     private void initCriteriaView(){

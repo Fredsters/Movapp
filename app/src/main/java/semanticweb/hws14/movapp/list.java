@@ -10,10 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import model.Movie;
+import model.MovieComparator;
 
 
 public class list extends Activity {
@@ -32,9 +34,12 @@ public class list extends Activity {
         ListView listView = (ListView) findViewById(R.id.resultList);
 
         for(Movie movie : movieList) {
-            Log.d("Title: ",movie.getTitle());
-            Log.d("MdbId: ",""+movie.getMdbId());
-            Log.d("ImdbRating: ",""+movie.getImdbRating());
+            Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
+        }
+        Collections.sort(movieList,  new MovieComparator());
+
+        for(Movie movie : movieList) {
+            Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
         }
 
 

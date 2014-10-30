@@ -1,6 +1,7 @@
 package request;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -27,13 +28,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import model.Movie;
+import semanticweb.hws14.movapp.list;
 
 /**
  * Created by Frederik on 29.10.2014.
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (Activity criteriaActivity, ArrayList<Movie>  movieList) {
+    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList) {
         for(final Movie movie : movieList) {
 
 
@@ -43,7 +45,13 @@ public class HttpRequester {
                 public void onResponse(JSONObject r) {
                     try {
                         movie.setImdbRating((float)r.getDouble("imdbRating"));
-                        Log.d("ACHTUNG", movie.getTitle()+", Rating: "+ movie.getImdbRating());
+
+                        if(movieList.size() == movieList.indexOf(movie) + 1) {
+                            Intent intent = new Intent(criteriaActivity, list.class);
+                            intent.putParcelableArrayListExtra("movieList", movieList);
+                            criteriaActivity.startActivity(intent);
+                        }
+
                     } catch (JSONException e) {
                         movie.setImdbRating(0.0f);
                     }
@@ -56,7 +64,7 @@ public class HttpRequester {
             });
             HttpRequestQueueSingleton.getInstance(criteriaActivity).addToRequestQueue(jsObjRequest);
 
-/*
+/* This should be synchronous, but it does not work
             RequestFuture<JSONObject> future = RequestFuture.newFuture();
             JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
 
@@ -72,22 +80,6 @@ public class HttpRequester {
             } catch (ExecutionException e) {
                 // handle the error
             } */
-/*
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response = null;
-            try {
-                response = httpclient.execute(new HttpGet(url));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            StatusLine statusLine = response.getStatusLine();
-            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                Log.d("ACHTUNG", response.toString());
-                //..more logic
-            } else{
-                Log.d("ACHTUNG", response.toString());
-            }*/
-            Log.d("MovieList", movie.toString());
         }
 
         return movieList;
