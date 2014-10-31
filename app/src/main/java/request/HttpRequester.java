@@ -21,7 +21,9 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -37,29 +39,52 @@ import semanticweb.hws14.movapp.list;
 public class HttpRequester {
     public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList) {
         for(final Movie movie : movieList) {
+            String url = "";
+/*            if(!movie.getImdbFilmId().equals("")) {
+                url ="http://www.omdbapi.com/?i="+movie.getImdbFilmId();
+            } else {*/
+                String urlTitle = null;
+                try {
+                    urlTitle = URLEncoder.encode(movie.getTitle(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                url ="http://www.omdbapi.com/?t="+urlTitle;
+//            }
 
+//TODO: Shall we remove the movie without response
 
-           String url ="http://www.omdbapi.com/?i="+movie.getImdbFilmId();
-
+            //TODO: compare Dbpedia query result to linkedMDB result
             JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
                     try {
-                        movie.setImdbRating((float)r.getDouble("imdbRating"));
+                        double imdbRating = r.getDouble("imdbRating");
 
-                        if(movieList.size() == movieList.indexOf(movie) + 1) {
-                            Intent intent = new Intent(criteriaActivity, list.class);
-                            intent.putParcelableArrayListExtra("movieList", movieList);
-                            criteriaActivity.startActivity(intent);
+                        movie.setImdbRating(String.valueOf(imdbRating));
+                    } catch (JSONException e) {
+                        try {
+                            if (r.getBoolean("Response")) {
+                                movie.setImdbRating("No rating");
+                            }
+                        } catch (JSONException e1) {
+                           movieList.remove(movie);
                         }
 
-                    } catch (JSONException e) {
-                        movie.setImdbRating(0.0f);
+                    }
+                    if(null == movie.getImdbRating()){
+                        movieList.remove(movie);
+                    }
+                    if(movieList.size() == movieList.indexOf(movie) + 1) {
+                        startActivity(criteriaActivity, movieList);
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    movie.setImdbRating(0.0f);
+                    Log.e("JSONREQUESTERROR", "RESPONSE FAILED");
+                    if(movieList.size() == movieList.indexOf(movie) + 1) {
+                        startActivity(criteriaActivity, movieList);
+                    }
                 }
             });
             HttpRequestQueueSingleton.getInstance(criteriaActivity).addToRequestQueue(jsObjRequest);
@@ -83,5 +108,11 @@ public class HttpRequester {
         }
 
         return movieList;
+    }
+
+    public static void startActivity(Activity criteriaActivity, ArrayList<Movie>  movieList) {
+        Intent intent = new Intent(criteriaActivity, list.class);
+        intent.putParcelableArrayListExtra("movieList", movieList);
+        criteriaActivity.startActivity(intent);
     }
 }

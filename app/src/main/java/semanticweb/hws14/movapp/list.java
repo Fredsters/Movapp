@@ -33,13 +33,17 @@ public class list extends Activity {
 
         ListView listView = (ListView) findViewById(R.id.resultList);
 
+  /*      for(Movie movie : movieList) {
+            Log.d(" Rating: " +movie.getImdbRating() + "   Title: ",movie.getTitle());
+        } */
+
         for(Movie movie : movieList) {
-            Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
+            Log.d(" Rating: " +movie.getImdbRating() + "   Title: ",movie.getTitle());
         }
         Collections.sort(movieList,  new MovieComparator());
 
         for(Movie movie : movieList) {
-            Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
+            Log.d(" Rating: " +movie.getImdbRating() + "   Title: ",movie.getTitle());
         }
 
 

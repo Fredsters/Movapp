@@ -3,19 +3,18 @@ package model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
-
 /**
  * Created by Frederik on 29.10.2014.
  */
+//TODO: Should ImdbRating be String or float?
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;
-    private String imdbFilmId;
-    private float imdbRating;
+    //private String imdbFilmId;
+    private String imdbRating;
 
     /* Constructors */
-    public Movie(String title, int mdbId, String imdbFilmId, float imdbRating) {
+/*    public Movie(String title, int mdbId, String imdbFilmId/, String imdbRating) {
         this.title = title;
         this.mdbId = mdbId;
         this.imdbFilmId = imdbFilmId;
@@ -26,6 +25,12 @@ public class Movie implements Parcelable {
         this.title = title;
         this.mdbId = mdbId;
         this.imdbFilmId = imdbFilmId;
+    }
+*/
+
+    public Movie(String title, int mdbId) {
+        this.title = title;
+        this.mdbId = mdbId;
     }
 
     public Movie(String title) {
@@ -44,8 +49,8 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeInt(mdbId);
-        out.writeString(imdbFilmId);
-        out.writeFloat(imdbRating);
+ //       out.writeString(imdbFilmId);
+        out.writeString(imdbRating);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -62,11 +67,11 @@ public class Movie implements Parcelable {
     private Movie(Parcel in) {
         title = in.readString();
         mdbId = in.readInt();
-        imdbFilmId = in.readString();
-        imdbRating = in.readFloat();
+  //      imdbFilmId = in.readString();
+        imdbRating = in.readString();
     }
 
-
+/*
     public String getImdbFilmId() {
         return imdbFilmId;
     }
@@ -74,7 +79,7 @@ public class Movie implements Parcelable {
     public void setImdbFilmId(String imdbFilmId) {
         this.imdbFilmId = imdbFilmId;
     }
-
+*/
     /* Getter and Setter */
     public String getTitle() {
         return title;
@@ -84,11 +89,11 @@ public class Movie implements Parcelable {
         this.title = title;
     }
 
-    public float getImdbRating() {
+    public String getImdbRating() {
         return imdbRating;
     }
 
-    public void setImdbRating(float imdbRating) {
+    public void setImdbRating(String imdbRating) {
         this.imdbRating = imdbRating;
     }
 
