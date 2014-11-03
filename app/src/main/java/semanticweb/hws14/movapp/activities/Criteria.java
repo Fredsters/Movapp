@@ -1,10 +1,8 @@
-package semanticweb.hws14.movapp;
+package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,20 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import model.Movie;
-import request.HttpRequestQueueSingleton;
-import request.HttpRequester;
-import request.SparqlListQuery;
+import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.helper.InputCleaner;
 
 
 public class Criteria extends Activity implements AdapterView.OnItemSelectedListener {
@@ -36,19 +22,26 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     int selectedFromDate;
     int selctedToDate;
     String selectedGenre;
-
     Spinner yearFrom;
     Spinner yearTo;
     Spinner genre;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria);
-
         initCriteriaView();
-        }
+    }
 
+    public void submitSearch(View view) {
+        Intent intent = new Intent(this, List.class);
+
+        EditText editText = (EditText) findViewById(R.id.tfActorName);
+        String actorName = InputCleaner.cleanActorName(editText.getText().toString());
+        intent.putExtra("actorName", actorName);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,29 +60,6 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void submitSearch(View view) {
-        Intent intent = new Intent(this, list.class);
-
-        //TODO: Remove and make the query async
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        EditText editText = (EditText) findViewById(R.id.tfActorName);
-
-        ArrayList<Movie> movieList = SparqlListQuery.runListQuery(editText.getText().toString());
-
-        // TODO : Work this shit
-        //adds ImdbRating to the movieList. Since the Http Request to get the imdb Rating is
-        // asynchronous. The next activity can only started, after the response is received.
-        // Therefore the next activity is started within this method
-        // It would be much nicer if i could make the Http Request synchronous --> Does not work for now
-        // The best would be if everything is async again, but for now its ok like this.
-        // The whole damn thing is so extraordinary ugly. It would not get laid.
-        // IN SHORT: This methods add ImdbRating and starts next Activity
-        HttpRequester.addImdbRating(this, movieList);
     }
 
     private void initCriteriaView(){
@@ -159,7 +129,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         setupSpinnerGenre();
     }
 
-    public void setupSpinnerYearFrom(){
+    private void setupSpinnerYearFrom(){
         yearFrom = (Spinner) findViewById(R.id.spYearFrom);
         ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -167,7 +137,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         yearFrom.setOnItemSelectedListener(this);
     }
 
-    public void setupSpinnerYearTo(){
+    private void setupSpinnerYearTo(){
         yearTo = (Spinner) findViewById(R.id.spYearTo);
         ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this,R.array.year_array,android.R.layout.simple_spinner_item);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -175,7 +145,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         yearTo.setOnItemSelectedListener(this);
     }
 
-    public void setupSpinnerGenre(){
+    private void setupSpinnerGenre(){
         genre = (Spinner) findViewById(R.id.spGenre);
         ArrayAdapter<CharSequence> adapterGenre = ArrayAdapter.createFromResource(this,R.array.genre_array,android.R.layout.simple_spinner_item);
         adapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

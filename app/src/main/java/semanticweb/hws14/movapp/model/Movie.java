@@ -1,4 +1,4 @@
-package model;
+package semanticweb.hws14.movapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -10,23 +10,9 @@ import android.os.Parcelable;
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;
-    //private String imdbFilmId;
     private String imdbRating;
 
     /* Constructors */
-/*    public Movie(String title, int mdbId, String imdbFilmId/, String imdbRating) {
-        this.title = title;
-        this.mdbId = mdbId;
-        this.imdbFilmId = imdbFilmId;
-        this.imdbRating = imdbRating;
-    }
-
-    public Movie(String title, int mdbId , String imdbFilmId) {
-        this.title = title;
-        this.mdbId = mdbId;
-        this.imdbFilmId = imdbFilmId;
-    }
-*/
 
     public Movie(String title, int mdbId) {
         this.title = title;
@@ -49,7 +35,7 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeInt(mdbId);
- //       out.writeString(imdbFilmId);
+        //       out.writeString(imdbFilmId);
         out.writeString(imdbRating);
     }
 
@@ -67,19 +53,10 @@ public class Movie implements Parcelable {
     private Movie(Parcel in) {
         title = in.readString();
         mdbId = in.readInt();
-  //      imdbFilmId = in.readString();
+        //      imdbFilmId = in.readString();
         imdbRating = in.readString();
     }
 
-/*
-    public String getImdbFilmId() {
-        return imdbFilmId;
-    }
-
-    public void setImdbFilmId(String imdbFilmId) {
-        this.imdbFilmId = imdbFilmId;
-    }
-*/
     /* Getter and Setter */
     public String getTitle() {
         return title;

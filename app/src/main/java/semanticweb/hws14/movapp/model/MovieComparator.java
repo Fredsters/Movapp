@@ -1,4 +1,4 @@
-package model;
+package semanticweb.hws14.movapp.model;
 
 import java.util.Comparator;
 

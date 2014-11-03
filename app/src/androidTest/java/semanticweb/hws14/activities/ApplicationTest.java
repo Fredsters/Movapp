@@ -1,4 +1,4 @@
-package semanticweb.hws14.movapp;
+package semanticweb.hws14.activities;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package request;
+package semanticweb.hws14.movapp.request;
 
 import android.content.Context;
 import android.graphics.Bitmap;

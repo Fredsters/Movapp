@@ -1,12 +1,14 @@
-package semanticweb.hws14.movapp;
+package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import semanticweb.hws14.activities.R;
 
-public class result extends Activity {
+
+public class Detail extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
