@@ -81,4 +81,12 @@ public class Movie implements Parcelable {
     public void setMdbId(int mdbId) {
         this.mdbId = mdbId;
     }
+
+    @Override
+    public String toString(){
+
+        String rating = "" + imdbRating;
+        String out = this.title.toString() + "\n" + rating.toString();
+        return out;
+    }
 }
