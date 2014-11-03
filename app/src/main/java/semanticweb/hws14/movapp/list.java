@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import model.Movie;
 import model.MovieComparator;
@@ -32,6 +32,17 @@ public class list extends Activity {
 
 
         ListView listView = (ListView) findViewById(R.id.resultList);
+        AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //TODO: edit startIntent in a way that its open the activity result
+                startIntent();
+
+
+            }
+        };
+
+        listView.setOnItemClickListener(clickListen);
 
         for(Movie movie : movieList) {
             Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
@@ -42,12 +53,27 @@ public class list extends Activity {
             Log.d("Title: ",movie.getTitle() + " Rating: " +movie.getImdbRating());
         }
 
+        Movie[] movies = convertToArray(movieList);
 
         // Convert ArrayList to array
        // HashMap<String, String>[] lv_arr = (HashMap<String,String>[]) result.toArray();
         ArrayAdapter adapter = new ArrayAdapter<Movie>(list.this,android.R.layout.simple_list_item_1, movieList);
         listView.setAdapter(adapter);
         //TODO: Cach the data or just query if the list does not have items
+    }
+
+    private void startIntent() {
+        Intent intent = new Intent(this,result.class);
+    }
+
+    private Movie[] convertToArray(ArrayList<Movie> movieList) {
+
+        Movie[] m = new Movie[movieList.size()];
+        for(int index=0;index < movieList.size();index++){
+            m[index] = movieList.get(index);
+        }
+        return m;
+
     }
 
 
@@ -69,4 +95,5 @@ public class list extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

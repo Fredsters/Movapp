@@ -3,8 +3,6 @@ package model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONObject;
-
 /**
  * Created by Frederik on 29.10.2014.
  */
@@ -98,5 +96,13 @@ public class Movie implements Parcelable {
 
     public void setMdbId(int mdbId) {
         this.mdbId = mdbId;
+    }
+
+    @Override
+    public String toString(){
+
+        String rating = "" + imdbRating;
+        String out = this.title.toString() + "\n" + rating.toString();
+        return out;
     }
 }
