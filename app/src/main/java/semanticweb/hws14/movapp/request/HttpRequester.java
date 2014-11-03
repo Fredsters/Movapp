@@ -3,6 +3,7 @@ package semanticweb.hws14.movapp.request;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,7 +25,7 @@ import semanticweb.hws14.movapp.activities.List;
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList) {
+    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter) {
         for(final Movie movie : movieList) {
             String url = "";
             String urlTitle = null;
@@ -33,9 +34,9 @@ public class HttpRequester {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            url ="http://www.omdbapi.com/?t="+urlTitle+"%20&y="+movie.getReleaseYear();
+            url ="http://www.omdbapi.com/?t="+urlTitle;//+"%20&y="+movie.getReleaseYear();
 
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
                     try {
                         double imdbRating = r.getDouble("imdbRating");
@@ -56,7 +57,8 @@ public class HttpRequester {
                         movieList.remove(movie);
                     }
                     if(movieList.size() == movieList.indexOf(movie) + 1) {
-                        startActivity(criteriaActivity, movieList);
+                        mlAdapter.addAll(movieList);
+                        mlAdapter.notifyDataSetChanged();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -64,7 +66,6 @@ public class HttpRequester {
                 public void onErrorResponse(VolleyError error) {
                     Log.e("JSONExcepetion", "RESPONSE FAILED");
                     if(movieList.size() == movieList.indexOf(movie) + 1) {
-                        startActivity(criteriaActivity, movieList);
                     }
                 }
             });
@@ -89,11 +90,5 @@ public class HttpRequester {
             } */
         }
         return movieList;
-    }
-
-    public static void startActivity(Activity criteriaActivity, ArrayList<Movie>  movieList) {
-        Intent intent = new Intent(criteriaActivity, List.class);
-        intent.putParcelableArrayListExtra("movieList", movieList);
-        criteriaActivity.startActivity(intent);
     }
 }
