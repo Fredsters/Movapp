@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 
@@ -37,10 +41,14 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     public void submitSearch(View view) {
         Intent intent = new Intent(this, List.class);
 
-       // EditText editText = (EditText) findViewById(R.id.tfActorName);
-      //  String actorName = InputCleaner.cleanActorName(editText.getText().toString());
-        String actorName = "Jim Carrey";
-        intent.putExtra("actorName", actorName);
+        EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
+        String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
+
+        HashMap<String,Object> criteria = new HashMap<String, Object>();
+
+        criteria.put("actorName", actorName);
+        intent.putExtra("criteria", criteria);
+
         startActivity(intent);
     }
 

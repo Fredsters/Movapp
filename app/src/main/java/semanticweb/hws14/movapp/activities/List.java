@@ -28,6 +28,7 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,7 +51,8 @@ public class List extends Activity {
         setContentView(R.layout.activity_list);
 
         Intent intent = getIntent();
-        String actorName = intent.getStringExtra("actorName");
+        //String actorName = intent.getStringExtra("actorName");
+        HashMap<String, Object> criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
 
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
         this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
@@ -65,7 +67,7 @@ public class List extends Activity {
 
         queryForMovies q = new queryForMovies();
         //Executes SPARQL Queries, Private class queryForMovies is called.
-        q.execute(actorName);
+        q.execute(criteria);
 
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
@@ -98,16 +100,17 @@ public class List extends Activity {
     }
 
 
-    private class queryForMovies extends AsyncTask<String, Void, ArrayList<Movie>> {
+    private class queryForMovies extends AsyncTask<HashMap<String, Object>, Void, ArrayList<Movie>> {
 
         @Override
-        protected ArrayList<Movie> doInBackground(String... params) {
+        protected ArrayList<Movie> doInBackground(HashMap<String, Object>... criteria) {
 
-            String actorName = params[0];
             ArrayList<Movie> movieList = new ArrayList<Movie>();
 
+            SparqlQueries sparqler = new SparqlQueries(criteria[0]);
+
         /* LMDB */
-            String LMDBsparqlQueryString = SparqlQueries.LMDBQuery(actorName);
+            String LMDBsparqlQueryString = sparqler.LMDBQuery();
             Query query = QueryFactory.create(LMDBsparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
             ResultSet results = qexec.execSelect();
@@ -125,7 +128,7 @@ public class List extends Activity {
 
 
         /* DPBEDIA */
-            String dbPediaSparqlQueryString = SparqlQueries.DBPEDIAQuery(actorName);
+            String dbPediaSparqlQueryString = sparqler.DBPEDIAQuery();
             query = QueryFactory.create(dbPediaSparqlQueryString);
             qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
             results = qexec.execSelect();
