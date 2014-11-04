@@ -38,7 +38,7 @@ public class HttpRequester {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            if(!"0".equals(movie.getImdbId()) && null != movie.getImdbId()) {
+            if(!"0".equals(movie.getImdbId())) {
                 url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
             } else if(movie.getReleaseYear() != 0) {
                 url = "http://www.omdbapi.com/?t=" + urlTitle + "%20&y=" + movie.getReleaseYear();
@@ -54,31 +54,26 @@ public class HttpRequester {
                             String imdbID = r.getString("imdbID");
                             movie.setImdbId(imdbID);
                         }
-
                         double imdbRating = r.getDouble("imdbRating");
                         movie.setImdbRating(String.valueOf(imdbRating));
 
                     } catch (JSONException e) {
-                        movie.setImdbRating("0");
+                        movie.setImdbRating("0 bad data");
                     }
-                    boolean isLastMovie = false;
-                    if("0".equals(movie.getImdbId()) || null == movie.getImdbId()){
-                        if(movieList.size() == movieList.indexOf(movie) + 1) {
-                            isLastMovie = true;
-                        }
-                        movieList.remove(movie);
 
-
-                    } else if(null == movie.getImdbRating()) {
-                        movie.setImdbRating("0");
+                    if("0".equals(movie.getImdbId())){
+                        movie.setImdbId("bad data");
                     }
-                    if(isLastMovie) {
+                    if(null == movie.getImdbRating()) {
+                        movie.setImdbRating("0 bad data");
+                    }
+
+                    if(movieList.size() == movieList.indexOf(movie) + 1) {
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
                         progressBar.setVisibility(View.INVISIBLE);
                         mlAdapter.addAll(movieList);
                         mlAdapter.notifyDataSetChanged();
-
                     }
                 }
             }, new Response.ErrorListener() {
@@ -89,23 +84,6 @@ public class HttpRequester {
             });
 
             HttpRequestQueueSingleton.getInstance(criteriaActivity).addToRequestQueue(jsObjRequest);
-
-/* This should be synchronous, but it does not work
-            RequestFuture<JSONObject> future = RequestFuture.newFuture();
-            JsonObjectRequest request = new JsonObjectRequest(url, null, future, future);
-
-            // Add the request to the RequestQueue.
-            HttpRequestQueueSingleton.getInstance(criteriaActivity).addToRequestQueue(request);
-
-            try {
-                JSONObject response = future.get();
-                Log.d("response", response.toString());
-                // do something with response
-            } catch (InterruptedException e) {
-                // handle the error
-            } catch (ExecutionException e) {
-                // handle the error
-            } */
         }
         return movieList;
     }

@@ -21,20 +21,23 @@ public class Movie implements Parcelable {
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
         this.imdbId = imdbId;
+        this.imdbRating = "0";
     }
 
     public Movie(String title, int mdbId, int releaseYear) {
         this.title = title;
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
+        this.imdbId = "0";
+        this.imdbRating = "0";
     }
 
     public Movie(String title, int releaseYear) {
         this.title = title;
         this.releaseYear = releaseYear;
-    }
-
-    public Movie() {
+        this.imdbId = "0";
+        this.mdbId = 0;
+        this.imdbRating = "0";
     }
 
     // 99.9% of the time you can just ignore this
@@ -46,7 +49,6 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeInt(mdbId);
-        //       out.writeString(imdbFilmId);
         out.writeString(imdbRating);
         out.writeInt(releaseYear);
         out.writeString(imdbId);

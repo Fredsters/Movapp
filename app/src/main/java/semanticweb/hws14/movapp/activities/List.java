@@ -52,7 +52,7 @@ public class List extends Activity {
         Intent intent = getIntent();
         String actorName = intent.getStringExtra("actorName");
 
-        ArrayList<Movie> movieList = new ArrayList<Movie>();
+        final ArrayList<Movie> movieList = new ArrayList<Movie>();
         this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
 //        Only neccessary if we use Request calls in the UI-Thread
@@ -69,30 +69,14 @@ public class List extends Activity {
 
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //TODO: edit startIntent in a way that its open the activity result
-                startIntent();
-
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(that, Detail.class);
+                intent.putExtra("movie", movieList.get(position));
+                startActivity(intent);
             }
         };
         listView.setOnItemClickListener(clickListen);
     }
-
-    private void startIntent() {
-        Intent intent = new Intent(this,Detail.class);
-    }
-
-    private Movie[] convertToArray(ArrayList<Movie> movieList) {
-
-        Movie[] m = new Movie[movieList.size()];
-        for(int index=0;index < movieList.size();index++){
-            m[index] = movieList.get(index);
-        }
-        return m;
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,8 +100,6 @@ public class List extends Activity {
 
     private class queryForMovies extends AsyncTask<String, Void, ArrayList<Movie>> {
 
-        private ProgressDialog dialog;
-        //TODO loading buffer gif or soemthing
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
@@ -163,9 +145,6 @@ public class List extends Activity {
             ArrayList indexArray = new ArrayList();
             for(int i=0; i<movieList.size();i++) {
                 for(int j=i+1; j<movieList.size();j++) {
-                    if(movieList.get(j).getTitle().equals("The Cable Guy") && movieList.get(i).getTitle().equals("The Cable Guy")){
-                        Log.d("ST","ST");
-                    }
                     if(movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
                         indexArray.add(movieList.get(j));
                     }
@@ -181,10 +160,7 @@ public class List extends Activity {
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
-  //          mlAdapter.addAll(movieList);
- //           mlAdapter.notifyDataSetChanged();
-  //         this.dialog.dismiss();
-           movieList =  HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar);
+           HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar);
         }
     }
 }
