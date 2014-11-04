@@ -6,7 +6,9 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 29.10.2014.
  */
-//TODO: Should ImdbRating be String or float? For now it should stay a String
+    //TODO What to do when no criteria
+    //TODO busyindicator in action bar and show results after they are there
+    //TODO budget?
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;
@@ -68,8 +70,8 @@ public class Movie implements Parcelable {
     private Movie(Parcel in) {
         title = in.readString();
         mdbId = in.readInt();
-        releaseYear = in.readInt();
         imdbRating = in.readString();
+        releaseYear = in.readInt();
         imdbId = in.readString();
     }
 

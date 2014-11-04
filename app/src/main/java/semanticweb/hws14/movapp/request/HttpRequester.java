@@ -29,7 +29,7 @@ import semanticweb.hws14.movapp.model.MovieComparator;
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final ProgressBar progressBar) {
+    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final ProgressBar progressBar, final boolean isTime) {
         for(final Movie movie : movieList) {
             String url = "";
             String urlTitle = null;
@@ -54,6 +54,11 @@ public class HttpRequester {
                             String imdbID = r.getString("imdbID");
                             movie.setImdbId(imdbID);
                         }
+
+                        if(0 == movie.getReleaseYear()) {
+                            int releaseYear = r.getInt("Year");
+                            movie.setReleaseYear(releaseYear);
+                        }
                         double imdbRating = r.getDouble("imdbRating");
                         movie.setImdbRating(String.valueOf(imdbRating));
 
@@ -69,6 +74,11 @@ public class HttpRequester {
                     }
 
                     if(movieList.size() == movieList.indexOf(movie) + 1) {
+
+                        if(isTime) {
+                            SparqlQueries.filterReleaseDate(movieList);
+                        }
+
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
                         progressBar.setVisibility(View.INVISIBLE);

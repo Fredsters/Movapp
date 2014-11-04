@@ -16,7 +16,7 @@
             android:layout_height="wrap_content" android:layout_weight="1"
             android:background="#FFFFFFFF">
             <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name" />
+                android:layout_height="wrap_content" android:text="Name of Actor:" />
             <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -68,12 +68,31 @@
             android:layout_height="wrap_content"
         ></Spinner>
     </LinearLayout>
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:id="@+id/submit_button"
-            android:onClick="submitSearch" />
+
+    <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="Director"
+        android:textColor="#FFFFFFFF" />
+    <LinearLayout android:id="@+id/panelDirector"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#FFFFFFFF">
+        <LinearLayout android:id="@+id/panelDirector1"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:background="#FFFFFFFF">
+            <TextView android:id="@+id/tvDirectorName" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Name of Director:" />
+            <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:id="@+id/submit_button"
+        android:onClick="submitSearch" />
 
 
 

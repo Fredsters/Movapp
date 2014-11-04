@@ -1,11 +1,9 @@
 package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,15 +20,11 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
@@ -44,6 +38,7 @@ public class List extends Activity {
     protected ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
     protected ProgressBar progressBar;
+    HashMap<String, Object> criteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +46,11 @@ public class List extends Activity {
         setContentView(R.layout.activity_list);
 
         Intent intent = getIntent();
-        //String actorName = intent.getStringExtra("actorName");
-        HashMap<String, Object> criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
+        criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
 
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
         this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
-//        Only neccessary if we use Request calls in the UI-Thread
-//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//        StrictMode.setThreadPolicy(policy);
         this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ListView listView = (ListView) findViewById(R.id.resultList);
         listView.setAdapter(mlAdapter);
@@ -73,7 +64,8 @@ public class List extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(that, Detail.class);
-                intent.putExtra("movie", movieList.get(position));
+                Movie movie = movieList.get(position);
+                intent.putExtra("movie", movie);
                 startActivity(intent);
             }
         };
@@ -113,33 +105,42 @@ public class List extends Activity {
             String LMDBsparqlQueryString = sparqler.LMDBQuery();
             Query query = QueryFactory.create(LMDBsparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
-            ResultSet results = qexec.execSelect();
+            ResultSet results;
+            try {
+                results = qexec.execSelect();
 
-            for (; results.hasNext(); ) {
-                QuerySolution soln = results.nextSolution();
-                String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
-                Literal movieId = soln.getLiteral("i");
-                Literal releaseYearLiteral = soln.getLiteral("y");
-                String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
-                Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId);
-                movieList.add(movie);
-            }
+                for (; results.hasNext(); ) {
+                    QuerySolution soln = results.nextSolution();
+                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
+                    Literal movieId = soln.getLiteral("i");
+                    Literal releaseYearLiteral = soln.getLiteral("y");
+                    String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
+                    Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId);
+                    movieList.add(movie);
+                }
+            }catch (Exception e){
+            Log.e("LINKEDMDB", "Failed"+ e.toString());
+        }
             qexec.close();
 
 
         /* DPBEDIA */
+
             String dbPediaSparqlQueryString = sparqler.DBPEDIAQuery();
             query = QueryFactory.create(dbPediaSparqlQueryString);
             qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
-            results = qexec.execSelect();
+            try {
+                results = qexec.execSelect();
+                for (; results.hasNext(); ) {
+                    QuerySolution soln = results.nextSolution();
+                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
+                    Literal releaseYearLiteral = soln.getLiteral("y");
 
-            for (; results.hasNext(); ) {
-                QuerySolution soln = results.nextSolution();
-                String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
-                Literal releaseYearLiteral = soln.getLiteral("y");
-
-                Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral));
-                movieList.add(movie);
+                    Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral));
+                    movieList.add(movie);
+                }
+            }catch (Exception e){
+                Log.e("DBPEDIA", "Failed"+ e.toString());
             }
             qexec.close();
 
@@ -163,7 +164,7 @@ public class List extends Activity {
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
-           HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar);
+           HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar, (Boolean) criteria.get("isTime"));
         }
     }
 }

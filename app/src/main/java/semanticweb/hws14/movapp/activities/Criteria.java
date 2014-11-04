@@ -44,9 +44,18 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
         String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
 
-        HashMap<String,Object> criteria = new HashMap<String, Object>();
+        EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
+        String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
+
+        HashMap<String, Object> criteria = new HashMap<String, Object>();
 
         criteria.put("actorName", actorName);
+        criteria.put("isActor", true);
+        criteria.put("directorName", directorName);
+        criteria.put("isDirector", true);
+
+        criteria.put("isGenre", false);
+        criteria.put("isTime", false);
         intent.putExtra("criteria", criteria);
 
         startActivity(intent);
@@ -75,28 +84,35 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         Button btnActor = (Button) findViewById(R.id.btnActor);
         Button btnYear = (Button) findViewById(R.id.btnYear);
         Button btnGenre = (Button) findViewById(R.id.btnGenre);
+        Button btnDirector = (Button) findViewById(R.id.btnDirector);
 
-        View panelProfile = findViewById(R.id.panelActor);
-        panelProfile.setVisibility(View.GONE);
+        View panelActor = findViewById(R.id.panelActor);
+        panelActor.setVisibility(View.GONE);
 
-        View panelSettings = findViewById(R.id.panelYear);
-        panelSettings.setVisibility(View.GONE);
+        View panelYear = findViewById(R.id.panelYear);
+        panelYear.setVisibility(View.GONE);
 
-        View panelPrivacy = findViewById(R.id.panelGenre);
-        panelPrivacy.setVisibility(View.GONE);
+        View panelGenre = findViewById(R.id.panelGenre);
+        panelGenre.setVisibility(View.GONE);
+
+        View panelDirector = findViewById(R.id.panelDirector);
+        panelDirector.setVisibility(View.GONE);
 
         btnActor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelActor);
-                panelProfile.setVisibility(View.VISIBLE);
+                View panelActor = findViewById(R.id.panelActor);
+                panelActor.setVisibility(View.VISIBLE);
 
-                View panelSettings = findViewById(R.id.panelYear);
-                panelSettings.setVisibility(View.GONE);
+                View panelYear = findViewById(R.id.panelYear);
+                panelYear.setVisibility(View.GONE);
 
-                View panelPrivacy = findViewById(R.id.panelGenre);
-                panelPrivacy.setVisibility(View.GONE);
+                View panelGenre = findViewById(R.id.panelGenre);
+                panelGenre.setVisibility(View.GONE);
+
+                View panelDirector = findViewById(R.id.panelDirector);
+                panelDirector.setVisibility(View.GONE);
 
             }
         });
@@ -105,14 +121,17 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelActor);
-                panelProfile.setVisibility(View.GONE);
+                View panelActor = findViewById(R.id.panelActor);
+                panelActor.setVisibility(View.GONE);
 
-                View panelSettings = findViewById(R.id.panelYear);
-                panelSettings.setVisibility(View.VISIBLE);
+                View panelYear = findViewById(R.id.panelYear);
+                panelYear.setVisibility(View.VISIBLE);
 
-                View panelPrivacy = findViewById(R.id.panelGenre);
-                panelPrivacy.setVisibility(View.GONE);
+                View panelGenre = findViewById(R.id.panelGenre);
+                panelGenre.setVisibility(View.GONE);
+
+                View panelDirector = findViewById(R.id.panelDirector);
+                panelDirector.setVisibility(View.GONE);
 
             }
         });
@@ -121,14 +140,36 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             @Override
             public void onClick(View v) {
                 // DO STUFF
-                View panelProfile = findViewById(R.id.panelActor);
-                panelProfile.setVisibility(View.GONE);
+                View panelActor = findViewById(R.id.panelActor);
+                panelActor.setVisibility(View.GONE);
 
-                View panelSettings = findViewById(R.id.panelYear);
-                panelSettings.setVisibility(View.GONE);
+                View panelYear = findViewById(R.id.panelYear);
+                panelYear.setVisibility(View.GONE);
 
-                View panelPrivacy = findViewById(R.id.panelGenre);
-                panelPrivacy.setVisibility(View.VISIBLE);
+                View panelGenre = findViewById(R.id.panelGenre);
+                panelGenre.setVisibility(View.VISIBLE);
+
+                View panelDirector = findViewById(R.id.panelDirector);
+                panelDirector.setVisibility(View.GONE);
+
+            }
+        });
+
+        btnDirector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // DO STUFF
+                View panelActor = findViewById(R.id.panelActor);
+                panelActor.setVisibility(View.GONE);
+
+                View panelYear = findViewById(R.id.panelYear);
+                panelYear.setVisibility(View.GONE);
+
+                View panelGenre = findViewById(R.id.panelGenre);
+                panelGenre.setVisibility(View.GONE);
+
+                View panelDirector = findViewById(R.id.panelDirector);
+                panelDirector.setVisibility(View.VISIBLE);
 
             }
         });

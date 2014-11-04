@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_list">list</string>
     <string name="title_activity_result">result</string>
+    <string name="dummy">Just proof that data is there</string>
     <string-array name="year_array">
         <item>1925</item>
         <item>1930</item>
