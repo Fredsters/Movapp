@@ -1,6 +1,7 @@
 package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -40,6 +42,7 @@ public class List extends Activity {
 
     protected ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
+    protected ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +55,12 @@ public class List extends Activity {
         ArrayList<Movie> movieList = new ArrayList<Movie>();
         this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
-        //TODO: Remove and make the query async
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-       ListView listView = (ListView) findViewById(R.id.resultList);
-       listView.setAdapter(mlAdapter);
+//        Only neccessary if we use Request calls in the UI-Thread
+//        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//        StrictMode.setThreadPolicy(policy);
+        this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ListView listView = (ListView) findViewById(R.id.resultList);
+        listView.setAdapter(mlAdapter);
 
 
         queryForMovies q = new queryForMovies();
@@ -113,6 +116,7 @@ public class List extends Activity {
 
     private class queryForMovies extends AsyncTask<String, Void, ArrayList<Movie>> {
 
+        private ProgressDialog dialog;
         //TODO loading buffer gif or soemthing
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
@@ -172,11 +176,15 @@ public class List extends Activity {
             return movieList;
         }
 
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         public void onPostExecute(ArrayList<Movie> movieList) {
   //          mlAdapter.addAll(movieList);
  //           mlAdapter.notifyDataSetChanged();
-
-           movieList =  HttpRequester.addImdbRating(that, movieList, mlAdapter);
+  //         this.dialog.dismiss();
+           movieList =  HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar);
         }
     }
 }

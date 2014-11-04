@@ -45,7 +45,6 @@ public class InputCleaner {
 
     public static String cleanImdbId(Resource url) {
         String imdbId = "";
-        //Todo check if everything is set to "0"
         if(url == null) {
             imdbId = "0";
         } else {

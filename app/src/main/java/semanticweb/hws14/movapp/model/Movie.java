@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 29.10.2014.
  */
-//TODO: Should ImdbRating be String or float?
+//TODO: Should ImdbRating be String or float? For now it should stay a String
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;

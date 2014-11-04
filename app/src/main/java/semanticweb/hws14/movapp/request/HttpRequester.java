@@ -3,7 +3,9 @@ package semanticweb.hws14.movapp.request;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,7 +29,7 @@ import semanticweb.hws14.movapp.model.MovieComparator;
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter) {
+    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final ProgressBar progressBar) {
         for(final Movie movie : movieList) {
             String url = "";
             String urlTitle = null;
@@ -36,8 +38,6 @@ public class HttpRequester {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            //&plot=short&r=json
-            //TODO Check every film from Jim Carrey
             if(!"0".equals(movie.getImdbId()) && null != movie.getImdbId()) {
                 url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
             } else if(movie.getReleaseYear() != 0) {
@@ -46,10 +46,6 @@ public class HttpRequester {
                 url = "http://www.omdbapi.com/?t=" + urlTitle;
             }
             url+="&plot=short&r=json";
-            //http://www.omdbapi.com/?t=Lemony+Snicket's&y=&plot=short&r=json
-            //TODO get correct data
-
-            //TODO much wrong data with year?
 
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
@@ -79,8 +75,10 @@ public class HttpRequester {
                     if(isLastMovie) {
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
+                        progressBar.setVisibility(View.INVISIBLE);
                         mlAdapter.addAll(movieList);
                         mlAdapter.notifyDataSetChanged();
+
                     }
                 }
             }, new Response.ErrorListener() {
