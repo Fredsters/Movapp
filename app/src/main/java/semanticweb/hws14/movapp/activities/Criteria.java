@@ -37,8 +37,9 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     public void submitSearch(View view) {
         Intent intent = new Intent(this, List.class);
 
-        EditText editText = (EditText) findViewById(R.id.tfActorName);
-        String actorName = InputCleaner.cleanActorName(editText.getText().toString());
+       // EditText editText = (EditText) findViewById(R.id.tfActorName);
+      //  String actorName = InputCleaner.cleanActorName(editText.getText().toString());
+        String actorName = "Jim Carrey";
         intent.putExtra("actorName", actorName);
         startActivity(intent);
     }

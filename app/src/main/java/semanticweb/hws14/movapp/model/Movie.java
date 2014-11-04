@@ -11,16 +11,27 @@ public class Movie implements Parcelable {
     private String title;
     private int mdbId;
     private String imdbRating;
+    private int releaseYear;
+    private String imdbId;
 
     /* Constructors */
 
-    public Movie(String title, int mdbId) {
+    public Movie(String title, int mdbId, int releaseYear, String imdbId) {
         this.title = title;
         this.mdbId = mdbId;
+        this.releaseYear = releaseYear;
+        this.imdbId = imdbId;
     }
 
-    public Movie(String title) {
+    public Movie(String title, int mdbId, int releaseYear) {
         this.title = title;
+        this.mdbId = mdbId;
+        this.releaseYear = releaseYear;
+    }
+
+    public Movie(String title, int releaseYear) {
+        this.title = title;
+        this.releaseYear = releaseYear;
     }
 
     public Movie() {
@@ -37,6 +48,8 @@ public class Movie implements Parcelable {
         out.writeInt(mdbId);
         //       out.writeString(imdbFilmId);
         out.writeString(imdbRating);
+        out.writeInt(releaseYear);
+        out.writeString(imdbId);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -53,11 +66,13 @@ public class Movie implements Parcelable {
     private Movie(Parcel in) {
         title = in.readString();
         mdbId = in.readInt();
-        //      imdbFilmId = in.readString();
+        releaseYear = in.readInt();
         imdbRating = in.readString();
+        imdbId = in.readString();
     }
 
     /* Getter and Setter */
+
     public String getTitle() {
         return title;
     }
@@ -82,11 +97,27 @@ public class Movie implements Parcelable {
         this.mdbId = mdbId;
     }
 
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
     @Override
     public String toString(){
 
         String rating = "" + imdbRating;
-        String out = this.title.toString() + "\n" + rating.toString();
+        String out = this.title.toString() + "\nImdb-Rating: " + rating.toString();
         return out;
     }
 }

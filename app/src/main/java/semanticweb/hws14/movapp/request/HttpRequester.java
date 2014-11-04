@@ -16,9 +16,11 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.activities.List;
+import semanticweb.hws14.movapp.model.MovieComparator;
 
 /**
  * Created by Frederik on 29.10.2014.
@@ -34,29 +36,49 @@ public class HttpRequester {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            url ="http://www.omdbapi.com/?t="+urlTitle;//+"%20&y="+movie.getReleaseYear();
+            //&plot=short&r=json
+            //TODO Check every film from Jim Carrey
+            if(!"0".equals(movie.getImdbId()) && null != movie.getImdbId()) {
+                url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
+            } else if(movie.getReleaseYear() != 0) {
+                url = "http://www.omdbapi.com/?t=" + urlTitle + "%20&y=" + movie.getReleaseYear();
+            } else {
+                url = "http://www.omdbapi.com/?t=" + urlTitle;
+            }
+            url+="&plot=short&r=json";
+            //http://www.omdbapi.com/?t=Lemony+Snicket's&y=&plot=short&r=json
+            //TODO get correct data
+
+            //TODO much wrong data with year?
 
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
                     try {
-                        double imdbRating = r.getDouble("imdbRating");
-
-                        movie.setImdbRating(String.valueOf(imdbRating));
-                    } catch (JSONException e) {
-                        //Really bad coding style :D :D
-                        try {
-                            if (r.getBoolean("Response")) {
-                                movie.setImdbRating("No rating");
-                            }
-                        } catch (JSONException e1) {
-                            Log.e("JSONExcepetion", "No Response --> Movie does not really exist");
+                        if("0".equals(movie.getImdbId())) {
+                            String imdbID = r.getString("imdbID");
+                            movie.setImdbId(imdbID);
                         }
 
+                        double imdbRating = r.getDouble("imdbRating");
+                        movie.setImdbRating(String.valueOf(imdbRating));
+
+                    } catch (JSONException e) {
+                        movie.setImdbRating("0");
                     }
-                    if(null == movie.getImdbRating()){
+                    boolean isLastMovie = false;
+                    if("0".equals(movie.getImdbId()) || null == movie.getImdbId()){
+                        if(movieList.size() == movieList.indexOf(movie) + 1) {
+                            isLastMovie = true;
+                        }
                         movieList.remove(movie);
+
+
+                    } else if(null == movie.getImdbRating()) {
+                        movie.setImdbRating("0");
                     }
-                    if(movieList.size() == movieList.indexOf(movie) + 1) {
+                    if(isLastMovie) {
+                        Collections.sort(movieList, new MovieComparator());
+                        mlAdapter.clear();
                         mlAdapter.addAll(movieList);
                         mlAdapter.notifyDataSetChanged();
                     }
@@ -65,8 +87,6 @@ public class HttpRequester {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("JSONExcepetion", "RESPONSE FAILED");
-                    if(movieList.size() == movieList.indexOf(movie) + 1) {
-                    }
                 }
             });
 

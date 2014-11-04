@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +20,17 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Resource;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
@@ -55,30 +61,8 @@ public class List extends Activity {
 
 
         queryForMovies q = new queryForMovies();
+        //Executes SPARQL Queries, Private class queryForMovies is called.
         q.execute(actorName);
-
-
-
-  //      Collections.sort(movieList,  new MovieComparator());
-
-/*        for(Movie movie : movieList) {
-            Log.d(" Rating: " +movie.getImdbRating() + "   Title: ",movie.getTitle());
-        }*/
-        //HttpRequester.addImdbRating(this, this.movieList);
-
-//        ArrayAdapter adapter = new ArrayAdapter<Movie>(list.this,android.R.layout.simple_list_item_1, movieList);
-    //    listView.setAdapter(adapter);
-
-
-        // TODO : Work this shit
-        //adds ImdbRating to the movieList. Since the Http Request to get the imdb Rating is
-        // asynchronous. The next activity can only started, after the response is received.
-        // Therefore the next activity is started within this method
-        // It would be much nicer if i could make the Http Request synchronous --> Does not work for now
-        // The best would be if everything is async again, but for now its ok like this.
-        // The whole damn thing is so extraordinary ugly. It would not get laid.
-        // IN SHORT: This methods add ImdbRating and starts next Activity
-
 
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
@@ -129,14 +113,12 @@ public class List extends Activity {
 
     private class queryForMovies extends AsyncTask<String, Void, ArrayList<Movie>> {
 
-        //TODO: Input bereinigen
-        //TODO start buffer gif or soemthing
+        //TODO loading buffer gif or soemthing
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
 
             String actorName = params[0];
             ArrayList<Movie> movieList = new ArrayList<Movie>();
-
 
         /* LMDB */
             String LMDBsparqlQueryString = SparqlQueries.LMDBQuery(actorName);
@@ -146,18 +128,11 @@ public class List extends Activity {
 
             for (; results.hasNext(); ) {
                 QuerySolution soln = results.nextSolution();
-                Literal title = soln.getLiteral("t");
+                String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
                 Literal movieId = soln.getLiteral("i");
                 Literal releaseYearLiteral = soln.getLiteral("y");
-                String releaseYearString = releaseYearLiteral.toString();
-                Pattern p = Pattern.compile("\\d\\d\\d\\d");
-                Matcher m = p.matcher(releaseYearString);
-                if(m.find()) {
-                    releaseYearString = m.group();
-                }
-                int releaseYear = Integer.parseInt(releaseYearString);
-
-                Movie movie = new Movie(title.getString(), movieId.getInt()/*, releaseYear*/);
+                String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
+                Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId);
                 movieList.add(movie);
             }
             qexec.close();
@@ -171,28 +146,35 @@ public class List extends Activity {
 
             for (; results.hasNext(); ) {
                 QuerySolution soln = results.nextSolution();
-                Literal title = soln.getLiteral("t");
-                Movie movie = new Movie(title.getString(),1999);
+                String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
+                Literal releaseYearLiteral = soln.getLiteral("y");
+
+                Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral));
                 movieList.add(movie);
             }
             qexec.close();
 
-            //TODO Encode & und and
         /* Put the Lists together */
+
+            ArrayList indexArray = new ArrayList();
             for(int i=0; i<movieList.size();i++) {
                 for(int j=i+1; j<movieList.size();j++) {
+                    if(movieList.get(j).getTitle().equals("The Cable Guy") && movieList.get(i).getTitle().equals("The Cable Guy")){
+                        Log.d("ST","ST");
+                    }
                     if(movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                        movieList.remove(movieList.get(j));
-                        break;
+                        indexArray.add(movieList.get(j));
                     }
                 }
             }
+            movieList.removeAll(indexArray);
+
             return movieList;
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
-            mlAdapter.addAll(movieList);
-            mlAdapter.notifyDataSetChanged();
+  //          mlAdapter.addAll(movieList);
+ //           mlAdapter.notifyDataSetChanged();
 
            movieList =  HttpRequester.addImdbRating(that, movieList, mlAdapter);
         }
