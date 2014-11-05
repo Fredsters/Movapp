@@ -8,14 +8,12 @@ import android.os.Parcelable;
  */
     //TODO Genre is einfach kacke, weil die Daten scheise sind (vielleicht über omdb holen)
     //TODO Wenn nur Genre als einziges Criterium angegeben ist dann nutze SPARQL für einschränkung, wenn ein zweites criterium angegeben ist dann mache es bei sparql optional und hle zusätzlich daten über omdb
-    //TODO: MOVIE OBJECT GUTE Alternative statt einzelnen Variablen
-    //TODO: Date criteria
+    //TODO: Nutze MOVIE Resource statt einzelnen Variablen beim sparql
+    //TODO: Date criteria komplett einbauen und testen
 
     //Todo Title?
-    //TODO budget?
 
-
-    //TODO Check if one input is empty and then dont use it
+    //TODO Check if one input is empty and then dont use it maybe with switch?
     //TODO What to do when no criteria
 
 
