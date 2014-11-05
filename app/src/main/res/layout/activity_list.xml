@@ -4,14 +4,6 @@
     android:layout_height="match_parent"
     tools:context="semanticweb.hws14.movapp.activities.List">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="invisible"/>
-
     <ListView
         android:layout_width="fill_parent"
         android:layout_weight="1"

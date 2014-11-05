@@ -33,7 +33,7 @@
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
             android:background="#FFFFFFFF">
-            <TextView android:id="@+id/tvYearFrom" android:layout_width="wrap_content"
+            <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
                 android:layout_height="wrap_content" android:text="From:" />
             <Spinner
                 android:id="@+id/spYearFrom"
@@ -44,7 +44,7 @@
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
             android:background="#FFFFFFFF">
-            <TextView android:id="@+id/tvYearTo" android:layout_width="wrap_content"
+            <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
                 android:layout_height="wrap_content" android:text="To:" />
             <Spinner
                 android:id="@+id/spYearTo"

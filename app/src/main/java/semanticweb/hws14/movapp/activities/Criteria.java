@@ -14,6 +14,8 @@ import android.widget.Spinner;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
@@ -45,16 +47,16 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
         String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
 
-        EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
-        String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
+       // EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
+     //   String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
 
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
         criteria.put("actorName", actorName);
         criteria.put("isActor", true);
 
-        criteria.put("directorName", directorName);
-        criteria.put("isDirector", true);
+   //     criteria.put("directorName", directorName);
+        criteria.put("isDirector", false);
 
         criteria.put("timePeriod", new TimePeriod(1995, 2005));
         criteria.put("isTime", false);
@@ -186,7 +188,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
     private void setupSpinnerYearFrom(){
         yearFrom = (Spinner) findViewById(R.id.spYearFrom);
-        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_from, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearFrom.setAdapter(adapterFrom);
         yearFrom.setOnItemSelectedListener(this);
@@ -194,8 +196,9 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
     private void setupSpinnerYearTo(){
         yearTo = (Spinner) findViewById(R.id.spYearTo);
-        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this,R.array.year_array,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this, R.array.year_to,android.R.layout.simple_spinner_item);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         yearTo.setAdapter(adapterTo);
         yearTo.setOnItemSelectedListener(this);
     }

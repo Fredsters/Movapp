@@ -8,10 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -20,8 +20,6 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.sparql.engine.binding.Binding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,12 +35,14 @@ public class List extends Activity {
 
     protected ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
-    protected ProgressBar progressBar;
     HashMap<String, Object> criteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //supportRequestWindowFeature
+
         setContentView(R.layout.activity_list);
 
         Intent intent = getIntent();
@@ -51,7 +51,6 @@ public class List extends Activity {
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
         this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
-        this.progressBar = (ProgressBar) findViewById(R.id.progressBar);
         ListView listView = (ListView) findViewById(R.id.resultList);
         listView.setAdapter(mlAdapter);
 
@@ -160,11 +159,12 @@ public class List extends Activity {
         }
 
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
+            setProgressBarIndeterminateVisibility(true);
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
-           HttpRequester.addImdbRating(that, movieList, mlAdapter, progressBar, (Boolean) criteria.get("isTime"));
+           mlAdapter.addAll(movieList);
+           HttpRequester.addImdbRating(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"));
         }
     }
 }

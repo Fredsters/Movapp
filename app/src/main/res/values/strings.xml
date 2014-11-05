@@ -6,14 +6,11 @@
     <string name="title_activity_list">list</string>
     <string name="title_activity_result">result</string>
     <string name="dummy">Just proof that data is there</string>
-    <string-array name="year_array">
-        <item>1925</item>
+    <string-array name="year_from">
+        <item>1920</item>
         <item>1930</item>
-        <item>1935</item>
         <item>1940</item>
-        <item>1945</item>
         <item>1950</item>
-        <item>1955</item>
         <item>1960</item>
         <item>1965</item>
         <item>1970</item>
@@ -21,11 +18,45 @@
         <item>1980</item>
         <item>1985</item>
         <item>1990</item>
-        <item>1995</item>
+        <item>1992</item>
+        <item>1994</item>
+        <item>1996</item>
+        <item>1998</item>
         <item>2000</item>
-        <item>2005</item>
+        <item>2002</item>
+        <item>2004</item>
+        <item>2006</item>
+        <item>2008</item>
         <item>2010</item>
-        <item>2015</item>
+        <item>2012</item>
+        <item>2014</item>
+        <item>2016</item>
+    </string-array>
+    <string-array name="year_to">
+        <item>2016</item>
+        <item>2014</item>
+        <item>2012</item>
+        <item>2010</item>
+        <item>2008</item>
+        <item>2006</item>
+        <item>2004</item>
+        <item>2002</item>
+        <item>2000</item>
+        <item>1998</item>
+        <item>1996</item>
+        <item>1994</item>
+        <item>1992</item>
+        <item>1990</item>
+        <item>1985</item>
+        <item>1980</item>
+        <item>1975</item>
+        <item>1970</item>
+        <item>1965</item>
+        <item>1960</item>
+        <item>1950</item>
+        <item>1940</item>
+        <item>1930</item>
+        <item>1920</item>
     </string-array>
     <string-array name="genre_array">
         <item>Action</item>
@@ -55,7 +86,5 @@
         <item>Thriller</item>
         <item>War</item>
         <item>Western</item>
-
-
     </string-array>
 </resources>

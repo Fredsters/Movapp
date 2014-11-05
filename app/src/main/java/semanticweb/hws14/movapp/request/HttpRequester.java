@@ -29,7 +29,7 @@ import semanticweb.hws14.movapp.model.MovieComparator;
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (final Activity criteriaActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final ProgressBar progressBar, final boolean isTime) {
+    public static ArrayList<Movie> addImdbRating (final Activity listActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime) {
         for(final Movie movie : movieList) {
             String url = "";
             String urlTitle = null;
@@ -85,9 +85,9 @@ public class HttpRequester {
 
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        listActivity.setProgressBarIndeterminateVisibility(false);
                         mlAdapter.addAll(movieList);
-                        mlAdapter.notifyDataSetChanged();
+                      //  mlAdapter.notifyDataSetChanged();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -97,7 +97,7 @@ public class HttpRequester {
                 }
             });
 
-            HttpRequestQueueSingleton.getInstance(criteriaActivity).addToRequestQueue(jsObjRequest);
+            HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
         }
         return movieList;
     }

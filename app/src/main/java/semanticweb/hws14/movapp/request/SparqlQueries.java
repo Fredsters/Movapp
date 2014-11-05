@@ -65,7 +65,7 @@ public class SparqlQueries {
             "OPTIONAL{?m dbpprop:released ?y.";
 
             if((Boolean)criteria.get("isTime")) {
-                queryString +="FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-00-00\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date)";
+                queryString +="FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-01-01\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date)";
             }
             queryString += "}" +
             "} LIMIT 100";
