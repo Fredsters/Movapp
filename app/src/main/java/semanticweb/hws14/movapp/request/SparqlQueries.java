@@ -3,6 +3,7 @@ package semanticweb.hws14.movapp.request;
 import java.util.ArrayList;
 import java.util.HashMap;
 import semanticweb.hws14.movapp.model.Movie;
+import semanticweb.hws14.movapp.model.TimePeriod;
 
 /**
  * Created by Frederik on 23.10.2014.
@@ -31,7 +32,7 @@ public class SparqlQueries {
                 "?m movie:director ?d. ";
             }
             if((Boolean)criteria.get("isGenre")) {
-                queryString += "?g movie:movie:film_genre_name '"+criteria.get("directorName")+"'. "+
+                queryString += "?g movie:film_genre_name '"+criteria.get("genreName")+"'. "+
                 "?m movie:genre ?g. ";
             }
         queryString +=
@@ -46,7 +47,6 @@ public class SparqlQueries {
     }
 
     public String DBPEDIAQuery() {
-//TODO isGenre extra, so wie bei LINKEDMDB das Date (Vielleicht mal dbpedia-owl nutzen)
         String queryString =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
             "PREFIX dbpprop: <http://dbpedia.org/property/> "+
@@ -65,7 +65,7 @@ public class SparqlQueries {
             "OPTIONAL{?m dbpprop:released ?y.";
 
             if((Boolean)criteria.get("isTime")) {
-                queryString +="FILTER(?y >= \""+criteria.get("from")+"-00-00\"^^xsd:date && ?y <= \""+criteria.get("to")+"-12-31\"^^xsd:date)";
+                queryString +="FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-00-00\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date)";
             }
             queryString += "}" +
             "} LIMIT 100";
@@ -74,15 +74,22 @@ public class SparqlQueries {
     }
 
     public static ArrayList<Movie> filterReleaseDate(ArrayList<Movie> movieList) {
-        int from = (Integer) criteria.get("from");
-        int to = (Integer) criteria.get("to");
+        int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
+        int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
         for(Movie movie : movieList) {
             if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
                 movieList.remove(movie);
             }
         }
-
         return movieList;
+    }
 
+    public static ArrayList<Movie> filterReleaseDate(ArrayList<Movie> movieList, Movie movie) {
+        int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
+        int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
+        if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
+            movieList.remove(movie);
+        }
+        return movieList;
     }
 }

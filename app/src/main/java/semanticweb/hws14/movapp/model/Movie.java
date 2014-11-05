@@ -6,9 +6,16 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 29.10.2014.
  */
-    //TODO What to do when no criteria
-    //TODO busyindicator in action bar and show results after they are there
+
+    //Todo Title?
     //TODO budget?
+    //TODO Check if one input is empty and then dont use it
+    //TODO What to do when no criteria
+
+    //TODO busyindicator in action bar and show results after they are there
+
+    //TODO get Genre via REGEX and improve genre dropdown data
+    //TODO: Date criteria
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;

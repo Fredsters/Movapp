@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
+import semanticweb.hws14.movapp.model.TimePeriod;
 
 
 public class Criteria extends Activity implements AdapterView.OnItemSelectedListener {
@@ -51,11 +52,15 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
         criteria.put("actorName", actorName);
         criteria.put("isActor", true);
+
         criteria.put("directorName", directorName);
         criteria.put("isDirector", true);
 
-        criteria.put("isGenre", false);
+        criteria.put("timePeriod", new TimePeriod(1995, 2005));
         criteria.put("isTime", false);
+
+
+        criteria.put("isGenre", false);
         intent.putExtra("criteria", criteria);
 
         startActivity(intent);

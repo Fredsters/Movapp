@@ -58,6 +58,9 @@ public class HttpRequester {
                         if(0 == movie.getReleaseYear()) {
                             int releaseYear = r.getInt("Year");
                             movie.setReleaseYear(releaseYear);
+                            if(isTime) {
+                                SparqlQueries.filterReleaseDate(movieList, movie);
+                            }
                         }
                         double imdbRating = r.getDouble("imdbRating");
                         movie.setImdbRating(String.valueOf(imdbRating));
@@ -76,7 +79,8 @@ public class HttpRequester {
                     if(movieList.size() == movieList.indexOf(movie) + 1) {
 
                         if(isTime) {
-                            SparqlQueries.filterReleaseDate(movieList);
+                            //Could put the filter just in the get method
+                           // SparqlQueries.filterReleaseDate(movieList);
                         }
 
                         Collections.sort(movieList, new MovieComparator());
