@@ -44,15 +44,15 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     public void submitSearch(View view) {
         Intent intent = new Intent(this, List.class);
 
-        EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
-        String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
+    //    EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
+   //     String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
 
        // EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
      //   String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
 
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
-        criteria.put("actorName", actorName);
+        criteria.put("actorName", "Edward Norton");
         criteria.put("isActor", true);
 
    //     criteria.put("directorName", directorName);
@@ -61,8 +61,8 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         criteria.put("timePeriod", new TimePeriod(1995, 2005));
         criteria.put("isTime", false);
 
-
-        criteria.put("isGenre", false);
+        criteria.put("genreName", "drama");
+        criteria.put("isGenre", true);
         intent.putExtra("criteria", criteria);
 
         startActivity(intent);
@@ -188,17 +188,19 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
     private void setupSpinnerYearFrom(){
         yearFrom = (Spinner) findViewById(R.id.spYearFrom);
-        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_from, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yearFrom.setAdapter(adapterFrom);
+        yearFrom.setSelection(6);
+        yearFrom.offsetTopAndBottom(0);
+        yearFrom.offsetLeftAndRight(0);
         yearFrom.setOnItemSelectedListener(this);
     }
 
     private void setupSpinnerYearTo(){
         yearTo = (Spinner) findViewById(R.id.spYearTo);
-        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this, R.array.year_to,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this, R.array.year_array,android.R.layout.simple_spinner_item);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         yearTo.setAdapter(adapterTo);
         yearTo.setOnItemSelectedListener(this);
     }

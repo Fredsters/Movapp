@@ -6,45 +6,54 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 29.10.2014.
  */
+    //TODO Genre is einfach kacke, weil die Daten scheise sind (vielleicht über omdb holen)
+    //TODO Wenn nur Genre als einziges Criterium angegeben ist dann nutze SPARQL für einschränkung, wenn ein zweites criterium angegeben ist dann mache es bei sparql optional und hle zusätzlich daten über omdb
+    //TODO: MOVIE OBJECT GUTE Alternative statt einzelnen Variablen
+    //TODO: Date criteria
 
     //Todo Title?
     //TODO budget?
+
+
     //TODO Check if one input is empty and then dont use it
     //TODO What to do when no criteria
 
-    //TODO get Genre via REGEX
-    //TODO: Date criteria
+
 public class Movie implements Parcelable {
     private String title;
     private int mdbId;
     private String imdbRating;
     private int releaseYear;
     private String imdbId;
+    private String genre;
 
     /* Constructors */
 
-    public Movie(String title, int mdbId, int releaseYear, String imdbId) {
+    public Movie(String title, int mdbId, int releaseYear, String imdbId, String genre) {
         this.title = title;
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
         this.imdbId = imdbId;
         this.imdbRating = "0";
+        this.genre = genre;
     }
 
-    public Movie(String title, int mdbId, int releaseYear) {
+    public Movie(String title, int mdbId, int releaseYear, String genre) {
         this.title = title;
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
         this.imdbId = "0";
         this.imdbRating = "0";
+        this.genre = genre;
     }
 
-    public Movie(String title, int releaseYear) {
+    public Movie(String title, int releaseYear, String genre) {
         this.title = title;
         this.releaseYear = releaseYear;
         this.imdbId = "0";
         this.mdbId = 0;
         this.imdbRating = "0";
+        this.genre = genre;
     }
 
     // 99.9% of the time you can just ignore this
@@ -59,6 +68,7 @@ public class Movie implements Parcelable {
         out.writeString(imdbRating);
         out.writeInt(releaseYear);
         out.writeString(imdbId);
+        out.writeString(genre);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -78,6 +88,7 @@ public class Movie implements Parcelable {
         imdbRating = in.readString();
         releaseYear = in.readInt();
         imdbId = in.readString();
+        genre = in.readString();
     }
 
     /* Getter and Setter */
@@ -120,6 +131,14 @@ public class Movie implements Parcelable {
 
     public void setImdbId(String imdbId) {
         this.imdbId = imdbId;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     @Override

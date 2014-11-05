@@ -22,7 +22,7 @@ public class SparqlQueries {
             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
             "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
-            "SELECT ?t ?i ?y ?p WHERE { ";
+            "SELECT distinct ?t ?i ?y ?p ?gn WHERE { ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?a movie:actor_name '"+criteria.get("actorName")+"'. "+
                 "?m movie:actor ?a. ";
@@ -31,13 +31,18 @@ public class SparqlQueries {
                 queryString += "?d movie:director_name '"+criteria.get("directorName")+"'. "+
                 "?m movie:director ?d. ";
             }
+            queryString +=
+            "?m movie:filmid ?i; " +
+            "rdfs:label ?t. ";
+
             if((Boolean)criteria.get("isGenre")) {
-                queryString += "?g movie:film_genre_name '"+criteria.get("genreName")+"'. "+
+                queryString +=
+                "?g movie:film_genre_name ?gn. "+
+                "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
                 "?m movie:genre ?g. ";
             }
+
         queryString +=
-            "?m movie:filmid ?i;" +
-            "rdfs:label ?t." +
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL { ?m foaf:page ?p." +
             "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
@@ -52,7 +57,7 @@ public class SparqlQueries {
             "PREFIX dbpprop: <http://dbpedia.org/property/> "+
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
-            "SELECT ?t ?y WHERE { ";
+            "SELECT distinct ?t ?y ?gn WHERE { ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?actor rdfs:label '"+criteria.get("actorName")+"'@en. "+
                 "?m dbpprop:starring ?actor. ";
@@ -61,6 +66,14 @@ public class SparqlQueries {
                 queryString += "?d rdfs:label '"+criteria.get("directorName")+"'@en. "+
                 "?m dbpedia-owl:director ?d. ";
             }
+            if((Boolean)criteria.get("isGenre")) {
+                queryString +=
+                "?g rdfs:label ?gn. "+
+                "FILTER(langMatches(lang(?gn), 'EN')) "+
+                "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
+                "?m dbpprop:genre ?g.";
+            }
+
             queryString+= "?m foaf:name ?t." +
             "OPTIONAL{?m dbpprop:released ?y.";
 

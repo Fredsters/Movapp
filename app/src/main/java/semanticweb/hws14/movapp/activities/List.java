@@ -20,6 +20,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -113,8 +114,9 @@ public class List extends Activity {
                     String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
                     Literal movieId = soln.getLiteral("i");
                     Literal releaseYearLiteral = soln.getLiteral("y");
+                  //  Resource m = soln.getResource("m");
                     String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
-                    Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId);
+                    Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId, "");
                     movieList.add(movie);
                 }
             }catch (Exception e){
@@ -135,7 +137,7 @@ public class List extends Activity {
                     String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
                     Literal releaseYearLiteral = soln.getLiteral("y");
 
-                    Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral));
+                    Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral), "");
                     movieList.add(movie);
                 }
             }catch (Exception e){
