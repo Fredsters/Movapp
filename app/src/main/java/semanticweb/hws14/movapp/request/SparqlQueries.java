@@ -2,6 +2,9 @@ package semanticweb.hws14.movapp.request;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
@@ -35,18 +38,24 @@ public class SparqlQueries {
             "?m movie:filmid ?i; " +
             "rdfs:label ?t. ";
 
-            if((Boolean)criteria.get("isGenre")) {
+            //TODO DO the OPTIONAL or don't???
+            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString +=
                 "?g movie:film_genre_name ?gn. "+
                 "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
                 "?m movie:genre ?g. ";
-            }
+            }/* else {
+                queryString +=
+                "OPTIONAL {?g movie:film_genre_name ?gn." +
+                "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
+                "?m movie:genre ?g.}" ;
+            } */
 
         queryString +=
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL { ?m foaf:page ?p." +
             "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
-            "} LIMIT 100";
+            "} LIMIT 200";
 
         return queryString;
     }
@@ -57,7 +66,11 @@ public class SparqlQueries {
             "PREFIX dbpprop: <http://dbpedia.org/property/> "+
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
-            "SELECT distinct ?t ?y ?gn WHERE { ";
+            "SELECT distinct ?t ?y ";
+            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
+                queryString += "?gn ";
+            }
+            queryString += "WHERE { ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?actor rdfs:label '"+criteria.get("actorName")+"'@en. "+
                 "?m dbpprop:starring ?actor. ";
@@ -66,13 +79,19 @@ public class SparqlQueries {
                 queryString += "?d rdfs:label '"+criteria.get("directorName")+"'@en. "+
                 "?m dbpedia-owl:director ?d. ";
             }
-            if((Boolean)criteria.get("isGenre")) {
+            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString +=
                 "?g rdfs:label ?gn. "+
                 "FILTER(langMatches(lang(?gn), 'EN')) "+
                 "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g.";
-            }
+            }/* else {
+                queryString +=
+                "OPTIONAL { ?g rdfs:label ?gn. "+
+                "FILTER(langMatches(lang(?gn), 'EN')) "+
+                "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
+                "?m dbpprop:genre ?g. }";
+            }*/
 
             queryString+= "?m foaf:name ?t." +
             "OPTIONAL{?m dbpprop:released ?y.";
@@ -81,28 +100,30 @@ public class SparqlQueries {
                 queryString +="FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-01-01\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date)";
             }
             queryString += "}" +
-            "} LIMIT 100";
+            "} LIMIT 200";
 
         return queryString;
     }
 
-    public static ArrayList<Movie> filterReleaseDate(ArrayList<Movie> movieList) {
-        int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
-        int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
-        for(Movie movie : movieList) {
-            if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
-                movieList.remove(movie);
-            }
-        }
-        return movieList;
-    }
-
-    public static ArrayList<Movie> filterReleaseDate(ArrayList<Movie> movieList, Movie movie) {
+    public static boolean filterReleaseDate(ArrayList<Movie> movieList, Movie movie) {
         int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
         int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
         if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
-            movieList.remove(movie);
+           // movieList.remove(movie);
+            return true;
         }
-        return movieList;
+        return false;
+    }
+
+    public static boolean filterGenre(ArrayList<Movie> movieList, Movie movie) {
+        String genre = movie.getGenre();
+        String genreNameFilter = (String) criteria.get("genreName");
+        Pattern p = Pattern.compile(genreNameFilter, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(genre);
+        if(!m.find()) {
+            //movieList.remove(movie);
+            return true;
+        }
+        return false;
     }
 }

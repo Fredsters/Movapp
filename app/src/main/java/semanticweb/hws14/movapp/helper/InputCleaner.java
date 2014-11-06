@@ -39,8 +39,13 @@ public class InputCleaner {
         return Integer.parseInt(yearString);
     }
 
-    public static String cleanMovieTitle (String title) {
-        return title.replace("and", "&");
+    public static String cleanMovieTitle (Literal title) {
+        if(null != title && title.isLiteral()) {
+            return title.getString().replace("and", "&");
+        } else {
+            return "";
+        }
+
     }
 
     public static String cleanImdbId(Resource url) {
@@ -56,5 +61,13 @@ public class InputCleaner {
             imdbId = m.group();
         }
         return imdbId;
+    }
+
+    public static String cleanGenreName (Literal genreName) {
+        if(null != genreName && genreName.isLiteral()) {
+            return genreName.getString();
+        } else {
+            return "";
+        }
     }
 }

@@ -44,25 +44,25 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     public void submitSearch(View view) {
         Intent intent = new Intent(this, List.class);
 
-    //    EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
-   //     String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
+        EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
+       String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
 
        // EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
      //   String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
 
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
-        criteria.put("actorName", "Edward Norton");
+        criteria.put("actorName", actorName);
         criteria.put("isActor", true);
 
    //     criteria.put("directorName", directorName);
         criteria.put("isDirector", false);
 
-        criteria.put("timePeriod", new TimePeriod(1995, 2005));
+        criteria.put("timePeriod", new TimePeriod(1998, 2002));
         criteria.put("isTime", false);
 
         criteria.put("genreName", "drama");
-        criteria.put("isGenre", true);
+        criteria.put("isGenre", false);
         intent.putExtra("criteria", criteria);
 
         startActivity(intent);

@@ -20,6 +20,7 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 import java.util.ArrayList;
@@ -111,12 +112,15 @@ public class List extends Activity {
 
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
+
+
+                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
                     Literal movieId = soln.getLiteral("i");
                     Literal releaseYearLiteral = soln.getLiteral("y");
-                  //  Resource m = soln.getResource("m");
                     String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
-                    Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId, "");
+                    String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
+
+                    Movie movie = new Movie(title, movieId.getInt(), InputCleaner.cleanReleaseYear(releaseYearLiteral),imdbId, genreName);
                     movieList.add(movie);
                 }
             }catch (Exception e){
@@ -134,10 +138,11 @@ public class List extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t").getString());
+                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
                     Literal releaseYearLiteral = soln.getLiteral("y");
+                    String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
 
-                    Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral), "");
+                    Movie movie = new Movie(title, InputCleaner.cleanReleaseYear(releaseYearLiteral), genreName);
                     movieList.add(movie);
                 }
             }catch (Exception e){
@@ -166,7 +171,7 @@ public class List extends Activity {
 
         public void onPostExecute(ArrayList<Movie> movieList) {
            mlAdapter.addAll(movieList);
-           HttpRequester.addImdbRating(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"));
+           HttpRequester.addImdbRating(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"));
         }
     }
 }

@@ -6,9 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 29.10.2014.
  */
-    //TODO Genre is einfach kacke, weil die Daten scheise sind (vielleicht über omdb holen)
-    //TODO Wenn nur Genre als einziges Criterium angegeben ist dann nutze SPARQL für einschränkung, wenn ein zweites criterium angegeben ist dann mache es bei sparql optional und hle zusätzlich daten über omdb
-    //TODO: Nutze MOVIE Resource statt einzelnen Variablen beim sparql
+
     //TODO: Date criteria komplett einbauen und testen
 
     //Todo Title?
