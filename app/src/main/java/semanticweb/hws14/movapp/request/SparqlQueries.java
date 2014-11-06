@@ -38,7 +38,6 @@ public class SparqlQueries {
             "?m movie:filmid ?i; " +
             "rdfs:label ?t. ";
 
-            //TODO DO the OPTIONAL or don't???
             if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString +=
                 "?g movie:film_genre_name ?gn. "+
@@ -66,6 +65,7 @@ public class SparqlQueries {
             "PREFIX dbpprop: <http://dbpedia.org/property/> "+
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
+            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "+
             "SELECT distinct ?t ?y ";
             if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString += "?gn ";
@@ -92,14 +92,17 @@ public class SparqlQueries {
                 "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g. }";
             }*/
+            queryString+= "?m foaf:name ?t. ";
 
-            queryString+= "?m foaf:name ?t." +
-            "OPTIONAL{?m dbpprop:released ?y.";
-
-            if((Boolean)criteria.get("isTime")) {
-                queryString +="FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-01-01\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date)";
+            if((Boolean)criteria.get("isTime") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
+                queryString+=
+                "?m dbpprop:released ?y. " +
+                "FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-01-01\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date) ";
+            } else {
+                queryString+=
+                "OPTIONAL{?m dbpprop:released ?y.}";
             }
-            queryString += "}" +
+            queryString+=
             "} LIMIT 200";
 
         return queryString;

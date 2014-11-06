@@ -50,6 +50,7 @@ public class HttpRequester {
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
                     boolean response = false;
+                    boolean lastMovie = false;
                     try {
                         response = r.getBoolean("Response");
                     } catch (JSONException e) {
@@ -75,11 +76,17 @@ public class HttpRequester {
                                     movie.setGenre(genreName);
                                 }
                                 if (SparqlQueries.filterGenre(movieList, movie)) {
+                                    if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                                        lastMovie = true;
+                                    }
                                     movieList.remove(movie);
                                 }
                             }
                         } catch (JSONException e) {
-                            movie.setGenre("");
+                            if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                                lastMovie = true;
+                            }
+                            movieList.remove(movie);
                         }
                         //TIME
                         try {
@@ -89,11 +96,17 @@ public class HttpRequester {
                                     movie.setReleaseYear(releaseYear);
                                 }
                                 if (SparqlQueries.filterReleaseDate(movieList, movie)) {
+                                    if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                                        lastMovie = true;
+                                    }
                                     movieList.remove(movie);
                                 }
                             }
                         } catch (JSONException e) {
-                            movie.setReleaseYear(0);
+                            if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                                lastMovie = true;
+                            }
+                            movieList.remove(movie);
                         }
                         //IMDB RATING
                         try {
@@ -103,12 +116,14 @@ public class HttpRequester {
                             movie.setImdbRating("0 No Rating");
                         }
                     } else {
-                        //TODO Do remove it or don't ????
+                        if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                            lastMovie = true;
+                        }
                         movieList.remove(movie);
+
                     }
 
-                    if(movieList.size() <= movieList.indexOf(movie) + 1) {
-
+                    if(lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
                         listActivity.setProgressBarIndeterminateVisibility(false);
@@ -119,7 +134,7 @@ public class HttpRequester {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("JSONExcepetion", "RESPONSE FAILED");
+                    Log.e("JSONException", "RESPONSE FAILED");
                 }
             });
 

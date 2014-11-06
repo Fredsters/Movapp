@@ -146,7 +146,7 @@ public class List extends Activity {
                     movieList.add(movie);
                 }
             }catch (Exception e){
-                Log.e("DBPEDIA", "Failed"+ e.toString());
+                Log.e("DBPEDIA", "Failed DBPEDIA DOWN"+ e.toString());
             }
             qexec.close();
 

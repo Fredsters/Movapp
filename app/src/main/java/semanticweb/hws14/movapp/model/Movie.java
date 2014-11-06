@@ -7,8 +7,9 @@ import android.os.Parcelable;
  * Created by Frederik on 29.10.2014.
  */
 
-    //TODO: Date criteria komplett einbauen und testen
+    //TODO: Bei Date Criteria mal schauen ob man die Abfrage des Datums doch im SPARQL machen kann??
 
+    //TODO Rating Count ?
     //Todo Title?
 
     //TODO Check if one input is empty and then dont use it maybe with switch?
@@ -30,7 +31,7 @@ public class Movie implements Parcelable {
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
         this.imdbId = imdbId;
-        this.imdbRating = "0";
+        this.imdbRating = "";
         this.genre = genre;
     }
 
@@ -39,7 +40,7 @@ public class Movie implements Parcelable {
         this.mdbId = mdbId;
         this.releaseYear = releaseYear;
         this.imdbId = "0";
-        this.imdbRating = "0";
+        this.imdbRating = "";
         this.genre = genre;
     }
 
@@ -48,7 +49,7 @@ public class Movie implements Parcelable {
         this.releaseYear = releaseYear;
         this.imdbId = "0";
         this.mdbId = 0;
-        this.imdbRating = "0";
+        this.imdbRating = "";
         this.genre = genre;
     }
 
