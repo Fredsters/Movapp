@@ -19,10 +19,13 @@ public class SparqlQueries {
         this.criteria = criteria;
     }
 
+    public SparqlQueries(){
+
+    }
+
     public String LMDBQuery() {
         String queryString =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
-            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
             "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
             "SELECT distinct ?t ?i ?y ?p ?gn WHERE { ";
@@ -129,4 +132,32 @@ public class SparqlQueries {
         }
         return false;
     }
+
+    //TODO Verbessern, so dass keine multizierten ergebnisse da sind : UNION wäre ne möglichkeit
+    public String LMDBDetailQuery(Movie movie) {
+        String queryString=
+                "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
+                "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
+                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
+                "?m movie:filmid '"+movie.getMdbId()+"'^^xsd:int. "+
+                "OPTIONAL {?m movie:actor ?a. "+
+                "?a movie:actor_name ?aN.} "+
+                "OPTIONAL {?m movie:director ?d. "+
+                "?d movie:director_name ?dN.} "+
+                "OPTIONAL {?m movie:writer ?w. "+
+                "?w movie:writer_name ?wN.} "+
+                "OPTIONAL {?m movie:genre ?g. "+
+                "?g movie:film_genre_name ?gN.} "+
+                "OPTIONAL {?m movie:runtime ?r.}} ";
+        return queryString;
+    }
+
+    public String DBPEDIADetailQuery() {
+        String queryString= "";
+
+
+        return queryString;
+    }
+
+
 }

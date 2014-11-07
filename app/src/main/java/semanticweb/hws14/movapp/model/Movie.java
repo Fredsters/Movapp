@@ -9,7 +9,6 @@ import android.os.Parcelable;
 
     //TODO: Bei Date Criteria mal schauen ob man die Abfrage des Datums doch im SPARQL machen kann??
 
-    //TODO Rating Count ?
     //Todo Title?
 
     //TODO Check if one input is empty and then dont use it maybe with switch?
@@ -50,6 +49,15 @@ public class Movie implements Parcelable {
         this.imdbId = "0";
         this.mdbId = 0;
         this.imdbRating = "";
+        this.genre = genre;
+    }
+
+    public Movie(String title, int mdbId, int releaseYear, String imdbId, String genre, String imdbRating) {
+        this.title = title;
+        this.mdbId = mdbId;
+        this.releaseYear = releaseYear;
+        this.imdbId = imdbId;
+        this.imdbRating = imdbRating;
         this.genre = genre;
     }
 
@@ -145,4 +153,28 @@ public class Movie implements Parcelable {
         String out = this.title.toString() + "\nImdb-Rating: " + rating.toString();
         return out;
     }
+/*
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null || obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        Movie movie = (Movie) obj;
+        return (title == movie.getTitle() || (title != null && title.equals(movie.getTitle())));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((title == null) ? 0 : title.hashCode());
+        return result;
+    }*/
+
+
 }

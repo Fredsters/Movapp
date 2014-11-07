@@ -20,8 +20,6 @@ import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,7 +41,6 @@ public class List extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        //supportRequestWindowFeature
 
         setContentView(R.layout.activity_list);
 
@@ -151,7 +148,7 @@ public class List extends Activity {
             qexec.close();
 
         /* Put the Lists together */
-
+    //TODO POssible with contains method, but then we need to override equals and hash method
             ArrayList indexArray = new ArrayList();
             for(int i=0; i<movieList.size();i++) {
                 for(int j=i+1; j<movieList.size();j++) {
@@ -171,7 +168,7 @@ public class List extends Activity {
 
         public void onPostExecute(ArrayList<Movie> movieList) {
            mlAdapter.addAll(movieList);
-           HttpRequester.addImdbRating(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"));
+           HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"));
         }
     }
 }

@@ -29,23 +29,10 @@ import semanticweb.hws14.movapp.model.MovieComparator;
  */
 
 public class HttpRequester {
-    public static ArrayList<Movie> addImdbRating (final Activity listActivity, final ArrayList<Movie>  movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre) {
         for(final Movie movie : movieList) {
-            String url = "";
-            String urlTitle = null;
-            try {
-                urlTitle = URLEncoder.encode(movie.getTitle(),"UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            if(!"0".equals(movie.getImdbId())) {
-                url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
-            } else if(movie.getReleaseYear() != 0) {
-                url = "http://www.omdbapi.com/?t=" + urlTitle + "%20&y=" + movie.getReleaseYear();
-            } else {
-                url = "http://www.omdbapi.com/?t=" + urlTitle;
-            }
-            url+="&plot=short&r=json";
+            
+            String url = prepareURL(movie);
 
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
@@ -58,36 +45,7 @@ public class HttpRequester {
                     }
 
                     if(response) {
-                        //IMDB ID
-                        try {
-                            if ("0".equals(movie.getImdbId())) {
-                                String imdbID = r.getString("imdbID");
-                                movie.setImdbId(imdbID);
-                            }
-                        } catch (JSONException e) {
-                            movie.setImdbId("");
-                        }
 
-                        //Genre
-                        try {
-                            if (isGenre) {
-                                if ("".equals(movie.getGenre())) {
-                                    String genreName = r.getString("Genre");
-                                    movie.setGenre(genreName);
-                                }
-                                if (SparqlQueries.filterGenre(movieList, movie)) {
-                                    if(movieList.size() <= movieList.indexOf(movie) + 1) {
-                                        lastMovie = true;
-                                    }
-                                    movieList.remove(movie);
-                                }
-                            }
-                        } catch (JSONException e) {
-                            if(movieList.size() <= movieList.indexOf(movie) + 1) {
-                                lastMovie = true;
-                            }
-                            movieList.remove(movie);
-                        }
                         //TIME
                         try {
                             if (isTime) {
@@ -96,24 +54,60 @@ public class HttpRequester {
                                     movie.setReleaseYear(releaseYear);
                                 }
                                 if (SparqlQueries.filterReleaseDate(movieList, movie)) {
-                                    if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                                    if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                         lastMovie = true;
                                     }
                                     movieList.remove(movie);
                                 }
                             }
                         } catch (JSONException e) {
-                            if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                 lastMovie = true;
                             }
                             movieList.remove(movie);
                         }
-                        //IMDB RATING
-                        try {
-                            double imdbRating = r.getDouble("imdbRating");
-                            movie.setImdbRating(String.valueOf(imdbRating));
-                        } catch (JSONException e) {
-                            movie.setImdbRating("0 No Rating");
+
+                        if (!(movieList.indexOf(movie) == -1)) {
+                            //Genre
+                            try {
+                                if (isGenre) {
+                                    if ("".equals(movie.getGenre())) {
+                                        String genreName = r.getString("Genre");
+                                        movie.setGenre(genreName);
+                                    }
+                                    if (SparqlQueries.filterGenre(movieList, movie)) {
+                                        if (movieList.size() <= movieList.indexOf(movie) + 1) {
+                                            lastMovie = true;
+                                        }
+                                        movieList.remove(movie);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                if (movieList.size() <= movieList.indexOf(movie) + 1) {
+                                    lastMovie = true;
+                                }
+                                movieList.remove(movie);
+                            }
+                            if (!(movieList.indexOf(movie) == -1)) {
+                                //IMDB ID
+
+                                try {
+                                    if ("0".equals(movie.getImdbId())) {
+                                        String imdbID = r.getString("imdbID");
+                                        movie.setImdbId(imdbID);
+                                    }
+                                } catch (JSONException e) {
+                                    movie.setImdbId("0");
+                                }
+
+                                //IMDB RATING
+                                try {
+                                    double imdbRating = r.getDouble("imdbRating");
+                                    movie.setImdbRating(String.valueOf(imdbRating));
+                                } catch (JSONException e) {
+                                    movie.setImdbRating("0 No Rating");
+                                }
+                            }
                         }
                     } else {
                         if(movieList.size() <= movieList.indexOf(movie) + 1) {
@@ -128,7 +122,6 @@ public class HttpRequester {
                         mlAdapter.clear();
                         listActivity.setProgressBarIndeterminateVisibility(false);
                         mlAdapter.addAll(movieList);
-                      //  mlAdapter.notifyDataSetChanged();
                     }
                 }
             }, new Response.ErrorListener() {
@@ -140,6 +133,52 @@ public class HttpRequester {
 
             HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
         }
-        return movieList;
+    }
+
+    public static void loadWebServiceData (final Activity listActivity, final Movie movie) {
+        String url = prepareURL(movie);
+
+        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            public void onResponse(JSONObject r) {
+                boolean response = false;
+                try {
+                    response = r.getBoolean("Response");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//TODO Implement
+                if(response) {
+                } else {
+                }
+
+                //TODO update The UiThread with new data
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("JSONException", "RESPONSE FAILED");
+            }
+        });
+
+        HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
+    }
+
+    private static String prepareURL(Movie movie) {
+        String url = "";
+        String urlTitle = null;
+        try {
+            urlTitle = URLEncoder.encode(movie.getTitle(),"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if(!"0".equals(movie.getImdbId())) {
+            url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
+        } else if(movie.getReleaseYear() != 0) {
+            url = "http://www.omdbapi.com/?t=" + urlTitle + "%20&y=" + movie.getReleaseYear();
+        } else {
+            url = "http://www.omdbapi.com/?t=" + urlTitle;
+        }
+        url+="&plot=short&plot=full&r=json";
+        return url;
     }
 }
