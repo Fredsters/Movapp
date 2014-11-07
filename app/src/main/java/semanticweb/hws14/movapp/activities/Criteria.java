@@ -9,13 +9,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
@@ -27,11 +25,31 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
     String selectedActorName;
     int selectedFromDate;
-    int selctedToDate;
+    int selectedToDate;
     String selectedGenre;
+
+    EditText tfActorName;
+    EditText tfDirectorName;
+
     Spinner yearFrom;
     Spinner yearTo;
     Spinner genre;
+
+    Button btnActor;
+    Button btnYear ;
+    Button btnGenre ;
+    Button btnDirector ;
+
+    Switch swActor ;
+    Switch swYear ;
+    Switch swGenre ;
+    Switch swDirector ;
+
+    boolean activeActor = false;
+    boolean activeYear = false;
+    boolean activeGenre = false;
+    boolean activeDirector = false;
+
 
 
     @Override
@@ -42,30 +60,69 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     }
 
     public void submitSearch(View view) {
-        Intent intent = new Intent(this, List.class);
 
-        EditText actorNameInput = (EditText) findViewById(R.id.tfActorName);
-        String actorName = InputCleaner.cleanActorName(actorNameInput.getText().toString());
 
-        //EditText directorNameInput = (EditText) findViewById(R.id.tfDirectorName);
-        //String directorName = InputCleaner.cleanActorName(directorNameInput.getText().toString());
 
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
-        criteria.put("actorName", actorName);
-        criteria.put("isActor", false);
+        String actorName = tfActorName.getText().toString();
+        String directorName = tfDirectorName.getText().toString();
 
-        //criteria.put("directorName", directorName);
-        criteria.put("isDirector", false);
 
-        criteria.put("timePeriod", new TimePeriod(1998, 2002));
-        criteria.put("isTime", false);
 
-        //criteria.put("genreName", "drama");
-        criteria.put("isGenre", false);
-        intent.putExtra("criteria", criteria);
 
-        startActivity(intent);
+
+
+        if(activeActor && !actorName.equals("")){
+            InputCleaner.cleanActorName(actorName);
+            criteria.put("actorName", actorName);
+            criteria.put("isActor", true);
+            System.out.println("!!!!!!!ACTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        else{
+            criteria.put("isActor", false);
+            System.out.println("!!!!!!!ACTOR DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        if(activeYear){
+            criteria.put("timePeriod", new TimePeriod(selectedFromDate, selectedToDate));
+            criteria.put("isTime", true);
+            System.out.println("!!!!!!!TIME ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        else{
+            criteria.put("isTime", false);
+            System.out.println("!!!!!!!TIME DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        if(activeGenre){
+            criteria.put("genreName", selectedGenre);
+            criteria.put("isGenre", true);
+            System.out.println("!!!!!!!GENRE ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        else{
+            criteria.put("isGenre", false);
+            System.out.println("!!!!!!!GENRE DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        if(activeDirector && !directorName.equals("")){
+            InputCleaner.cleanDirectorName(directorName);
+            criteria.put("directorName", tfDirectorName.getText().toString());
+            criteria.put("isDirector", true);
+            System.out.println("!!!!!!!DIRECTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        else{
+            criteria.put("isDirector", false);
+            System.out.println("!!!!!!!DIRECTOR DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+
+        if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals(""))){
+            findViewById(R.id.warning).setVisibility(View.GONE);
+            Intent intent = new Intent(this, List.class);
+            intent.putExtra("criteria", criteria);
+            startActivity(intent);
+        }
+        else{
+            findViewById(R.id.warning).setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override
@@ -88,12 +145,22 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     }
 
     private void initCriteriaView(){
-        Button btnActor = (Button) findViewById(R.id.btnActor);
-        Button btnYear = (Button) findViewById(R.id.btnYear);
-        Button btnGenre = (Button) findViewById(R.id.btnGenre);
-        Button btnDirector = (Button) findViewById(R.id.btnDirector);
 
-        View panelActor = findViewById(R.id.panelActor);
+        tfActorName = (EditText) findViewById(R.id.tfActorName);
+        tfDirectorName = (EditText) findViewById(R.id.tfDirectorName);
+
+         btnActor = (Button) findViewById(R.id.btnActor);
+         btnYear = (Button) findViewById(R.id.btnYear);
+         btnGenre = (Button) findViewById(R.id.btnGenre);
+         btnDirector = (Button) findViewById(R.id.btnDirector);
+
+         swActor = (Switch) findViewById(R.id.swActor);
+         swYear = (Switch) findViewById(R.id.swYear);
+         swGenre = (Switch) findViewById(R.id.swGenre);
+         swDirector = (Switch) findViewById(R.id.swDirector);
+
+
+        final View panelActor = findViewById(R.id.panelActor);
         panelActor.setVisibility(View.GONE);
 
         View panelYear = findViewById(R.id.panelYear);
@@ -114,6 +181,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
                 View panelYear = findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
+
 
                 View panelGenre = findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
@@ -184,6 +252,34 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         setupSpinnerYearFrom();
         setupSpinnerYearTo();
         setupSpinnerGenre();
+
+        swActor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+             activeActor=b;
+            }
+        });
+
+        swYear.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activeYear = b;
+            }
+        });
+
+        swGenre.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activeGenre = b;
+            }
+        });
+
+        swDirector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activeDirector = b;
+            }
+        });
     }
 
     private void setupSpinnerYearFrom(){
@@ -224,13 +320,13 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             selectedFromDate=Integer.parseInt(item);
         }
         else if (adapterView.getId() == yearTo.getId()){
-            selctedToDate=Integer.parseInt(item);
+            selectedToDate =Integer.parseInt(item);
         }
 
         System.out.println();
         System.out.println("selectedActorName: " + selectedActorName);
         System.out.println("selectedFromDate: " +selectedFromDate);
-        System.out.println("selctedToDate: " + selctedToDate);
+        System.out.println("selectedToDate: " + selectedToDate);
         System.out.println("selectedGenre: " +selectedGenre);
         System.out.println();
     }
@@ -240,3 +336,5 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
     }
 }
+
+

@@ -6,6 +6,11 @@
     <string name="title_activity_list">list</string>
     <string name="title_activity_result">result</string>
     <string name="dummy">Just proof that data is there</string>
+    <string name="year">Year</string>
+    <string name="actor">Actor</string>
+    <string name="genre">Genre</string>
+    <string name="director">Director</string>
+    <string name="submit">Submit</string>
     <string-array name="year_array">
         <item>2016</item>
         <item>2014</item>

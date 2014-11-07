@@ -19,32 +19,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/movieTitle"
         android:layout_below="@+id/dummy"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+
+        />
     <TextView
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/movieRating"
         android:layout_below="@+id/movieTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+       />
     <TextView
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/releaseYear"
         android:layout_below="@+id/movieRating"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+         />
     <TextView
         android:text="@string/hello_world"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ImdbId"
         android:layout_below="@+id/releaseYear"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+         />
 
     <Button
         android:layout_width="wrap_content"
@@ -53,8 +50,7 @@
         android:id="@+id/button"
         android:onClick="goToList"
         android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        />
 
 
 </RelativeLayout>
