@@ -24,6 +24,7 @@ import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
+import semanticweb.hws14.movapp.model.EventListener;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.MovieDetail;
 import semanticweb.hws14.movapp.request.HttpRequester;
@@ -31,6 +32,9 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 
 
 public class Detail extends Activity {
+
+    private Activity that = this;
+   // MovieDetail movieDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,22 @@ public class Detail extends Activity {
         Intent intent = getIntent();
         Movie movie = (Movie)intent.getParcelableExtra("movie");
 
+        final MovieDetail movieD = new MovieDetail(movie);
+
+        movieD.setOnFinishedEventListener(new EventListener() {
+            @Override
+            public void onFinished(MovieDetail movie) {
+                //TODO update UIELEMENTS
+                //TODO DO THIS Design Pattern with list too??
+                //TODO Check why so many films go missing when searching with only time or only genre
+                //TODO Buttons colored
+                //TODO Detail screen bauen
+                //TODO Trailer and Picture in view.
+                setProgressBarIndeterminateVisibility(false);
+                Log.d("movie", movie.toString());
+            }
+        });
+
         TextView movieTitle = (TextView) findViewById(R.id.movieTitle);
         movieTitle.setText(movie.getTitle());
 
@@ -58,8 +78,12 @@ public class Detail extends Activity {
         ImdbId.setText(String.valueOf(movie.getImdbId()));
 
         queryForMovieData q = new queryForMovieData();
-        q.execute(movie);
+        q.execute(movieD);
 
+    }
+
+    public static boolean updateUiComponents(MovieDetail movie) {
+        return false;
     }
 
 
@@ -82,15 +106,15 @@ public class Detail extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class queryForMovieData extends AsyncTask<Movie, Movie, Movie> {
+    private class queryForMovieData extends AsyncTask<MovieDetail, MovieDetail, MovieDetail> {
 
         @Override
-        protected Movie doInBackground(Movie... movieArray) {
+        protected MovieDetail doInBackground(MovieDetail... movieArray) {
 
             SparqlQueries sparqler = new SparqlQueries();
-            MovieDetail movie = new MovieDetail(movieArray[0]);
+            MovieDetail movieDetail = movieArray[0];
         /* LMDB */
-            String LMDBsparqlQueryString = sparqler.LMDBDetailQuery(movie);
+            String LMDBsparqlQueryString = sparqler.LMDBDetailQuery(movieDetail);
             Query query = QueryFactory.create(LMDBsparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
             ResultSet results;
@@ -98,55 +122,58 @@ public class Detail extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    if("".equals(movie.getRuntime())) {
-                        movie.setRuntime(soln.getLiteral("r").getString());
+                    if(soln.getLiteral("r") != null && "".equals(movieDetail.getRuntime())) {
+                        movieDetail.setRuntime(soln.getLiteral("r").getString());
                     }
-                    if(!movie.getActors().contains(soln.getLiteral("aN").getString())) {
-                        movie.addActor(soln.getLiteral("aN").getString());
+                    if(soln.getLiteral("aN") != null && !movieDetail.getActors().contains(soln.getLiteral("aN").getString())) {
+                        movieDetail.addActor(soln.getLiteral("aN").getString());
                     }
-
-                    if(!movie.getDirectors().contains(soln.getLiteral("dN").getString())) {
-                        movie.addDirector(soln.getLiteral("dN").getString());
+                    if(soln.getLiteral("dN") != null && !movieDetail.getDirectors().contains(soln.getLiteral("dN").getString())) {
+                        movieDetail.addDirector(soln.getLiteral("dN").getString());
                     }
-
-                    if(!movie.getWriters().contains(soln.getLiteral("wN").getString())) {
-                        movie.addWriter(soln.getLiteral("wN").getString());
+                    if(soln.getLiteral("wN") != null && !movieDetail.getWriters().contains(soln.getLiteral("wN").getString())) {
+                        movieDetail.addWriter(soln.getLiteral("wN").getString());
                     }
-                    if(!movie.getGenres().contains(soln.getLiteral("gN").getString())) {
-                        movie.addGenre(soln.getLiteral("gN").getString());
+                    if(soln.getLiteral("gN") != null && !movieDetail.getGenres().contains(soln.getLiteral("gN").getString())) {
+                        movieDetail.addGenre(soln.getLiteral("gN").getString());
                     }
                 }
             }catch (Exception e){
-                Log.e("LINKEDMDBDetail", "Failed" + e.toString());
+                Log.e("LINKEDMDBDetail", "Failed " + e.toString());
             }
             qexec.close();
 
 
         /* DPBEDIA */
-/*
-            String dbPediaSparqlQueryStringDetail = sparqlerus.DBPEDIADetailQuery();
-            query = QueryFactory.create(dbPediaSparqlQueryStringDetail);
-            qexecDetail = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
+
+            String dbPediaSparqlQueryString = sparqler.DBPEDIADetailQuery(movieDetail);
+            query = QueryFactory.create(dbPediaSparqlQueryString);
+            qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
             try {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    //Todo set Movie Attributes
+
+                    if(soln.getLiteral("abs") != null && "".equals(movieDetail.getWikiAbstract())) {
+                        movieDetail.setWikiAbstract(soln.getLiteral("abs").getString());
+                    }
+                    if(soln.getLiteral("bu") != null && "".equals(movieDetail.getBudget())) {
+                        movieDetail.setBudget(soln.getLiteral("bu").getString());
+                    }
                 }
             }catch (Exception e){
-                Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN"+ e.toString());
+                Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN "+ e.toString());
             }
             qexec.close();
-*/
-            return movie;
+
+            return movieDetail;
         }
         protected void onPreExecute() {
             setProgressBarIndeterminateVisibility(true);
 
         }
-        public void onPostExecute(Movie movie) {
-            //UPdate UI Elementes
-            setProgressBarIndeterminateVisibility(false);
+        public void onPostExecute(MovieDetail movieDetail) {
+            HttpRequester.loadWebServiceData(that, movieDetail);
         }
     }
 }

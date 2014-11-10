@@ -24,15 +24,13 @@ public class MovieDetail extends Movie{
     ArrayList<String> directors; //LMDB //DBP
     ArrayList<String> writers; //LDMB //DBP
     ArrayList<String> genres; //Alle
-    //Genre von allen
-    //Year von allen
 
 
     //Noch nicht
     //distributor 20th centruy fox //DBP or LMDB
     //Based near  //LMDB or DBP
 
-    public MovieDetail(String title, int mdbId, int releaseYear, String imdbId, String genre) {
+    public MovieDetail(String title, int mdbId, int releaseYear, String imdbId, String genre ) {
         super(title, mdbId, releaseYear, imdbId, genre);
     }
 
@@ -45,7 +43,7 @@ public class MovieDetail extends Movie{
     }
 
     public MovieDetail(Movie movie) {
-        super(movie.getTitle(), movie.getMdbId(), movie.getReleaseYear(), movie.getImdbId(), movie.getGenre(), movie.getImdbRating());
+        super(movie.getTitle(), movie.getLMDBmovieId(), movie.getReleaseYear(), movie.getImdbId(), movie.getGenre(), movie.getImdbRating());
         this.runtime = "";
         this.awards = "";
         this.poster = "";
@@ -96,6 +94,10 @@ public class MovieDetail extends Movie{
             this.genres.add(genre);
             return true;
         }
+    }
+
+    public MovieDetail updateUiComponents(){
+        return this;
     }
 
 
@@ -201,5 +203,24 @@ public class MovieDetail extends Movie{
 
     public void setGenres(ArrayList<String> genres) {
         this.genres = genres;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDetail{" +
+                "awards='" + awards + '\'' +
+                ", poster='" + poster + '\'' +
+                ", plot='" + plot + '\'' +
+                ", rated='" + rated + '\'' +
+                ", wikiAbstract='" + wikiAbstract + '\'' +
+                ", voteCount=" + voteCount +
+                ", metaScore=" + metaScore +
+                ", budget='" + budget + '\'' +
+                ", runtime='" + runtime + '\'' +
+                ", actors=" + actors +
+                ", directors=" + directors +
+                ", writers=" + writers +
+                ", genres=" + genres +
+                '}';
     }
 }

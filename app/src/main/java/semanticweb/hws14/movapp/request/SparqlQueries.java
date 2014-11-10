@@ -11,6 +11,9 @@ import semanticweb.hws14.movapp.model.TimePeriod;
 /**
  * Created by Frederik on 23.10.2014.
  */
+
+//TODO: Bei Date Criteria mal schauen ob man die Abfrage des Datums doch im SPARQL machen kann bei LMDB??
+//Todo Title?
 public class SparqlQueries {
 
     static HashMap<String, Object> criteria;
@@ -95,7 +98,7 @@ public class SparqlQueries {
                 "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g. }";
             }*/
-            queryString+= "?m foaf:name ?t. ";
+            queryString+= "?m foaf:name ?t.";
 
             if((Boolean)criteria.get("isTime") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString+=
@@ -133,13 +136,12 @@ public class SparqlQueries {
         return false;
     }
 
-    //TODO Verbessern, so dass keine multizierten ergebnisse da sind : UNION wäre ne möglichkeit
     public String LMDBDetailQuery(Movie movie) {
         String queryString=
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
                 "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
                 "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
-                "?m movie:filmid '"+movie.getMdbId()+"'^^xsd:int. "+
+                "?m movie:filmid '"+movie.getLMDBmovieId()+"'^^xsd:int. "+
                 "OPTIONAL {?m movie:actor ?a. "+
                 "?a movie:actor_name ?aN.} "+
                 "OPTIONAL {?m movie:director ?d. "+
@@ -152,12 +154,20 @@ public class SparqlQueries {
         return queryString;
     }
 
-    public String DBPEDIADetailQuery() {
-        String queryString= "";
-
-
+    public String DBPEDIADetailQuery(Movie movie) {
+        String queryString=
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+                "select ?abs ?bu where { " +
+                "?m rdf:type dbpedia-owl:Film; "+
+                "rdfs:label '"+movie.getTitle()+"'@en. "+
+                "OPTIONAL {?m dbpedia-owl:abstract ?abs . " +
+                "FILTER(langMatches(lang(?abs ), 'EN')) " +
+                "} " +
+                "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
+                "} ";
         return queryString;
     }
-
 
 }

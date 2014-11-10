@@ -7,36 +7,31 @@ import android.os.Parcelable;
  * Created by Frederik on 29.10.2014.
  */
 
-    //TODO: Bei Date Criteria mal schauen ob man die Abfrage des Datums doch im SPARQL machen kann??
-
-    //Todo Title?
-
-    //TODO Check if one input is empty and then dont use it maybe with switch?
-    //TODO What to do when no criteria
-
 
 public class Movie implements Parcelable {
     private String title;
-    private int mdbId;
+    private int LMDBmovieId;
     private String imdbRating;
     private int releaseYear;
     private String imdbId;
     private String genre;
 
+    private EventListener eListener = null;
+
     /* Constructors */
 
-    public Movie(String title, int mdbId, int releaseYear, String imdbId, String genre) {
+    public Movie(String title, int LMDBmovieId, int releaseYear, String imdbId, String genre) {
         this.title = title;
-        this.mdbId = mdbId;
+        this.LMDBmovieId = LMDBmovieId;
         this.releaseYear = releaseYear;
         this.imdbId = imdbId;
         this.imdbRating = "";
         this.genre = genre;
     }
 
-    public Movie(String title, int mdbId, int releaseYear, String genre) {
+    public Movie(String title, int LMDBmovieId, int releaseYear, String genre) {
         this.title = title;
-        this.mdbId = mdbId;
+        this.LMDBmovieId = LMDBmovieId;
         this.releaseYear = releaseYear;
         this.imdbId = "0";
         this.imdbRating = "";
@@ -47,14 +42,14 @@ public class Movie implements Parcelable {
         this.title = title;
         this.releaseYear = releaseYear;
         this.imdbId = "0";
-        this.mdbId = 0;
+        this.LMDBmovieId = 0;
         this.imdbRating = "";
         this.genre = genre;
     }
 
-    public Movie(String title, int mdbId, int releaseYear, String imdbId, String genre, String imdbRating) {
+    public Movie(String title, int LMDBmovieId, int releaseYear, String imdbId, String genre, String imdbRating) {
         this.title = title;
-        this.mdbId = mdbId;
+        this.LMDBmovieId = LMDBmovieId;
         this.releaseYear = releaseYear;
         this.imdbId = imdbId;
         this.imdbRating = imdbRating;
@@ -69,7 +64,7 @@ public class Movie implements Parcelable {
     // write your object's data to the passed-in Parcel
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
-        out.writeInt(mdbId);
+        out.writeInt(LMDBmovieId);
         out.writeString(imdbRating);
         out.writeInt(releaseYear);
         out.writeString(imdbId);
@@ -89,7 +84,7 @@ public class Movie implements Parcelable {
     // example constructor that takes a Parcel and gives you an object populated with it's values
     private Movie(Parcel in) {
         title = in.readString();
-        mdbId = in.readInt();
+        LMDBmovieId = in.readInt();
         imdbRating = in.readString();
         releaseYear = in.readInt();
         imdbId = in.readString();
@@ -97,6 +92,14 @@ public class Movie implements Parcelable {
     }
 
     /* Getter and Setter */
+
+    public EventListener geteListener() {
+        return eListener;
+    }
+
+    public void setOnFinishedEventListener(EventListener listener) {
+        eListener = listener;
+    }
 
     public String getTitle() {
         return title;
@@ -114,12 +117,12 @@ public class Movie implements Parcelable {
         this.imdbRating = imdbRating;
     }
 
-    public int getMdbId() {
-        return mdbId;
+    public int getLMDBmovieId() {
+        return LMDBmovieId;
     }
 
-    public void setMdbId(int mdbId) {
-        this.mdbId = mdbId;
+    public void setLMDBmovieId(int LMDBmovieId) {
+        this.LMDBmovieId = LMDBmovieId;
     }
 
     public int getReleaseYear() {

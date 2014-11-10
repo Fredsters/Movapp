@@ -18,21 +18,23 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.activities.List;
 import semanticweb.hws14.movapp.model.MovieComparator;
+import semanticweb.hws14.movapp.model.MovieDetail;
 
 /**
  * Created by Frederik on 29.10.2014.
  */
 
 public class HttpRequester {
-    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector) {
         for(final Movie movie : movieList) {
             
-            String url = prepareURL(movie);
+            String url = prepareURL(movie, false);
 
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject r) {
@@ -113,7 +115,10 @@ public class HttpRequester {
                         if(movieList.size() <= movieList.indexOf(movie) + 1) {
                             lastMovie = true;
                         }
-                        movieList.remove(movie);
+
+                        if(!isActor && !isDirector) {
+                            movieList.remove(movie);
+                        }
 
                     }
 
@@ -135,8 +140,8 @@ public class HttpRequester {
         }
     }
 
-    public static void loadWebServiceData (final Activity listActivity, final Movie movie) {
-        String url = prepareURL(movie);
+    public static void loadWebServiceData (final Activity detailActivity, final MovieDetail movie) {
+        String url = prepareURL(movie, true);
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             public void onResponse(JSONObject r) {
@@ -146,12 +151,73 @@ public class HttpRequester {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-//TODO Implement
+
                 if(response) {
+                    //Runtime?
+                    //writer?
+                    //director?
+                    //actors?
+
+                    try {
+                        String rated = r.getString("Rated");
+                        movie.setRated(rated);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        String genre = r.getString("Genre");
+                        String[] genreArray = (genre.split(","));
+                        for(int i=0; i < genreArray.length; i++) {
+                            if(!movie.getGenres().contains(genreArray[i])) {
+                                movie.addGenre(genreArray[i]);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        String plot = r.getString("Plot");
+                        movie.setPlot(plot);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        String awards = r.getString("Awards");
+                        movie.setAwards(awards);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        String posterUrl = r.getString("Poster");
+                        movie.setPoster(posterUrl);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        int metascore = r.getInt("Metascore");
+                        movie.setMetaScore(metascore);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        int voteCount = r.getInt("imdbVotes");
+                        movie.setVoteCount(voteCount);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    movie.geteListener().onFinished(movie);
+
                 } else {
+                    Log.e("FUCK", "THE SYSTEM");
                 }
 
-                //TODO update The UiThread with new data
             }
         }, new Response.ErrorListener() {
             @Override
@@ -160,10 +226,10 @@ public class HttpRequester {
             }
         });
 
-        HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
+        HttpRequestQueueSingleton.getInstance(detailActivity).addToRequestQueue(jsObjRequest);
     }
 
-    private static String prepareURL(Movie movie) {
+    private static String prepareURL(Movie movie, boolean detail) {
         String url = "";
         String urlTitle = null;
         try {
@@ -178,7 +244,11 @@ public class HttpRequester {
         } else {
             url = "http://www.omdbapi.com/?t=" + urlTitle;
         }
-        url+="&plot=short&plot=full&r=json";
+        if(detail) {
+            url+="&plot=full";
+        } else {
+            url+="&plot=short";
+        }
         return url;
     }
 }

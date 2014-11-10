@@ -74,7 +74,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
 
         if(activeActor && !actorName.equals("")){
-            InputCleaner.cleanActorName(actorName);
+            actorName = InputCleaner.cleanActorName(actorName);
             criteria.put("actorName", actorName);
             criteria.put("isActor", true);
             System.out.println("!!!!!!!ACTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -102,7 +102,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             System.out.println("!!!!!!!GENRE DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         if(activeDirector && !directorName.equals("")){
-            InputCleaner.cleanDirectorName(directorName);
+            directorName = InputCleaner.cleanDirectorName(directorName);
             criteria.put("directorName", tfDirectorName.getText().toString());
             criteria.put("isDirector", true);
             System.out.println("!!!!!!!DIRECTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
