@@ -12,8 +12,6 @@ import semanticweb.hws14.movapp.model.TimePeriod;
  * Created by Frederik on 23.10.2014.
  */
 
-//TODO: Bei Date Criteria mal schauen ob man die Abfrage des Datums doch im SPARQL machen kann bei LMDB??
-//Todo Title?
 public class SparqlQueries {
 
     static HashMap<String, Object> criteria;
@@ -60,7 +58,7 @@ public class SparqlQueries {
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL { ?m foaf:page ?p." +
             "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
-            "} LIMIT 200";
+            "} LIMIT 1000";
 
         return queryString;
     }
@@ -109,7 +107,7 @@ public class SparqlQueries {
                 "OPTIONAL{?m dbpprop:released ?y.}";
             }
             queryString+=
-            "} LIMIT 200";
+            "} LIMIT 1000";
 
         return queryString;
     }
@@ -118,10 +116,10 @@ public class SparqlQueries {
         int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
         int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
         if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
-           // movieList.remove(movie);
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public static boolean filterGenre(ArrayList<Movie> movieList, Movie movie) {
