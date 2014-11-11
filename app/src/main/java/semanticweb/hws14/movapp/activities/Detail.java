@@ -17,13 +17,8 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
-import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.EventListener;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.MovieDetail;
@@ -65,13 +60,19 @@ public class Detail extends Activity {
             }
         });
 
-        TextView movieTitle = (TextView) findViewById(R.id.movieTitle);
+        TextView movieTitle = (TextView) findViewById(R.id.tvMovieTitle);
         movieTitle.setText(movie.getTitle());
 
-        TextView movieRating = (TextView) findViewById(R.id.movieRating);
+        TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
         movieRating.setText(movie.getImdbRating());
 
-        TextView releaseYear = (TextView) findViewById(R.id.releaseYear);
+      //  TextView movieAbstract = (TextView) findViewById(R.id.tvAbstract);
+       // movieRating.setText(movie.getAbstract());
+
+        TextView genre = (TextView) findViewById(R.id.tvGenre);
+        genre.setText(String.valueOf(movie.getGenre()));
+
+        TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
         releaseYear.setText(String.valueOf(movie.getReleaseYear()) );
 
         TextView ImdbId = (TextView) findViewById(R.id.ImdbId);

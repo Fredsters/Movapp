@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/swActor"
             android:layout_gravity="center_horizontal"
-            android:checked="false" />
+            android:checked="false"   />
     </LinearLayout>
 
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"

@@ -249,6 +249,8 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             }
         });
 
+
+
         setupSpinnerYearFrom();
         setupSpinnerYearTo();
         setupSpinnerGenre();

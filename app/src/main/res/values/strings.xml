@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="android">hier sollte das Bild sein!</string>
     <string name="app_name">Movapp</string>
     <string name="hello_world">Hello Movapp!</string>
     <string name="action_settings">Settings</string>
@@ -66,4 +67,5 @@
         <item>War</item>
         <item>Western</item>
     </string-array>
+
 </resources>
