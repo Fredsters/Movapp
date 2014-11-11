@@ -23,6 +23,7 @@ import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
@@ -110,7 +111,6 @@ public class List extends Activity {
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
 
-
                     String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
                     Literal movieId = soln.getLiteral("i");
                     Literal releaseYearLiteral = soln.getLiteral("y");
@@ -149,7 +149,7 @@ public class List extends Activity {
             qexec.close();
 
         /* Put the Lists together */
-    //TODO POssible with contains method, but then we need to override equals and hash method
+
             ArrayList indexArray = new ArrayList();
             for(int i=0; i<movieList.size();i++) {
                 for(int j=i+1; j<movieList.size();j++) {
@@ -168,6 +168,13 @@ public class List extends Activity {
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
+            Iterator<Movie> i = movieList.iterator();
+            while(i.hasNext()) {
+                Movie movie = i.next();
+                if (movie.getReleaseYear() != 0 && SparqlQueries.filterReleaseDate(movieList, movie)) {
+                    i.remove();
+                }
+            }
            mlAdapter.addAll(movieList);
            HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"));
         }
