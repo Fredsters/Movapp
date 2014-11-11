@@ -33,10 +33,11 @@ import semanticweb.hws14.movapp.model.MovieDetail;
 public class HttpRequester {
     public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector) {
         for(final Movie movie : movieList) {
-            
+
             String url = prepareURL(movie, false);
 
             final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
                 public void onResponse(JSONObject r) {
                     boolean response = false;
                     boolean lastMovie = false;
@@ -72,7 +73,7 @@ public class HttpRequester {
                         if (!(movieList.indexOf(movie) == -1)) {
                             //Genre
                             try {
-                                if (isGenre) {
+                                if (isGenre && !isActor && !isDirector) {
                                     if ("".equals(movie.getGenre())) {
                                         String genreName = r.getString("Genre");
                                         movie.setGenre(genreName);
@@ -112,17 +113,17 @@ public class HttpRequester {
                             }
                         }
                     } else {
-                        if(movieList.size() <= movieList.indexOf(movie) + 1) {
+                        if (movieList.size() <= movieList.indexOf(movie) + 1) {
                             lastMovie = true;
                         }
 
-                        if(!isActor && !isDirector) {
+                        if (!isActor && !isDirector) {
                             movieList.remove(movie);
                         }
 
                     }
 
-                    if(lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
+                    if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.clear();
                         listActivity.setProgressBarIndeterminateVisibility(false);
@@ -151,13 +152,7 @@ public class HttpRequester {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 if(response) {
-                    //Runtime?
-                    //writer?
-                    //director?
-                    //actors?
-
                     try {
                         String rated = r.getString("Rated");
                         movie.setRated(rated);
