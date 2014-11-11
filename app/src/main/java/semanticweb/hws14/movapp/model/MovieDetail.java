@@ -223,4 +223,15 @@ public class MovieDetail extends Movie{
                 ", genres=" + genres +
                 '}';
     }
+
+    public String createTvOutOfList(ArrayList list){
+        ArrayList<String> actors = list;
+        String result="";
+
+        for( String actor : actors){
+
+            result = result + actor + "\n";
+        }
+        return result;
+    }
 }

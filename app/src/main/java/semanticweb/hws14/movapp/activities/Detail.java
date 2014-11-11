@@ -29,7 +29,7 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 public class Detail extends Activity {
 
     private Activity that = this;
-   // MovieDetail movieDetail;
+    MovieDetail movieDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,20 @@ public class Detail extends Activity {
                 //TODO Trailer and Picture in view.
                 setProgressBarIndeterminateVisibility(false);
                 Log.d("movie", movie.toString());
+                TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
+                moviePlot.setText(movieD.getPlot());
+
+                TextView actors = (TextView) findViewById(R.id.tvActors);
+                actors.setText(String.valueOf(movieD.createTvOutOfList(movieD.getActors())));
+
+                TextView directors = (TextView) findViewById(R.id.tvDirectors);
+                directors.setText(String.valueOf(movieD.createTvOutOfList(movieD.getDirectors())));
+
+                TextView genre = (TextView) findViewById(R.id.tvGenre);
+                genre.setText(String.valueOf(movieD.createTvOutOfList(movieD.getGenres())));
             }
+
+
         });
 
         TextView movieTitle = (TextView) findViewById(R.id.tvMovieTitle);
@@ -66,17 +79,17 @@ public class Detail extends Activity {
         TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
         movieRating.setText(movie.getImdbRating());
 
-      //  TextView movieAbstract = (TextView) findViewById(R.id.tvAbstract);
-       // movieRating.setText(movie.getAbstract());
 
-        TextView genre = (TextView) findViewById(R.id.tvGenre);
-        genre.setText(String.valueOf(movie.getGenre()));
+
+
 
         TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
         releaseYear.setText(String.valueOf(movie.getReleaseYear()) );
 
-        TextView ImdbId = (TextView) findViewById(R.id.ImdbId);
-        ImdbId.setText(String.valueOf(movie.getImdbId()));
+
+
+       // TextView ImdbId = (TextView) findViewById(R.id.ImdbId);
+        //ImdbId.setText(String.valueOf(movie.getImdbId()));
 
         queryForMovieData q = new queryForMovieData();
         q.execute(movieD);
@@ -176,5 +189,14 @@ public class Detail extends Activity {
         public void onPostExecute(MovieDetail movieDetail) {
             HttpRequester.loadWebServiceData(that, movieDetail);
         }
+
+
+
+
+
+
     }
+
+
 }
+
