@@ -49,6 +49,9 @@ public class Detail extends Activity {
         movieD.setOnFinishedEventListener(new EventListener() {
             @Override
             public void onFinished(MovieDetail movie) {
+                //TODO: LMDB DATE nicht einschränkbar in SPARQL
+                //Todo Title?
+                //Todo Stüzrt ab wenn oft hin und her navigiert
                 //TODO update UIELEMENTS
                 //TODO DO THIS Design Pattern with list too??
                 //TODO Check why so many films go missing when searching with only time or only genre
