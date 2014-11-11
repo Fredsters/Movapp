@@ -28,6 +28,8 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     int selectedToDate;
     String selectedGenre;
 
+    int actorCount = 1;
+
     EditText tfActorName;
     EditText tfDirectorName;
 
@@ -337,6 +339,47 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-}
 
+
+    public void addActor (View view){
+
+
+        if(actorCount==1){
+            View panelActor2 = findViewById(R.id.panelActor2);
+            panelActor2.setVisibility(View.VISIBLE);
+            actorCount++;
+        }
+        else if(actorCount==2){
+            View panelActor3 = findViewById(R.id.panelActor3);
+            panelActor3.setVisibility(View.VISIBLE);
+            actorCount++;
+        }
+        else{
+            View warning = findViewById(R.id.warning);
+            //TODO:somehow change warning message text!
+            //warning.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    public void delActor (View view){
+
+
+        if(actorCount==2){
+            View panelActor2 = findViewById(R.id.panelActor2);
+            panelActor2.setVisibility(View.GONE);
+            actorCount--;
+        }
+        else if(actorCount==3){
+            View panelActor3 = findViewById(R.id.panelActor3);
+            panelActor3.setVisibility(View.GONE);
+            actorCount--;
+        }
+        else{
+            View warning = findViewById(R.id.warning);
+            //TODO: somehow change warning message text!
+            //warning.setVisibility(View.VISIBLE);
+        }
+    }
+}
 

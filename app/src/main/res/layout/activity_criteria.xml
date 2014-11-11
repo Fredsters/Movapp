@@ -27,8 +27,54 @@
                 android:layout_height="wrap_content" android:text="Name of Actor:" />
             <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:enabled="true"  />
-
         </LinearLayout>
+        <LinearLayout android:id="@+id/panelActor2"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:background="#FFFFFFFF" android:visibility="gone" >
+            <TextView android:id="@+id/tvActorName2" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Name of Actor:" />
+            <EditText android:id="@+id/tfActorName2" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:enabled="true" />
+        </LinearLayout>
+        <LinearLayout android:id="@+id/panelActor3"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:background="#FFFFFFFF" android:visibility="gone">
+            <TextView android:id="@+id/tvActorName3" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Name of Actor:" />
+            <EditText android:id="@+id/tfActorName3" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:enabled="true"  />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/panelDelAdd"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnaddActor"
+                android:text="add Actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="addActor"
+
+                android:textSize="10dp"
+                />
+            <Button
+                android:id="@+id/btnDelActor"
+                android:text="delete Actor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="delActor"
+
+                android:textSize="10dp"
+               />
+            </LinearLayout>
+
+
 
         <Switch
             android:layout_width="wrap_content"
