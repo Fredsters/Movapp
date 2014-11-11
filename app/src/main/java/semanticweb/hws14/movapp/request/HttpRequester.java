@@ -206,8 +206,15 @@ public class HttpRequester {
                     }
 
                     try {
-                        int voteCount = r.getInt("imdbVotes");
+                        String voteCount = r.getString("imdbVotes");
                         movie.setVoteCount(voteCount);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        int releaseYear = r.getInt("Year");
+                        movie.setReleaseYear(releaseYear);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

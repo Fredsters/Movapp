@@ -14,7 +14,7 @@ public class MovieDetail extends Movie{
     String rated; //OMDB
     String wikiAbstract; //DBP
 
-    int voteCount; //OMDB
+    String voteCount; //OMDB
     int metaScore; //OMDB
 
     String budget; //DBP
@@ -50,7 +50,7 @@ public class MovieDetail extends Movie{
         this.plot = "";
         this.rated = "";
         this.wikiAbstract = "";
-        this.voteCount = 0;
+        this.voteCount = "";
         this.metaScore = 0;
         this.budget = "";
 
@@ -149,11 +149,11 @@ public class MovieDetail extends Movie{
         this.wikiAbstract = wikiAbstract;
     }
 
-    public int getVoteCount() {
+    public String getVoteCount() {
         return voteCount;
     }
 
-    public void setVoteCount(int voteCount) {
+    public void setVoteCount(String voteCount) {
         this.voteCount = voteCount;
     }
 
