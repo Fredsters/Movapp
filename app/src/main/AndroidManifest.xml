@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="semanticweb.hws14.movapp.activities.List"
+            android:name="semanticweb.hws14.movapp.activities.MovieList"
             android:label="@string/title_activity_list" >
         </activity>
         <activity

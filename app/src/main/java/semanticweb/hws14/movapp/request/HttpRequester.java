@@ -1,11 +1,8 @@
 package semanticweb.hws14.movapp.request;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,11 +15,10 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
+import semanticweb.hws14.movapp.activities.MovieList;
 import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.activities.List;
 import semanticweb.hws14.movapp.model.MovieComparator;
 import semanticweb.hws14.movapp.model.MovieDetail;
 
@@ -124,10 +120,12 @@ public class HttpRequester {
                     }
 
                     if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
-                        Collections.sort(movieList, new MovieComparator());
+
                         mlAdapter.clear();
-                        listActivity.setProgressBarIndeterminateVisibility(false);
+                        Collections.sort(movieList, new MovieComparator());
                         mlAdapter.addAll(movieList);
+                        listActivity.setProgressBarIndeterminateVisibility(false);
+                        MovieList.staticMovieList = movieList;
                     }
                 }
             }, new Response.ErrorListener() {
@@ -218,6 +216,16 @@ public class HttpRequester {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    if("".equals(movie.getRuntime())) {
+                        try {
+                            String runtime = r.getString("Runtime");
+                            movie.setRuntime(runtime);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
 
                     movie.geteListener().onFinished(movie);
 

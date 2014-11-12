@@ -26,21 +26,26 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
+import semanticweb.hws14.movapp.model.MovieComparator;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
 
-public class List extends Activity {
+public class MovieList extends Activity {
 
     protected ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
     HashMap<String, Object> criteria;
+
+    public static ArrayList<Movie> staticMovieList;
+    static HashMap<String, Object> staticCriteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +55,25 @@ public class List extends Activity {
         setContentView(R.layout.activity_list);
 
         Intent intent = getIntent();
-        criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
-
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
-        this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
+        criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         ListView listView = (ListView) findViewById(R.id.resultList);
-        listView.setAdapter(mlAdapter);
+        if(criteria.equals(staticCriteria)) {
+            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
+            listView.setAdapter(mlAdapter);
+            mlAdapter.addAll(staticMovieList);
 
-        queryForMovies q = new queryForMovies();
-        //Executes SPARQL Queries, Private class queryForMovies is called.
-        q.execute(criteria);
+        } else {
+            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+
+            listView.setAdapter(mlAdapter);
+            //Executes SPARQL Queries, Private class queryForMovies is called.
+            staticCriteria = criteria;
+            queryForMovies q = new queryForMovies();
+            q.execute(criteria);
+        }
 
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
@@ -203,6 +215,7 @@ public class List extends Activity {
                         }
                     }
                 }
+
                 mlAdapter.addAll(movieList);
                 HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"));
             } else {

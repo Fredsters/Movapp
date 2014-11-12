@@ -116,7 +116,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         }
 
         if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals(""))){
-            Intent intent = new Intent(this, List.class);
+            Intent intent = new Intent(this, MovieList.class);
             intent.putExtra("criteria", criteria);
             startActivity(intent);
         }

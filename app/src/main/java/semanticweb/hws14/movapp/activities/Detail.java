@@ -56,8 +56,6 @@ public class Detail extends Activity {
             @Override
             public void onFinished(final MovieDetail movie) {
                 movieDetail = movie;
-                // Link to Imdb Site
-
                 //TODO: LMDB DATE nicht einschränkbar in SPARQL, time queries only in dbpedia?
                 //Todo Title?
                 //TODO Buttons colored
@@ -70,6 +68,7 @@ public class Detail extends Activity {
                 //TODO nicer Layout in Criteriaview
                 //TODO 2 actors
                 //TODO Improve performance
+                //TODO only query for movielist when criteria has changed. so if you come back from list and just press submit again, that the data is still there
                 /*
 
                 The original movie ratings consisted of:
