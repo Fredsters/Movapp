@@ -26,7 +26,7 @@ public class InputCleaner {
 
     public static int cleanReleaseYear(Literal year) {
         String yearString;
-        if(year == null) {
+        if(year == null || "".equals(year.toString())) {
             yearString = "0";
         } else {
             yearString = year.toString();

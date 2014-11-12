@@ -16,7 +16,7 @@
     android:isScrollContainer="true"
     tools:context="semanticweb.hws14.movapp.activities.Detail">
 
-    <ImageView
+  <!--  <ImageView
         android:id="@+id/imageView"
         android:src="@drawable/ic_launcher"
 
@@ -25,7 +25,12 @@
 
         android:contentDescription="@string/android"
 
-    />
+    /> -->
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></WebView>
 
     <TextView
         android:id="@+id/tvMovieTitle"
@@ -36,19 +41,119 @@
 
         android:textSize="25dp"
         android:layout_marginTop="29dp" />
+
+    <LinearLayout
+        android:id="@+id/userRatingLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp" >
+
     <TextView
-        android:id="@+id/tvMovieRating"
-        android:text="rating"
+        android:id="@+id/tvMovieRatingHC"
+        android:text="IMDB-User Rating:"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:textColor="#7a315e73"
-        android:layout_marginTop="2dp" />
+        android:textColor="#7a315e73" />
+
+    <TextView
+        android:id="@+id/tvMovieRating"
+        android:text=""
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textColor="#7a315e73" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/userRatingCountLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/tvMovieRatingCountHC"
+            android:text="Amount of Votes:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="#7a315e73" />
+
+        <TextView
+            android:id="@+id/tvMovieRatingCount"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#7a315e73" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/metaScoreLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/tvMetaScoreHC"
+            android:text="Score of metascore.com:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="#7a315e73" />
+
+        <TextView
+            android:id="@+id/tvMetaScore"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#7a315e73" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ageRestrictionLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/tvAgeRestrictionHC"
+            android:text="Age Restriction:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textColor="#7a315e73" />
+
+        <TextView
+            android:id="@+id/tvAgeRestriction"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#7a315e73" />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tvPlot"
-        android:text="plot"
+        android:text=""
 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -74,7 +179,7 @@
             />
         <TextView
             android:id="@+id/tvGenre"
-            android:text="genre"
+            android:text=""
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -82,6 +187,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             />
     </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/yearLayout"
         android:layout_width="fill_parent"
@@ -101,7 +208,7 @@
         />
         <TextView
             android:id="@+id/tvReleaseYear"
-            android:text="releaseYear"
+            android:text=""
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,6 +216,84 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
           />
         </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/runtimeLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp" >
+
+        <TextView
+            android:id="@+id/tvRuntimeHC"
+            android:text="Runtime:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+
+            />
+        <TextView
+            android:id="@+id/tvRuntime"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/budgetLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/tvBudgetHC"
+            android:text="Budget:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvBudget"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/awardsLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="horizontal"
+        android:layout_marginTop="1dp" >
+
+        <TextView
+            android:id="@+id/tvAwardsHC"
+            android:text="Awards:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvAwards"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/actorsLayout"
@@ -127,12 +312,12 @@
 
         <TextView
             android:id="@+id/tvActors"
-            android:text="actorList"
+            android:text=""
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
             />
     </LinearLayout>
 
@@ -153,34 +338,69 @@
 
         <TextView
             android:id="@+id/tvDirectors"
-            android:text="directorList"
+            android:text=""
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
             />
     </LinearLayout>
 
-   <!-- <TextView
-        android:id="@+id/ImdbId"
-        android:text="imdbId"
-
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/writersLayout"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 
-        android:layout_marginTop="74dp"
-        android:visibility="gone"/>
-    <Button
-        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/activity_horizontal_margin" >
+
+        <TextView
+            android:id="@+id/tvWritersHC"
+            android:text="Writers:"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvWriters"
+            android:text=""
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            />
+    </LinearLayout>
+
+    <Button android:id="@+id/btnLink"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="To List"
-        android:id="@+id/button"
-        android:onClick="goToList"
+        android:text="@string/link"
+        android:onClick="linkToImdb"
+        />
 
-        android:layout_marginTop="161dp" />
 
--->
+    <Button android:id="@+id/btnSpoiler" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="@string/spoiler"
+        android:textColor="#FFFFFFFF"
+        android:layout_gravity="left" />
+    <LinearLayout android:id="@+id/panelSpoiler"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#FFFFFFFF">
+
+        <TextView
+            android:id="@+id/tvWikiAbstract"
+            android:text=""
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            />
+
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -56,7 +56,7 @@ public class HttpRequester {
                                     int releaseYear = r.getInt("Year");
                                     movie.setReleaseYear(releaseYear);
                                 }
-                                if (SparqlQueries.filterReleaseDate(movieList, movie)) {
+                                if (SparqlQueries.filterReleaseDate(movie)) {
                                     if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                         lastMovie = true;
                                     }
@@ -73,12 +73,12 @@ public class HttpRequester {
                         if (!(movieList.indexOf(movie) == -1)) {
                             //Genre
                             try {
-                                if (isGenre && !isActor && !isDirector) {
+                                if (isGenre && (isActor || isDirector)) {
                                     if ("".equals(movie.getGenre())) {
                                         String genreName = r.getString("Genre");
                                         movie.setGenre(genreName);
                                     }
-                                    if (SparqlQueries.filterGenre(movieList, movie)) {
+                                    if (SparqlQueries.filterGenre(movie)) {
                                         if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                             lastMovie = true;
                                         }
@@ -162,9 +162,14 @@ public class HttpRequester {
 
                     try {
                         String genre = r.getString("Genre");
-                        String[] genreArray = (genre.split(","));
-                        for(int i=0; i < genreArray.length; i++) {
-                            if(!movie.getGenres().contains(genreArray[i])) {
+                        String[] genreArray = (genre.split(", "));
+                        ArrayList<String> newGenres = new ArrayList<String>();
+                        for(int i=0; i< genreArray.length; i++) {
+                            newGenres.add(new String(genreArray[i]).trim());
+
+                        }
+                        for(int i =0; i < newGenres.size(); i++) {
+                            if(!movie.getGenres().contains(newGenres.get(i))) {
                                 movie.addGenre(genreArray[i]);
                             }
                         }

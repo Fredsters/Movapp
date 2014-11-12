@@ -3,13 +3,6 @@
     android:id="@+id/root_layout" android:layout_width="fill_parent"
     android:layout_height="fill_parent" android:background="#FFFFFFFF"
     android:layout_weight="1" android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Please choose at least one valid criteria!"
-        android:id="@+id/warning" android:visibility="gone"
-        android:textColor="#ffff0000"
-        android:textStyle="bold" />
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="@string/actor"

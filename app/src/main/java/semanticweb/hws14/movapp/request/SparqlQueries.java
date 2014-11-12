@@ -47,18 +47,18 @@ public class SparqlQueries {
                 "?g movie:film_genre_name ?gn. "+
                 "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
                 "?m movie:genre ?g. ";
-            }/* else {
+            } else if((Boolean)criteria.get("isGenre")){
                 queryString +=
                 "OPTIONAL {?g movie:film_genre_name ?gn." +
                 "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
                 "?m movie:genre ?g.}" ;
-            } */
+            }
 
         queryString +=
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL { ?m foaf:page ?p." +
             "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
-            "} LIMIT 1000";
+            "} LIMIT 100";
 
         return queryString;
     }
@@ -71,7 +71,7 @@ public class SparqlQueries {
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "+
             "SELECT distinct ?t ?y ";
-            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
+            if((Boolean)criteria.get("isGenre")) {
                 queryString += "?gn ";
             }
             queryString += "WHERE { ";
@@ -89,13 +89,13 @@ public class SparqlQueries {
                 "FILTER(langMatches(lang(?gn), 'EN')) "+
                 "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g.";
-            }/* else {
+            } else if((Boolean)criteria.get("isGenre")) {
                 queryString +=
                 "OPTIONAL { ?g rdfs:label ?gn. "+
                 "FILTER(langMatches(lang(?gn), 'EN')) "+
                 "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g. }";
-            }*/
+            }
             queryString+= "?m foaf:name ?t.";
 
             if((Boolean)criteria.get("isTime") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
@@ -107,12 +107,12 @@ public class SparqlQueries {
                 "OPTIONAL{?m dbpprop:released ?y.}";
             }
             queryString+=
-            "} LIMIT 1000";
+            "} LIMIT 100";
 
         return queryString;
     }
 
-    public static boolean filterReleaseDate(ArrayList<Movie> movieList, Movie movie) {
+    public static boolean filterReleaseDate(Movie movie) {
         int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
         int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
         if(movie.getReleaseYear() < from || movie.getReleaseYear() > to) {
@@ -122,13 +122,12 @@ public class SparqlQueries {
         }
     }
 
-    public static boolean filterGenre(ArrayList<Movie> movieList, Movie movie) {
+    public static boolean filterGenre(Movie movie) {
         String genre = movie.getGenre();
         String genreNameFilter = (String) criteria.get("genreName");
         Pattern p = Pattern.compile(genreNameFilter, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(genre);
         if(!m.find()) {
-            //movieList.remove(movie);
             return true;
         }
         return false;
@@ -136,10 +135,16 @@ public class SparqlQueries {
 
     public String LMDBDetailQuery(Movie movie) {
         String queryString=
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
                 "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
-                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
-                "?m movie:filmid '"+movie.getLMDBmovieId()+"'^^xsd:int. "+
+                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { ";
+                if(movie.getLMDBmovieId() != 0) {
+                    queryString+= "?m movie:filmid '"+movie.getLMDBmovieId()+"'^^xsd:int. ";
+                } else {
+                    queryString+= "?m rdfs:label '"+movie.getTitle()+"'. ";
+                }
+                queryString+=
                 "OPTIONAL {?m movie:actor ?a. "+
                 "?a movie:actor_name ?aN.} "+
                 "OPTIONAL {?m movie:director ?d. "+

@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -115,13 +116,12 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
         }
 
         if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals(""))){
-            findViewById(R.id.warning).setVisibility(View.GONE);
             Intent intent = new Intent(this, List.class);
             intent.putExtra("criteria", criteria);
             startActivity(intent);
         }
         else{
-            findViewById(R.id.warning).setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -355,9 +355,6 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             actorCount++;
         }
         else{
-            View warning = findViewById(R.id.warning);
-            //TODO:somehow change warning message text!
-            //warning.setVisibility(View.VISIBLE);
         }
 
     }
@@ -376,9 +373,6 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
             actorCount--;
         }
         else{
-            View warning = findViewById(R.id.warning);
-            //TODO: somehow change warning message text!
-            //warning.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -12,6 +12,8 @@
     <string name="genre">Genre</string>
     <string name="director">Director</string>
     <string name="submit">Submit</string>
+    <string name="spoiler">Spoiler</string>
+    <string name="link">Link to Imdb page</string>
     <string-array name="year_array">
         <item>2016</item>
         <item>2014</item>
