@@ -66,6 +66,7 @@ public class SparqlQueries {
     public String DBPEDIAQuery() {
         String queryString =
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
             "PREFIX dbpprop: <http://dbpedia.org/property/> "+
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
@@ -74,7 +75,7 @@ public class SparqlQueries {
             if((Boolean)criteria.get("isGenre")) {
                 queryString += "?gn ";
             }
-            queryString += "WHERE { ";
+            queryString += "WHERE { ?m rdf:type <http://schema.org/Movie>. ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?actor rdfs:label '"+criteria.get("actorName")+"'@en. "+
                 "?m dbpprop:starring ?actor. ";

@@ -107,7 +107,7 @@ public class MovieList extends Activity {
     }
 
 
-    private class queryForMovies extends AsyncTask<HashMap<String, Object>, Void, ArrayList<Movie>> {
+    private class queryForMovies extends AsyncTask<HashMap<String, Object>, Integer, ArrayList<Movie>> {
 
         @Override
         protected ArrayList<Movie> doInBackground(HashMap<String, Object>... criterias) {
@@ -150,8 +150,10 @@ public class MovieList extends Activity {
 
                 }
             });
+            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                tLMDB.start();
+            }
 
-            tLMDB.start();
         /* DPBEDIA */
 
             String dbPediaSparqlQueryString = sparqler.DBPEDIAQuery();
@@ -175,33 +177,41 @@ public class MovieList extends Activity {
             }
             qexec.close();
 
-            try {
-                tLMDB.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                try {
+                    tLMDB.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+
 
         /* Eliminate doublicates */
 
-            if(movieList.size() == 200 ) {
-                Toast.makeText(that, "Maximum Number of Movies reached. There might be some movies missing. Please specify your search", Toast.LENGTH_SHORT).show();
-            }
-
-            ArrayList indexArray = new ArrayList();
-            for(int i=0; i<movieList.size();i++) {
-                for(int j=i+1; j<movieList.size();j++) {
-                    if(movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
+            publishProgress(movieList.size());
+            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                ArrayList indexArray = new ArrayList();
+                for (int i = 0; i < movieList.size(); i++) {
+                    for (int j = i + 1; j < movieList.size(); j++) {
+                        if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
                             indexArray.add(movieList.get(j));
+                        }
                     }
                 }
+                movieList.removeAll(indexArray);
             }
-            movieList.removeAll(indexArray);
-
             return movieList;
         }
 
         protected void onPreExecute() {
             setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
+        protected void onProgressUpdate (Integer... values) {
+            if(values[0] >= 100 ) {
+                Toast.makeText(that, "Maximum Number of Movies reached. There might be some movies missing. Please specify your search", Toast.LENGTH_LONG).show();
+            }
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {

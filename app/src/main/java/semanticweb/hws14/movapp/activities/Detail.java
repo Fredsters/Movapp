@@ -56,19 +56,17 @@ public class Detail extends Activity {
             @Override
             public void onFinished(final MovieDetail movie) {
                 movieDetail = movie;
-                //TODO: LMDB DATE nicht einschränkbar in SPARQL, time queries only in dbpedia?
                 //Todo Title?
                 //TODO Buttons colored
                 //TODO get Trailer
                 //TODO Show more Ui Elements in detail
-                //TODO Wenn öfter auf detail, buggt
                 //TODO Mapping from rated to age
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO nicer Layout in Criteriaview
                 //TODO 2 actors
                 //TODO Improve performance
-                //TODO only query for movielist when criteria has changed. so if you come back from list and just press submit again, that the data is still there
+                //TODO When pressing home, save state
                 /*
 
                 The original movie ratings consisted of:

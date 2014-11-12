@@ -47,7 +47,7 @@ public class HttpRequester {
 
                         //TIME
                         try {
-                            if (isTime) {
+                            if (isTime && (isActor || isDirector ||isGenre)) {
                                 if (0 == movie.getReleaseYear()) {
                                     int releaseYear = r.getInt("Year");
                                     movie.setReleaseYear(releaseYear);

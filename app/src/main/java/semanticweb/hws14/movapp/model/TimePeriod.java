@@ -57,4 +57,22 @@ public class TimePeriod implements Parcelable {
     public void setTo(int to) {
         this.to = to;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TimePeriod))
+            return false;
+        if (obj == this)
+            return true;
+        TimePeriod rhs = (TimePeriod) obj;
+        return (from == rhs.getFrom() && to == rhs.getTo());
+    }
+
+    public int hashCode() {
+        int result = 0;
+        result = (int)(from/12) + to;
+        return result;
+    }
+
 }
