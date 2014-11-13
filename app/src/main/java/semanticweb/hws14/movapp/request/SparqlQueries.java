@@ -29,7 +29,11 @@ public class SparqlQueries {
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
             "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
-            "SELECT distinct ?t ?i ?y ?p ?gn WHERE { ";
+            "SELECT distinct ?t ?i ?y ?p";
+            if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
+                queryString += "?gn ";
+            }
+            queryString +="WHERE { ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?a movie:actor_name '"+criteria.get("actorName")+"'. "+
                 "?m movie:actor ?a. ";
@@ -44,8 +48,9 @@ public class SparqlQueries {
 
             if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString +=
-                "?g movie:film_genre_name ?gn. "+
-                "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
+                "?g movie:film_genre_name '"+ criteria.get("genreName")+"'. "+
+                        //Removed the filter, because it was too slowly
+               // "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
                 "?m movie:genre ?g. ";
             } else if((Boolean)criteria.get("isGenre")){
                 queryString +=
@@ -72,7 +77,7 @@ public class SparqlQueries {
             "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "+
             "SELECT distinct ?t ?y ";
-            if((Boolean)criteria.get("isGenre")) {
+            if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
                 queryString += "?gn ";
             }
             queryString += "WHERE { ?m rdf:type <http://schema.org/Movie>. ";
@@ -86,9 +91,10 @@ public class SparqlQueries {
             }
             if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
                 queryString +=
-                "?g rdfs:label ?gn. "+
+                "?g rdfs:label '"+criteria.get("genreName")+"' "+
                 "FILTER(langMatches(lang(?gn), 'EN')) "+
-                "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
+                        //Removed the filter, because it was too slowly
+     //           "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
                 "?m dbpprop:genre ?g.";
             } else if((Boolean)criteria.get("isGenre")) {
                 queryString +=
