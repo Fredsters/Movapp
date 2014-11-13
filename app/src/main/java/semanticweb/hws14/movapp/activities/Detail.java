@@ -66,7 +66,8 @@ public class Detail extends Activity {
                 //TODO nicer Layout in Criteriaview
                 //TODO 2 actors
                 //TODO Improve performance
-                //TODO When pressing home, save state
+                //TODO When pressing home, save state bundle onSave...
+                //TODO check in detail if property is there and if not then dont try to display it
                 /*
 
                 The original movie ratings consisted of:

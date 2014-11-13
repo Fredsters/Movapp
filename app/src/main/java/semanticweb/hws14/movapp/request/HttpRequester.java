@@ -70,10 +70,8 @@ public class HttpRequester {
                             //Genre
                             try {
                                 if (isGenre && (isActor || isDirector)) {
-                                    if ("".equals(movie.getGenre())) {
-                                        String genreName = r.getString("Genre");
-                                        movie.setGenre(genreName);
-                                    }
+                                    String genreName = r.getString("Genre");
+                                    movie.setGenre(genreName);
                                     if (SparqlQueries.filterGenre(movie)) {
                                         if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                             lastMovie = true;

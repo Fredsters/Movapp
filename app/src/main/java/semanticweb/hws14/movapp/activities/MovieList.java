@@ -194,7 +194,19 @@ public class MovieList extends Activity {
                 for (int i = 0; i < movieList.size(); i++) {
                     for (int j = i + 1; j < movieList.size(); j++) {
                         if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                            indexArray.add(movieList.get(j));
+                            //TODO Delete the movie with less data or wrong data
+                            if(!"".equals(movieList.get(j).getGenre())) {
+                                indexArray.add(movieList.get(i));
+                                break;
+                            } else if(!"".equals(movieList.get(j).getReleaseYear())){
+                                indexArray.add(movieList.get(i));
+                                break;
+                            } else if(!"".equals(movieList.get(j).getImdbId())){
+                                indexArray.add(movieList.get(i));
+                                break;
+                            } else {
+                                indexArray.add(movieList.get(j));
+                            }
                         }
                     }
                 }

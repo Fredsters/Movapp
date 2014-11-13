@@ -146,7 +146,7 @@ public class Movie implements Parcelable {
     }
 
     public void setGenre(String genre) {
-        this.genre = genre;
+        this.genre += " "+genre;
     }
 
     @Override
