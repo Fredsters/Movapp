@@ -22,7 +22,7 @@ import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
 
-public class Criteria extends Activity implements AdapterView.OnItemSelectedListener {
+public class MovieCriteria extends Activity implements AdapterView.OnItemSelectedListener {
 
     String selectedActorName;
     int selectedFromDate;
@@ -58,7 +58,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_criteria);
+        setContentView(R.layout.activity_movie_criteria);
         initCriteriaView();
     }
 
@@ -130,7 +130,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.criteria, menu);
+        getMenuInflater().inflate(R.menu.movie_criteria, menu);
         return true;
     }
 

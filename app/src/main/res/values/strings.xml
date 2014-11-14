@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="android">hier sollte das Bild sein!</string>
     <string name="app_name">Movapp</string>
     <string name="hello_world">Hello Movapp!</string>
@@ -14,6 +15,8 @@
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>
     <string name="link">Link to Imdb page</string>
+    <string name="toActorList">Actor Details</string>
+
     <string-array name="year_array">
         <item>2016</item>
         <item>2014</item>
@@ -70,5 +73,8 @@
         <item>War</item>
         <item>Western</item>
     </string-array>
+
+    <string name="title_activity_actor_list">ActorList</string>
+    <string name="title_activity_actor_detail">ActorDetail</string>
 
 </resources>

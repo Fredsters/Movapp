@@ -83,7 +83,7 @@ public class SparqlQueries {
             queryString += "WHERE { ?m rdf:type <http://schema.org/Movie>. ";
             if((Boolean)criteria.get("isActor")) {
                 queryString += "?actor rdfs:label '"+criteria.get("actorName")+"'@en. "+
-                "?m dbpprop:starring ?actor. ";
+                "?m dbpedia-owl:starring ?actor. ";
             }
             if((Boolean)criteria.get("isDirector")) {
                 queryString += "?d rdfs:label '"+criteria.get("directorName")+"'@en. "+

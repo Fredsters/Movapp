@@ -5,5 +5,5 @@ package semanticweb.hws14.movapp.model;
  */
 public interface EventListener {
 
-    public void onFinished(MovieDetail movie);
+    public void onFinished(MovieDet movie);
 }

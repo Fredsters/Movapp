@@ -20,7 +20,7 @@ import java.util.Collections;
 import semanticweb.hws14.movapp.activities.MovieList;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.MovieComparator;
-import semanticweb.hws14.movapp.model.MovieDetail;
+import semanticweb.hws14.movapp.model.MovieDet;
 
 /**
  * Created by Frederik on 29.10.2014.
@@ -137,7 +137,7 @@ public class HttpRequester {
         }
     }
 
-    public static void loadWebServiceData (final Activity detailActivity, final MovieDetail movie) {
+    public static void loadWebServiceData (final Activity detailActivity, final MovieDet movie) {
         String url = prepareURL(movie, true);
 
         final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

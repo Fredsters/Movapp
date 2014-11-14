@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,49 +24,49 @@ import com.hp.hpl.jena.query.ResultSet;
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.model.EventListener;
 import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.model.MovieDetail;
+import semanticweb.hws14.movapp.model.MovieDet;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
 
-public class Detail extends Activity {
+public class MovieDetail extends Activity {
 
     private Activity that = this;
-    MovieDetail movieDetail;
+    MovieDet movieDet;
     Button btnSpoiler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_movie_detail);
 
         initDetailView();
 
         Intent intent = getIntent();
         Movie movie = (Movie)intent.getParcelableExtra("movie");
 
-        final MovieDetail movieD = new MovieDetail(movie);
+        final MovieDet movieD = new MovieDet(movie);
 
         queryForMovieData q = new queryForMovieData();
         q.execute(movieD);
 
         movieD.setOnFinishedEventListener(new EventListener() {
             @Override
-            public void onFinished(final MovieDetail movie) {
-                movieDetail = movie;
-                //Todo Title?
+            public void onFinished(final MovieDet movie) {
+                movieDet = movie;
+                //Todo Title Criteria?
                 //TODO Buttons colored
                 //TODO get Trailer
-                //TODO Show more Ui Elements in detail
+                //TODO Show more Ui Elements in movie_detail
                 //TODO Mapping from rated to age
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO nicer Layout in Criteriaview
                 //TODO 2 actors
-                //TODO Improve performance
                 //TODO When pressing home, save state bundle onSave...
-                //TODO check in detail if property is there and if not then dont try to display it
+                //TODO check in movie_detail if property is there and if not then dont try to display it
+                //TODO THeme
                 /*
 
                 The original movie ratings consisted of:
@@ -144,7 +143,7 @@ Rated X – Children under the age of 17 not admitted.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.detail, menu);
+        getMenuInflater().inflate(R.menu.movie_detail, menu);
         return true;
     }
 
@@ -181,22 +180,28 @@ Rated X – Children under the age of 17 not admitted.
     }
 
     public void linkToImdb(View view){
-        String imdbUrl = "http://www.imdb.com/title/"+movieDetail.getImdbId()+"/";
+        String imdbUrl = "http://www.imdb.com/title/"+ movieDet.getImdbId()+"/";
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(imdbUrl));
         startActivity(browserIntent);
     }
 
-    private class queryForMovieData extends AsyncTask<MovieDetail, MovieDetail, MovieDetail> {
+    public void toActorList(View view) {
+        Intent intent = new Intent(that, ActorList.class);
+        intent.putStringArrayListExtra("actorList", movieDet.getActors());
+        startActivity(intent);
+    }
+
+    private class queryForMovieData extends AsyncTask<MovieDet, MovieDet, MovieDet> {
 
         @Override
-        protected MovieDetail doInBackground(MovieDetail... movieArray) {
+        protected MovieDet doInBackground(MovieDet... movieArray) {
 
             final SparqlQueries sparqler = new SparqlQueries();
-            final MovieDetail movieDetail = movieArray[0];
+            final MovieDet movieDet = movieArray[0];
         /* LMDB */
             Thread tLMDBDetail = new Thread(new Runnable() {
                 public void run() {
-                    String LMDBsparqlQueryString = sparqler.LMDBDetailQuery(movieDetail);
+                    String LMDBsparqlQueryString = sparqler.LMDBDetailQuery(movieDet);
                     Query query = QueryFactory.create(LMDBsparqlQueryString);
                     QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
                     ResultSet results;
@@ -204,20 +209,20 @@ Rated X – Children under the age of 17 not admitted.
                         results = qexec.execSelect();
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
-                            if (soln.getLiteral("r") != null && "".equals(movieDetail.getRuntime())) {
-                                movieDetail.setRuntime(soln.getLiteral("r").getString());
+                            if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
+                                movieDet.setRuntime(soln.getLiteral("r").getString());
                             }
-                            if (soln.getLiteral("aN") != null && !movieDetail.getActors().contains(soln.getLiteral("aN").getString())) {
-                                movieDetail.addActor(soln.getLiteral("aN").getString());
+                            if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
+                                movieDet.addActor(soln.getLiteral("aN").getString());
                             }
-                            if (soln.getLiteral("dN") != null && !movieDetail.getDirectors().contains(soln.getLiteral("dN").getString())) {
-                                movieDetail.addDirector(soln.getLiteral("dN").getString());
+                            if (soln.getLiteral("dN") != null && !movieDet.getDirectors().contains(soln.getLiteral("dN").getString())) {
+                                movieDet.addDirector(soln.getLiteral("dN").getString());
                             }
-                            if (soln.getLiteral("wN") != null && !movieDetail.getWriters().contains(soln.getLiteral("wN").getString())) {
-                                movieDetail.addWriter(soln.getLiteral("wN").getString());
+                            if (soln.getLiteral("wN") != null && !movieDet.getWriters().contains(soln.getLiteral("wN").getString())) {
+                                movieDet.addWriter(soln.getLiteral("wN").getString());
                             }
-                            if (soln.getLiteral("gN") != null && !movieDetail.getGenres().contains(soln.getLiteral("gN").getString())) {
-                                movieDetail.addGenre(soln.getLiteral("gN").getString());
+                            if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
+                                movieDet.addGenre(soln.getLiteral("gN").getString());
                             }
                         }
                     } catch (Exception e) {
@@ -230,7 +235,7 @@ Rated X – Children under the age of 17 not admitted.
             tLMDBDetail.start();
         /* DPBEDIA */
 
-            String dbPediaSparqlQueryString = sparqler.DBPEDIADetailQuery(movieDetail);
+            String dbPediaSparqlQueryString = sparqler.DBPEDIADetailQuery(movieDet);
             Query query = QueryFactory.create(dbPediaSparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
             ResultSet results;
@@ -239,11 +244,11 @@ Rated X – Children under the age of 17 not admitted.
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
 
-                    if(soln.getLiteral("abs") != null && "".equals(movieDetail.getWikiAbstract())) {
-                        movieDetail.setWikiAbstract(soln.getLiteral("abs").getString());
+                    if(soln.getLiteral("abs") != null && "".equals(movieDet.getWikiAbstract())) {
+                        movieDet.setWikiAbstract(soln.getLiteral("abs").getString());
                     }
-                    if(soln.getLiteral("bu") != null && "".equals(movieDetail.getBudget())) {
-                        movieDetail.setBudget(soln.getLiteral("bu").getString());
+                    if(soln.getLiteral("bu") != null && "".equals(movieDet.getBudget())) {
+                        movieDet.setBudget(soln.getLiteral("bu").getString());
                     }
                 }
             }catch (Exception e){
@@ -257,14 +262,14 @@ Rated X – Children under the age of 17 not admitted.
                 e.printStackTrace();
             }
 
-            return movieDetail;
+            return movieDet;
         }
         protected void onPreExecute() {
             setProgressBarIndeterminateVisibility(true);
 
         }
-        public void onPostExecute(MovieDetail movieDetail) {
-            HttpRequester.loadWebServiceData(that, movieDetail);
+        public void onPostExecute(MovieDet movieDet) {
+            HttpRequester.loadWebServiceData(that, movieDet);
         }
 
 
