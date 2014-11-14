@@ -163,7 +163,7 @@ public class Criteria extends Activity implements AdapterView.OnItemSelectedList
 
 
         final View panelActor = findViewById(R.id.panelActor);
-        panelActor.setVisibility(View.GONE);
+        panelActor.setVisibility(View.VISIBLE);
 
         View panelYear = findViewById(R.id.panelYear);
         panelYear.setVisibility(View.GONE);

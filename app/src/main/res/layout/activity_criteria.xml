@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="#FFFFFFFF"
+    android:layout_height="fill_parent" android:background="#B4CDCD"
     android:layout_weight="1" android:orientation="vertical">
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="@string/actor"
-        android:textColor="#FFFFFFFF"
-        android:layout_gravity="left" />
+        android:textColor="#FFFFFF" android:background="@drawable/button_background_accordion"
+        android:layout_gravity="left"
+        android:singleLine="true"  >
+        </Button>
     <LinearLayout android:id="@+id/panelActor"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFFFF">
+        android:background="#B4CDCD">
         <LinearLayout android:id="@+id/panelActor1"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#FFFFFFFF">
+            android:background="#B4CDCD">
             <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="Name of Actor:" />
             <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
@@ -50,6 +52,7 @@
             <Button
                 android:id="@+id/btnaddActor"
                 android:text="add Actor"
+                
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="addActor"
@@ -79,22 +82,24 @@
 
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="@string/year"
-        android:textColor="#FFFFFFFF" />
+        android:textColor="#FFFFFFFF"
+        android:background="@drawable/button_background_accordion" />
     <LinearLayout android:id="@+id/panelYear"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFFFF">
+        android:background="#B4CDCD">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="102dp"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:background="#B4CDCD">
 
             <LinearLayout android:id="@+id/panelYearFrom"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#FFFFFFFF">
+                android:background="#B4CDCD">
                 <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
                     android:layout_height="wrap_content" android:text="From:" />
                 <Spinner
@@ -111,7 +116,7 @@
             <LinearLayout android:id="@+id/panelYearTo"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#FFFFFFFF">
+                android:background="#B4CDCD">
                 <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
                     android:layout_height="wrap_content" android:text="To:" />
                 <Spinner
@@ -127,18 +132,20 @@
             android:id="@+id/swYear"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
-            android:checked="false" />
+            android:checked="false"
+            android:background="#B4CDCD" />
 
     </LinearLayout>
 
 
     <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="@string/genre"
-        android:textColor="#FFFFFFFF" />
+        android:textColor="#FFFFFFFF"
+        android:background="@drawable/button_background_accordion" />
     <LinearLayout android:id="@+id/panelGenre"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFFFF">
+        android:background="#B4CDCD">
         <TextView android:id="@+id/tvGenre" android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:text="Genre:" />
         <Spinner
@@ -157,15 +164,16 @@
 
     <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="@string/director"
-        android:textColor="#FFFFFFFF" />
+        android:textColor="#FFFFFFFF"
+        android:background="@drawable/button_background_accordion" />
     <LinearLayout android:id="@+id/panelDirector"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFFFF">
+        android:background="#B4CDCD">
         <LinearLayout android:id="@+id/panelDirector1"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#FFFFFFFF">
+            android:background="#B4CDCD">
             <TextView android:id="@+id/tvDirectorName" android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:text="Name of Director:" />
             <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
@@ -177,15 +185,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/swDirector"
             android:layout_gravity="center_horizontal"
-            android:checked="false" />
+            android:checked="false"
+            android:background="#B4CDCD" />
     </LinearLayout>
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="59dp"
         android:text="@string/submit"
         android:id="@+id/submit_button"
-        android:onClick="submitSearch" />
+        android:onClick="submitSearch" android:background="@drawable/button_background_submit"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="@dimen/activity_vertical_margin" />
 
 
 

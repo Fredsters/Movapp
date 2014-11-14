@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,14 +25,12 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.model.MovieComparator;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
@@ -46,7 +43,7 @@ public class MovieList extends Activity {
 
     public static ArrayList<Movie> staticMovieList;
     static HashMap<String, Object> staticCriteria;
-
+    int countListObjects;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,14 +56,17 @@ public class MovieList extends Activity {
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         ListView listView = (ListView) findViewById(R.id.resultList);
+
+
         if(criteria.equals(staticCriteria)) {
-            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+
 
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
 
         } else {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+
 
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
@@ -86,6 +86,8 @@ public class MovieList extends Activity {
         };
         listView.setOnItemClickListener(clickListen);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -186,6 +188,7 @@ public class MovieList extends Activity {
             }
 
 
+
         /* Eliminate doublicates */
 
             publishProgress(movieList.size());
@@ -212,6 +215,9 @@ public class MovieList extends Activity {
                 }
                 movieList.removeAll(indexArray);
             }
+
+            countListObjects = movieList.size();
+
             return movieList;
         }
 
@@ -256,5 +262,10 @@ public class MovieList extends Activity {
             }
         }
 
+
+
     }
+
+
+
 }
