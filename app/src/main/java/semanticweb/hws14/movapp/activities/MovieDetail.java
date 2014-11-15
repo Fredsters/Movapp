@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,7 +57,7 @@ public class MovieDetail extends Activity {
         initDetailView();
 
         Intent intent = getIntent();
-        Movie movie = (Movie)intent.getParcelableExtra("movie");
+        Movie movie = intent.getParcelableExtra("movie");
 
         final MovieDet movieD = new MovieDet(movie);
 
@@ -87,22 +86,17 @@ Rated M – For "Mature" audiences.
 Rated R – Restricted. Children under the age of 17 must be accompanied by a parent or "guardian" (i.e., supervised by an adult).
 Rated X – Children under the age of 17 not admitted.
 */
-       //         WebView web = (WebView) findViewById(R.id.webView);
-        //        web.loadUrl(movie.getPoster());
-             //   imageViewMovie
-
                 Thread picThread = new Thread(new Runnable() {
                     public void run() {
                         try {
                             ImageView img = (ImageView) findViewById(R.id.imageViewMovie);
                             URL url = new URL(movie.getPoster());
-                            HttpGet httpRequest = null;
+                            HttpGet httpRequest;
 
                             httpRequest = new HttpGet(url.toURI());
 
                             HttpClient httpclient = new DefaultHttpClient();
-                            HttpResponse response = (HttpResponse) httpclient
-                                    .execute(httpRequest);
+                            HttpResponse response = httpclient.execute(httpRequest);
 
                             HttpEntity entity = response.getEntity();
                             BufferedHttpEntity b_entity = new BufferedHttpEntity(entity);
@@ -113,7 +107,7 @@ Rated X – Children under the age of 17 not admitted.
                             img.setImageBitmap(bitmap);
 
                         } catch (Exception ex) {
-
+                            //TOdo Handle Exception
                         }
                     }
                 });
@@ -193,9 +187,7 @@ Rated X – Children under the age of 17 not admitted.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        if (id == R.id.action_settings) return true;
         return super.onOptionsItemSelected(item);
     }
 

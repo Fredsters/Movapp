@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.audiofx.AcousticEchoCanceler;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +37,6 @@ import java.util.HashMap;
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.model.ActorDet;
 import semanticweb.hws14.movapp.model.EventActorListener;
-import semanticweb.hws14.movapp.model.EventListener;
-import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.model.MovieDet;
-import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
 public class ActorDetail extends Activity {
