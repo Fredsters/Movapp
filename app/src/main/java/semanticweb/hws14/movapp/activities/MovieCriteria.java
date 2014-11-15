@@ -63,18 +63,10 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
     }
 
     public void submitSearch(View view) {
-
-
-
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
         String actorName = tfActorName.getText().toString();
         String directorName = tfDirectorName.getText().toString();
-
-
-
-
-
 
         if(activeActor && !actorName.equals("")){
             actorName = InputCleaner.cleanName(actorName);
@@ -123,7 +115,6 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         else{
             Toast.makeText(this, "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
         }
-
 
     }
 

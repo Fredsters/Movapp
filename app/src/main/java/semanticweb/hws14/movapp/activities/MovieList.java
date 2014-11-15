@@ -56,6 +56,7 @@ public class MovieList extends Activity {
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         ListView listView = (ListView) findViewById(R.id.movieList);
+
         if(criteria.equals(staticCriteria)) {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
@@ -193,7 +194,6 @@ public class MovieList extends Activity {
                 for (int i = 0; i < movieList.size(); i++) {
                     for (int j = i + 1; j < movieList.size(); j++) {
                         if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                            //TODO Delete the movie with less data or wrong data
                             if(!"".equals(movieList.get(j).getGenre())) {
                                 indexArray.add(movieList.get(i));
                                 break;

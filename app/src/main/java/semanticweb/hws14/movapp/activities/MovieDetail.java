@@ -2,6 +2,8 @@ package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +14,9 @@ import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -20,6 +24,16 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.InputStream;
+import java.net.URL;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.model.EventListener;
@@ -55,18 +69,16 @@ public class MovieDetail extends Activity {
             @Override
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
-                //Todo Title Criteria?
                 //TODO Buttons colored
-                //TODO get Trailer
-                //TODO Show more Ui Elements in movie_detail
                 //TODO Mapping from rated to age
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO nicer Layout in Criteriaview
-                //TODO 2 actors
-                //TODO When pressing home, save state bundle onSave...
-                //TODO check in movie_detail if property is there and if not then dont try to display it
+                //TODO check in movie_detail and actor_Detail if property is there and if not then dont try to display it
                 //TODO THeme
+                //TODO Actor nach land und stadt und stadt nach GPS Tracking
+                //TODO Movie nach land und dropdown stadt
+                //TODO ERROR bei kate winslet
                 /*
 
                 The original movie ratings consisted of:
@@ -74,17 +86,39 @@ Rated G – Acceptable to "general" audiences, including children.
 Rated M – For "Mature" audiences.
 Rated R – Restricted. Children under the age of 17 must be accompanied by a parent or "guardian" (i.e., supervised by an adult).
 Rated X – Children under the age of 17 not admitted.
+*/
+       //         WebView web = (WebView) findViewById(R.id.webView);
+        //        web.loadUrl(movie.getPoster());
+             //   imageViewMovie
 
-                 */
-                setProgressBarIndeterminateVisibility(false);
+                Thread picThread = new Thread(new Runnable() {
+                    public void run() {
+                        try {
+                            ImageView img = (ImageView) findViewById(R.id.imageViewMovie);
+                            URL url = new URL(movie.getPoster());
+                            HttpGet httpRequest = null;
 
-            //    Thread pictureThread = new Thread(new Runnable() {
-          //          public void run() {
-                        WebView web = (WebView) findViewById(R.id.webView);
-                        web.loadUrl(movie.getPoster());
-         //           }
-        //        });
-     //           pictureThread.start();
+                            httpRequest = new HttpGet(url.toURI());
+
+                            HttpClient httpclient = new DefaultHttpClient();
+                            HttpResponse response = (HttpResponse) httpclient
+                                    .execute(httpRequest);
+
+                            HttpEntity entity = response.getEntity();
+                            BufferedHttpEntity b_entity = new BufferedHttpEntity(entity);
+                            InputStream input = b_entity.getContent();
+
+                            Bitmap bitmap = BitmapFactory.decodeStream(input);
+
+                            img.setImageBitmap(bitmap);
+
+                        } catch (Exception ex) {
+
+                        }
+                    }
+                });
+
+                picThread.start();
 
                 TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
                 moviePlot.setText(movieD.getPlot());
@@ -97,8 +131,6 @@ Rated X – Children under the age of 17 not admitted.
 
                 TextView writers = (TextView) findViewById(R.id.tvWriters);
                 writers.setText(String.valueOf(movieD.createTvOutOfList(movieD.getWriters())));
-
-
 
                 TextView genre = (TextView) findViewById(R.id.tvGenre);
                 genre.setText(String.valueOf(movieD.createTvOutOfList(movieD.getGenres())));
@@ -129,6 +161,14 @@ Rated X – Children under the age of 17 not admitted.
 
                 TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
                 movieRating.setText(movie.getImdbRating()+"/10");
+
+                try {
+                    picThread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                setProgressBarIndeterminateVisibility(false);
             }
 
         });
@@ -191,7 +231,7 @@ Rated X – Children under the age of 17 not admitted.
         startActivity(intent);
     }
 
-    private class queryForMovieData extends AsyncTask<MovieDet, MovieDet, MovieDet> {
+    private class queryForMovieData extends AsyncTask<MovieDet, String, MovieDet> {
 
         @Override
         protected MovieDet doInBackground(MovieDet... movieArray) {
@@ -253,6 +293,7 @@ Rated X – Children under the age of 17 not admitted.
                 }
             }catch (Exception e){
                 Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN "+ e.toString());
+                publishProgress("A problem with DBPedia occured");
             }
             qexec.close();
 
@@ -264,6 +305,12 @@ Rated X – Children under the age of 17 not admitted.
 
             return movieDet;
         }
+
+        @Override
+        protected void onProgressUpdate (String... values) {
+            Toast.makeText(that, values[0], Toast.LENGTH_LONG).show();
+        }
+
         protected void onPreExecute() {
             setProgressBarIndeterminateVisibility(true);
 
@@ -271,13 +318,6 @@ Rated X – Children under the age of 17 not admitted.
         public void onPostExecute(MovieDet movieDet) {
             HttpRequester.loadWebServiceData(that, movieDet);
         }
-
-
-
-
-
-
-
     }
 
 

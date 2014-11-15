@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import semanticweb.hws14.movapp.model.ActorDet;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
@@ -177,6 +178,40 @@ public class SparqlQueries {
                 "} " +
                 "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
                 "} ";
+        return queryString;
+    }
+
+    public String DBPEDIAActorDetailQuery(ActorDet actorDet) {
+        String queryString =
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+                "PREFIX dbpprop: <http://dbpedia.org/property/> "+
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
+                "PREFIX yago: <http://dbpedia.org/class/yago/> " +
+                "select distinct ?wA ?birthN ?birthD ?birthP ?citS ?natN ?childC ?oC ?picLink ?yearA ?hp ?partnerN ?parentN ?mN " +
+                "where {" +
+                "{?ac rdfs:label '"+actorDet.getName()+"'@en; " +
+                "rdf:type yago:Actor109765278. " +
+                "OPTIONAL{?ac dbpedia-owl:abstract ?wA. FILTER(langMatches(lang(?wA), 'EN'))} " +
+                "OPTIONAL{?ac dbpedia-owl:birthName ?birthN.} " +
+                "OPTIONAL{?ac dbpedia-owl:birthDate ?birthD.} " +
+                "OPTIONAL{?ac dbpprop:birthPlace ?birthP.} " +
+                "OPTIONAL{?ac dbpprop:citizenship ?citS.} " +
+                "OPTIONAL{?ac dbpedia-owl:nationality ?n. ?n rdfs:label ?natN.} " +
+                "OPTIONAL{?ac dbpprop:occupation ?oC.} " +
+                "OPTIONAL{?ac dbpedia-owl:thumbnail ?picLink.} " +
+                "OPTIONAL{?ac dbpprop:children ?childC.} " +
+                "OPTIONAL{?ac dbpprop:yearsActive ?yearA.} " +
+                "OPTIONAL{?ac foaf:homepage ?hp.} " +
+                "OPTIONAL{?partner dbpedia-owl:partner ?ac; rdfs:label ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))} " +
+                "OPTIONAL{?parent dbpedia-owl:parent ?ac; rdfs:label ?parentN. FILTER(langMatches(lang(?parentN), 'EN'))} " +
+                "} UNION " +
+                "{?ac rdfs:label '"+actorDet.getName()+"'@en; rdf:type yago:Actor109765278. " +
+                "OPTIONAL{?m dbpedia-owl:starring ?ac; rdfs:label ?mN. " +
+                "FILTER(langMatches(lang(?mN), 'EN'))} " +
+                "} " +
+                "} LIMIT 100";
         return queryString;
     }
 

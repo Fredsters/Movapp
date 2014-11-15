@@ -15,8 +15,9 @@
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>
     <string name="link">Link to Imdb page</string>
-    <string name="toActorList">Actor Details</string>
-
+    <string name="toActorList">Actor Detail List</string>
+    <string name="toMovieList">Movie Detail List</string>
+    <string name="linkToActor">Link to Actors Page</string>
     <string-array name="year_array">
         <item>2016</item>
         <item>2014</item>
