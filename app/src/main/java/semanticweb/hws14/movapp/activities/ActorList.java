@@ -39,9 +39,6 @@ public class ActorList extends Activity {
             city = intent.getStringExtra("city");
         }
 
-
-
-
         if(intent.hasExtra("actorList")) {
             this.alAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, actorList);
             listView.setAdapter(alAdapter);

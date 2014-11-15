@@ -73,7 +73,7 @@ public class MovieDetail extends Activity {
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO nicer Layout in Criteriaview
-                //TODO check in movie_detail and actor_Detail if property is there and if not then dont try to display it
+                //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
                 //TODO THeme
                 //TODO Actor nach land und stadt und stadt nach GPS Tracking
                 //TODO Movie nach land und dropdown stadt

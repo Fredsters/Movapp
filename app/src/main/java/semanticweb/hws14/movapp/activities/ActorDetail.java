@@ -96,11 +96,6 @@ public class ActorDetail extends Activity {
                 });
 
                 picThread.start();
-
-
-
-
-
                 TextView actorDetailName = (TextView) findViewById(R.id.tvActorDetailName);
                 actorDetailName.setText(actorDet.getName());
 

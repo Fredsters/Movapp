@@ -41,12 +41,15 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
     Button btnActor;
     Button btnYear ;
     Button btnGenre ;
-    Button btnDirector ;
+    Button btnDirector;
+    Button btnRegion;
 
     Switch swActor ;
     Switch swYear ;
     Switch swGenre ;
     Switch swDirector ;
+    Switch swCity;
+    Switch swCountry;
 
     boolean activeActor = false;
     boolean activeYear = false;
@@ -146,12 +149,14 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
          btnYear = (Button) findViewById(R.id.btnYear);
          btnGenre = (Button) findViewById(R.id.btnGenre);
          btnDirector = (Button) findViewById(R.id.btnDirector);
+         btnRegion = (Button) findViewById(R.id.btnRegion);
 
          swActor = (Switch) findViewById(R.id.swActor);
          swYear = (Switch) findViewById(R.id.swYear);
          swGenre = (Switch) findViewById(R.id.swGenre);
          swDirector = (Switch) findViewById(R.id.swDirector);
-
+         swCity = (Switch) findViewById(R.id.swCity);
+         swCountry = (Switch) findViewById(R.id.swCountry);
 
         final View panelActor = findViewById(R.id.panelActor);
         panelActor.setVisibility(View.VISIBLE);
@@ -165,6 +170,9 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         View panelDirector = findViewById(R.id.panelDirector);
         panelDirector.setVisibility(View.GONE);
 
+        View panelRegion = findViewById(R.id.panelRegion);
+        panelRegion.setVisibility(View.GONE);
+
         btnActor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,12 +183,14 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
                 View panelYear = findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
 
-
                 View panelGenre = findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
 
                 View panelDirector = findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
+
+                View panelRegion = findViewById(R.id.panelRegion);
+                panelRegion.setVisibility(View.GONE);
 
             }
         });
@@ -201,6 +211,9 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
                 View panelDirector = findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
 
+                View panelRegion = findViewById(R.id.panelRegion);
+                panelRegion.setVisibility(View.GONE);
+
             }
         });
 
@@ -219,6 +232,9 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
 
                 View panelDirector = findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
+
+                View panelRegion = findViewById(R.id.panelRegion);
+                panelRegion.setVisibility(View.GONE);
 
             }
         });
@@ -239,8 +255,34 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
                 View panelDirector = findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.VISIBLE);
 
+                View panelRegion = findViewById(R.id.panelRegion);
+                panelRegion.setVisibility(View.GONE);
+
             }
         });
+
+        btnRegion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // DO STUFF
+                View panelActor = findViewById(R.id.panelActor);
+                panelActor.setVisibility(View.GONE);
+
+                View panelYear = findViewById(R.id.panelYear);
+                panelYear.setVisibility(View.GONE);
+
+                View panelGenre = findViewById(R.id.panelGenre);
+                panelGenre.setVisibility(View.GONE);
+
+                View panelDirector = findViewById(R.id.panelDirector);
+                panelDirector.setVisibility(View.GONE);
+
+                View panelRegion = findViewById(R.id.panelRegion);
+                panelRegion.setVisibility(View.VISIBLE);
+            }
+        });
+
+
 
 
 
@@ -270,6 +312,20 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         });
 
         swDirector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activeDirector = b;
+            }
+        });
+
+        swCity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activeDirector = b;
+            }
+        });
+
+        swCountry.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeDirector = b;
@@ -329,42 +385,6 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
-
-
-    public void addActor (View view){
-
-
-        if(actorCount==1){
-            View panelActor2 = findViewById(R.id.panelActor2);
-            panelActor2.setVisibility(View.VISIBLE);
-            actorCount++;
-        }
-        else if(actorCount==2){
-            View panelActor3 = findViewById(R.id.panelActor3);
-            panelActor3.setVisibility(View.VISIBLE);
-            actorCount++;
-        }
-        else{
-        }
-
-    }
-
-    public void delActor (View view){
-
-
-        if(actorCount==2){
-            View panelActor2 = findViewById(R.id.panelActor2);
-            panelActor2.setVisibility(View.GONE);
-            actorCount--;
-        }
-        else if(actorCount==3){
-            View panelActor3 = findViewById(R.id.panelActor3);
-            panelActor3.setVisibility(View.GONE);
-            actorCount--;
-        }
-        else{
-        }
     }
 }
 

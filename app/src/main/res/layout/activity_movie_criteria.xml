@@ -6,72 +6,25 @@
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="@string/actor"
-        android:textColor="#FFFFFF" android:background="@drawable/button_background_accordion"
+        android:textColor="#FFFFFF"
         android:layout_gravity="left"
-        android:singleLine="true"  >
+        android:singleLine="true">
         </Button>
+
+    <!-- android:background="@drawable/button_background_accordion" -->
+
     <LinearLayout android:id="@+id/panelActor"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
         android:background="#B4CDCD">
-        <LinearLayout android:id="@+id/panelActor1"
+        <LinearLayout android:id="@+id/panelActorText"
             android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#B4CDCD">
-            <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name of Actor:" />
-            <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:enabled="true"  />
+            android:layout_height="wrap_content">
+        <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="Name of Actor" />
+        <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:enabled="true"  />
         </LinearLayout>
-        <LinearLayout android:id="@+id/panelActor2"
-            android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#FFFFFFFF" android:visibility="gone" >
-            <TextView android:id="@+id/tvActorName2" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name of Actor:" />
-            <EditText android:id="@+id/tfActorName2" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:enabled="true" />
-        </LinearLayout>
-        <LinearLayout android:id="@+id/panelActor3"
-            android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#FFFFFFFF" android:visibility="gone">
-            <TextView android:id="@+id/tvActorName3" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name of Actor:" />
-            <EditText android:id="@+id/tfActorName3" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:enabled="true"  />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/panelDelAdd"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-
-            <Button
-                android:id="@+id/btnaddActor"
-                android:text="add Actor"
-                
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="addActor"
-
-                android:textSize="10dp"
-                />
-            <Button
-                android:id="@+id/btnDelActor"
-                android:text="delete Actor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="delActor"
-
-                android:textSize="10dp"
-               />
-            </LinearLayout>
-
-
-
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,128 +36,164 @@
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:text="@string/year"
         android:textColor="#FFFFFFFF"
-        android:background="@drawable/button_background_accordion" />
-    <LinearLayout android:id="@+id/panelYear"
+     />
+    <!-- android:background="@drawable/button_background_accordion" -->
+ <LinearLayout android:id="@+id/panelYear"
+     android:orientation="vertical" android:layout_width="fill_parent"
+     android:layout_height="wrap_content" android:layout_weight="1"
+     android:background="#B4CDCD">
+
+     <LinearLayout
+         android:orientation="horizontal"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:baselineAligned="false"
+         android:background="#B4CDCD">
+
+         <LinearLayout android:id="@+id/panelYearFrom"
+             android:orientation="horizontal" android:layout_width="fill_parent"
+             android:layout_height="wrap_content" android:layout_weight="1"
+             android:background="#B4CDCD">
+             <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
+                 android:layout_height="wrap_content" android:text="From" />
+             <Spinner
+                 android:id="@+id/spYearFrom"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"></Spinner>
+
+         </LinearLayout>
+
+         <LinearLayout android:id="@+id/panelYearTo"
+             android:orientation="horizontal" android:layout_width="fill_parent"
+             android:layout_height="wrap_content" android:layout_weight="1"
+             android:background="#B4CDCD">
+             <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
+                 android:layout_height="wrap_content" android:text="To" />
+             <Spinner
+                 android:id="@+id/spYearTo"
+                 android:layout_width="fill_parent"
+                 android:layout_height="wrap_content"></Spinner>
+         </LinearLayout>
+
+
+     </LinearLayout>
+
+     <Switch
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/swYear"
+         android:layout_gravity="top|center_horizontal"
+         android:checked="false" />
+ </LinearLayout>
+
+
+ <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
+     android:layout_height="wrap_content" android:text="@string/genre"
+     android:textColor="#FFFFFFFF" />
+    <!-- android:background="@drawable/button_background_accordion" -->
+ <LinearLayout android:id="@+id/panelGenre"
+     android:orientation="vertical" android:layout_width="fill_parent"
+     android:layout_height="wrap_content" android:layout_weight="1"
+     android:background="#B4CDCD">
+     <LinearLayout android:id="@+id/panelGenreText"
+         android:orientation="horizontal" android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+     <TextView android:id="@+id/tvGenre" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:text="Genre" />
+     <Spinner
+         android:id="@+id/spGenre"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+     ></Spinner>
+     </LinearLayout>
+     <Switch
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/swGenre"
+         android:layout_gravity="center_horizontal"
+         android:checked="false" />
+ </LinearLayout>
+
+ <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
+     android:layout_height="wrap_content" android:text="@string/director"
+     android:textColor="#FFFFFFFF" />
+    <!-- android:background="@drawable/button_background_accordion" -->
+ <LinearLayout android:id="@+id/panelDirector"
+     android:orientation="vertical" android:layout_width="fill_parent"
+     android:layout_height="wrap_content" android:layout_weight="1"
+     android:background="#B4CDCD">
+     <LinearLayout android:id="@+id/panelDirectorText"
+         android:orientation="horizontal" android:layout_width="fill_parent"
+         android:layout_height="wrap_content">
+     <TextView android:id="@+id/tvDirectorName" android:layout_width="wrap_content"
+         android:layout_height="wrap_content" android:text="Name of Director" />
+     <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
+         android:layout_height="wrap_content" />
+         </LinearLayout>
+     <Switch
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/swDirector"
+         android:layout_gravity="center_horizontal"
+         android:checked="false"
+         android:background="#B4CDCD" />
+ </LinearLayout>
+
+    <Button android:id="@+id/btnRegion" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:text="@string/region"
+        android:textColor="#FFFFFFFF" />
+    <!-- android:background="@drawable/button_background_accordion" -->
+    <LinearLayout android:id="@+id/panelRegion"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
         android:background="#B4CDCD">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="102dp"
-            android:baselineAligned="false"
-            android:background="#B4CDCD">
-
-            <LinearLayout android:id="@+id/panelYearFrom"
-                android:orientation="horizontal" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#B4CDCD">
-                <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
-                    android:layout_height="wrap_content" android:text="From:" />
-                <Spinner
-                    android:id="@+id/spYearFrom"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"></Spinner>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"></LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/panelYearTo"
-                android:orientation="horizontal" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#B4CDCD">
-                <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
-                    android:layout_height="wrap_content" android:text="To:" />
-                <Spinner
-                    android:id="@+id/spYearTo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"></Spinner>
-            </LinearLayout>
-        </LinearLayout>
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:id="@+id/swYear"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:checked="false"
-            android:background="#B4CDCD" />
-
-    </LinearLayout>
-
-
-    <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/genre"
-        android:textColor="#FFFFFFFF"
-        android:background="@drawable/button_background_accordion" />
-    <LinearLayout android:id="@+id/panelGenre"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#B4CDCD">
-        <TextView android:id="@+id/tvGenre" android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="Genre:" />
-        <Spinner
-            android:id="@+id/spGenre"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-        ></Spinner>
-
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/swGenre"
-            android:layout_gravity="center_horizontal"
-            android:checked="false" />
-    </LinearLayout>
-
-    <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/director"
-        android:textColor="#FFFFFFFF"
-        android:background="@drawable/button_background_accordion" />
-    <LinearLayout android:id="@+id/panelDirector"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#B4CDCD">
-        <LinearLayout android:id="@+id/panelDirector1"
+        <LinearLayout android:id="@+id/panelCountryText"
             android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#B4CDCD">
-            <TextView android:id="@+id/tvDirectorName" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name of Director:" />
-            <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+        <TextView android:id="@+id/tvCountryName" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="Country" />
+        <EditText android:id="@+id/tfCountryName" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
         </LinearLayout>
-
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/swDirector"
+            android:id="@+id/swCountry"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"
+            android:background="#B4CDCD" />
+        <LinearLayout android:id="@+id/panelCityText"
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+        <TextView android:id="@+id/tvCityName" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="City" />
+        <EditText android:id="@+id/tfCityName" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swCity"
             android:layout_gravity="center_horizontal"
             android:checked="false"
             android:background="#B4CDCD" />
     </LinearLayout>
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="59dp"
-        android:text="@string/submit"
-        android:id="@+id/submit_button"
-        android:onClick="submitSearch" android:background="@drawable/button_background_submit"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="@dimen/activity_vertical_margin" />
+ <Button
+     android:layout_width="fill_parent"
+     android:layout_height="60dp"
+     android:text="@string/submit"
+     android:id="@+id/submit_button"
+     android:onClick="submitSearch"
+     android:textSize="30dp"
+     android:textColor="#FFFFFF"
+     android:layout_marginTop="@dimen/activity_vertical_margin" />
 
-
-
-
+    <!-- android:background="@drawable/button_background_submit" -->
 </LinearLayout>
 
-    <!-- Checkbox-Code:
-    <CheckBox android:id="@+id/checkFacebook"
-            android:layout_width="fill_parent" android:layout_height="wrap_content"
-            android:layout_weight="1" android:text="Facebook" android:textColor="#ff355689">
-        </CheckBox> -->
+ <!-- Checkbox-Code:
+ <CheckBox android:id="@+id/checkFacebook"
+         android:layout_width="fill_parent" android:layout_height="wrap_content"
+         android:layout_weight="1" android:text="Facebook" android:textColor="#ff355689">
+     </CheckBox> -->
