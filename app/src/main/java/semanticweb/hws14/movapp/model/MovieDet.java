@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by Frederik on 07.11.2014.
  */
-public class MovieDetail extends Movie{
+public class MovieDet extends Movie{
 
     //omdb
     String awards; //OMDB
@@ -30,19 +30,19 @@ public class MovieDetail extends Movie{
     //distributor 20th centruy fox //DBP or LMDB
     //Based near  //LMDB or DBP
 
-    public MovieDetail(String title, int mdbId, int releaseYear, String imdbId, String genre ) {
+    public MovieDet(String title, int mdbId, int releaseYear, String imdbId, String genre) {
         super(title, mdbId, releaseYear, imdbId, genre);
     }
 
-    public MovieDetail(String title, int mdbId, int releaseYear, String genre) {
+    public MovieDet(String title, int mdbId, int releaseYear, String genre) {
         super(title, mdbId, releaseYear, genre);
     }
 
-    public MovieDetail(String title, int releaseYear, String genre) {
+    public MovieDet(String title, int releaseYear, String genre) {
         super(title, releaseYear, genre);
     }
 
-    public MovieDetail(Movie movie) {
+    public MovieDet(Movie movie) {
         super(movie.getTitle(), movie.getLMDBmovieId(), movie.getReleaseYear(), movie.getImdbId(), movie.getGenre(), movie.getImdbRating());
         this.runtime = "";
         this.awards = "";
@@ -96,7 +96,7 @@ public class MovieDetail extends Movie{
         }
     }
 
-    public MovieDetail updateUiComponents(){
+    public MovieDet updateUiComponents(){
         return this;
     }
 

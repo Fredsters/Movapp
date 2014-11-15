@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="semanticweb.hws14.movapp.activities.Detail" >
+    tools:context="semanticweb.hws14.movapp.activities.ActorList" >
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

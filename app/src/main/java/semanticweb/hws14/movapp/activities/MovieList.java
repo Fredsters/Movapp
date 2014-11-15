@@ -43,30 +43,28 @@ public class MovieList extends Activity {
 
     public static ArrayList<Movie> staticMovieList;
     static HashMap<String, Object> staticCriteria;
-    int countListObjects;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_movie_list);
 
         Intent intent = getIntent();
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
-        ListView listView = (ListView) findViewById(R.id.resultList);
-
+        ListView listView = (ListView) findViewById(R.id.movieList);
 
         if(criteria.equals(staticCriteria)) {
-
+            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
 
         } else {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
-
 
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
@@ -78,7 +76,7 @@ public class MovieList extends Activity {
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(that, Detail.class);
+                Intent intent = new Intent(that, MovieDetail.class);
                 Movie movie = movieList.get(position);
                 intent.putExtra("movie", movie);
                 startActivity(intent);
@@ -87,12 +85,10 @@ public class MovieList extends Activity {
         listView.setOnItemClickListener(clickListen);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.list, menu);
+        getMenuInflater().inflate(R.menu.movie_list, menu);
         return true;
     }
 
@@ -109,7 +105,7 @@ public class MovieList extends Activity {
     }
 
 
-    private class queryForMovies extends AsyncTask<HashMap<String, Object>, Integer, ArrayList<Movie>> {
+    private class queryForMovies extends AsyncTask<HashMap<String, Object>, String, ArrayList<Movie>> {
 
         @Override
         protected ArrayList<Movie> doInBackground(HashMap<String, Object>... criterias) {
@@ -146,7 +142,7 @@ public class MovieList extends Activity {
                         }
                     }catch (Exception e){
                         Log.e("LINKEDMDB", "Failed"+ e.toString());
-                        Toast.makeText(that, "A problem with LinkedMDB occured", Toast.LENGTH_SHORT).show();
+                        publishProgress("A problem with LinkedMDB occured");
                     }
                     qexec.close();
 
@@ -175,7 +171,7 @@ public class MovieList extends Activity {
                 }
             } catch (Exception e) {
                 Log.e("DBPEDIA", "Failed DBPEDIA DOWN" + e.toString());
-                Toast.makeText(that, "A problem with DBPedia occured", Toast.LENGTH_SHORT).show();
+                publishProgress("A problem with DBPedia occured");
             }
             qexec.close();
 
@@ -188,16 +184,16 @@ public class MovieList extends Activity {
             }
 
 
-
         /* Eliminate doublicates */
+            if(movieList.size() >= 100 ) {
+                publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
+            }
 
-            publishProgress(movieList.size());
             if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
                 ArrayList indexArray = new ArrayList();
                 for (int i = 0; i < movieList.size(); i++) {
                     for (int j = i + 1; j < movieList.size(); j++) {
                         if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                            //TODO Delete the movie with less data or wrong data
                             if(!"".equals(movieList.get(j).getGenre())) {
                                 indexArray.add(movieList.get(i));
                                 break;
@@ -215,9 +211,6 @@ public class MovieList extends Activity {
                 }
                 movieList.removeAll(indexArray);
             }
-
-            countListObjects = movieList.size();
-
             return movieList;
         }
 
@@ -226,10 +219,8 @@ public class MovieList extends Activity {
         }
 
         @Override
-        protected void onProgressUpdate (Integer... values) {
-            if(values[0] >= 100 ) {
-                Toast.makeText(that, "Maximum Number of Movies reached. There might be some movies missing. Please specify your search", Toast.LENGTH_LONG).show();
-            }
+        protected void onProgressUpdate (String... values) {
+            Toast.makeText(that, values[0], Toast.LENGTH_LONG).show();
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
@@ -262,10 +253,5 @@ public class MovieList extends Activity {
             }
         }
 
-
-
     }
-
-
-
 }
