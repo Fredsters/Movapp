@@ -148,9 +148,12 @@ public class MovieList extends Activity {
 
                 }
             });
-            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
-                tLMDB.start();
+            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
+                if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                    tLMDB.start();
+                }
             }
+
 
         /* DPBEDIA */
 
@@ -175,42 +178,43 @@ public class MovieList extends Activity {
             }
             qexec.close();
 
-            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
-                try {
-                    tLMDB.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
+                if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                    try {
+                        tLMDB.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
-
 
         /* Eliminate doublicates */
             if(movieList.size() >= 100 ) {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
-            if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
-                ArrayList indexArray = new ArrayList();
-                for (int i = 0; i < movieList.size(); i++) {
-                    for (int j = i + 1; j < movieList.size(); j++) {
-                        if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                            if(!"".equals(movieList.get(j).getGenre())) {
-                                indexArray.add(movieList.get(i));
-                                break;
-                            } else if(!"".equals(movieList.get(j).getReleaseYear())){
-                                indexArray.add(movieList.get(i));
-                                break;
-                            } else if(!"".equals(movieList.get(j).getImdbId())){
-                                indexArray.add(movieList.get(i));
-                                break;
-                            } else {
-                                indexArray.add(movieList.get(j));
-                            }
+
+            ArrayList indexArray = new ArrayList();
+            for (int i = 0; i < movieList.size(); i++) {
+                for (int j = i + 1; j < movieList.size(); j++) {
+                    if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
+                        if(!"".equals(movieList.get(j).getGenre())) {
+                            indexArray.add(movieList.get(i));
+                            break;
+                        } else if(!"".equals(movieList.get(j).getReleaseYear())){
+                            indexArray.add(movieList.get(i));
+                            break;
+                        } else if(!"".equals(movieList.get(j).getImdbId())){
+                            indexArray.add(movieList.get(i));
+                            break;
+                        } else {
+                            indexArray.add(movieList.get(j));
                         }
                     }
                 }
-                movieList.removeAll(indexArray);
             }
+            movieList.removeAll(indexArray);
+
             return movieList;
         }
 
@@ -236,7 +240,8 @@ public class MovieList extends Activity {
                 }
 
                 mlAdapter.addAll(movieList);
-                HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"));
+                //TODO start HttpRequester on Button Click. and Set sparql limit up
+                HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
             } else {
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No movies found!");

@@ -76,6 +76,18 @@
         <item>Western</item>
     </string-array>
 
+    <string-array name="city_array">
+        <item>New York City</item>
+        <item>Dallas, Texas</item>
+        <item>Berlin</item>
+        <item>Heidelberg</item>
+    </string-array>
+
+    <string-array name="state_array">
+        <item>Germany</item>
+        <item>the United States</item>
+    </string-array>
+
     <string name="title_activity_actor_list">ActorList</string>
     <string name="title_activity_actor_detail">ActorDetail</string>
 

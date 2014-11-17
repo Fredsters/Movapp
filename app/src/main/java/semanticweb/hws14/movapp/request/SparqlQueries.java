@@ -70,52 +70,62 @@ public class SparqlQueries {
 
     public String DBPEDIAQuery() {
         String queryString =
-            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
-            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
-            "PREFIX dbpprop: <http://dbpedia.org/property/> "+
-            "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
-            "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
-            "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "+
-            "SELECT distinct ?t ?y ";
-            if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
+                    "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+                    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                    "PREFIX dbpprop: <http://dbpedia.org/property/> " +
+                    "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+                    "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> " +
+                    "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
+                    "PREFIX category: <http://dbpedia.org/resource/Category:> "+
+                    "PREFIX dcterms: <http://purl.org/dc/terms/> "+
+                    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
+                    "SELECT distinct ?t ?y ";
+            if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
                 queryString += "?gn ";
             }
             queryString += "WHERE { ?m rdf:type <http://schema.org/Movie>. ";
-            if((Boolean)criteria.get("isActor")) {
-                queryString += "?actor rdfs:label '"+criteria.get("actorName")+"'@en. "+
-                "?m dbpedia-owl:starring ?actor. ";
+            if ((Boolean) criteria.get("isActor")) {
+                queryString += "?actor rdfs:label '" + criteria.get("actorName") + "'@en. " +
+                        "?m dbpedia-owl:starring ?actor. ";
             }
-            if((Boolean)criteria.get("isDirector")) {
-                queryString += "?d rdfs:label '"+criteria.get("directorName")+"'@en. "+
-                "?m dbpedia-owl:director ?d. ";
+            if ((Boolean) criteria.get("isDirector")) {
+                queryString += "?d rdfs:label '" + criteria.get("directorName") + "'@en. " +
+                        "?m dbpedia-owl:director ?d. ";
             }
-            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
+            if ((Boolean) criteria.get("isGenre") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector")) {
                 queryString +=
-                "?g rdfs:label '"+criteria.get("genreName")+"' "+
-                "FILTER(langMatches(lang(?gn), 'EN')) "+
-                        //Removed the filter, because it was too slowly
-     //           "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
-                "?m dbpprop:genre ?g.";
-            } else if((Boolean)criteria.get("isGenre")) {
+                        "?g rdfs:label '" + criteria.get("genreName") + "' " +
+                                "FILTER(langMatches(lang(?gn), 'EN')) " +
+                                //Removed the filter, because it was too slowly
+                                //           "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
+                                "?m dbpprop:genre ?g.";
+            } else if ((Boolean) criteria.get("isGenre")) {
                 queryString +=
-                "OPTIONAL { ?g rdfs:label ?gn. "+
-                "FILTER(langMatches(lang(?gn), 'EN')) "+
-                "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
-                "?m dbpprop:genre ?g. }";
+                        "OPTIONAL { ?g rdfs:label ?gn. " +
+                                "FILTER(langMatches(lang(?gn), 'EN')) " +
+                                "FILTER(regex(?gn, '" + criteria.get("genreName") + "', 'i')) " +
+                                "?m dbpprop:genre ?g. }";
             }
-            queryString+= "?m foaf:name ?t.";
+            if((Boolean) criteria.get("isCity")) {
+                queryString +=
+                "?m dcterms:subject category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("city")+". ";
+            } else if((Boolean) criteria.get("isState")) {
+                queryString += "{?m dcterms:subject category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+".} " +
+                        "UNION {category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_state skos:broader ?states. ?m dcterms:subject ?states } " +
+                        "UNION {?cities skos:broader  category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_city . ?m dcterms:subject ?cities} ";
+             }
+            queryString += "?m foaf:name ?t.";
 
-            if((Boolean)criteria.get("isTime") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
-                queryString+=
-                "?m dbpprop:released ?y. " +
-                "FILTER(?y >= \""+((TimePeriod) criteria.get("timePeriod")).getFrom()+"-01-01\"^^xsd:date && ?y <= \""+((TimePeriod) criteria.get("timePeriod")).getTo()+"-12-31\"^^xsd:date) ";
+            if ((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector")) {
+                queryString +=
+                        "?m dbpprop:released ?y. " +
+                                "FILTER(?y >= \"" + ((TimePeriod) criteria.get("timePeriod")).getFrom() + "-01-01\"^^xsd:date && ?y <= \"" + ((TimePeriod) criteria.get("timePeriod")).getTo() + "-12-31\"^^xsd:date) ";
             } else {
-                queryString+=
-                "OPTIONAL{?m dbpprop:released ?y.}";
+                queryString +=
+                        "OPTIONAL{?m dbpprop:released ?y.}";
             }
-            queryString+=
-            "} LIMIT 100";
-
+            queryString +=
+                    "} LIMIT 100";
         return queryString;
     }
 

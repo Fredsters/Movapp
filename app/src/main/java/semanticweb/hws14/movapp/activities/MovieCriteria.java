@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -21,22 +22,26 @@ import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
+import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
+
 
 public class MovieCriteria extends Activity implements AdapterView.OnItemSelectedListener {
 
-    String selectedActorName;
     int selectedFromDate;
     int selectedToDate;
     String selectedGenre;
+    String selectedCity;
+    String selectedState;
 
-    int actorCount = 1;
+    String regionKind;
 
     EditText tfActorName;
     EditText tfDirectorName;
-
-    Spinner yearFrom;
-    Spinner yearTo;
-    Spinner genre;
+    Spinner spYearFrom;
+    Spinner spYearTo;
+    Spinner spGenre;
+    Spinner spCity;
+    Spinner spState;
 
     Button btnActor;
     Button btnYear ;
@@ -49,14 +54,14 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
     Switch swGenre ;
     Switch swDirector ;
     Switch swCity;
-    Switch swCountry;
+    Switch swState;
 
     boolean activeActor = false;
     boolean activeYear = false;
     boolean activeGenre = false;
     boolean activeDirector = false;
-
-
+    boolean activeState = false;
+    boolean activeCity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,42 +80,49 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
             actorName = InputCleaner.cleanName(actorName);
             criteria.put("actorName", actorName);
             criteria.put("isActor", true);
-            System.out.println("!!!!!!!ACTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-        else{
+        } else{
             criteria.put("isActor", false);
-            System.out.println("!!!!!!!ACTOR DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
+
         if(activeYear){
             criteria.put("timePeriod", new TimePeriod(selectedFromDate, selectedToDate));
             criteria.put("isTime", true);
-            System.out.println("!!!!!!!TIME ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-        else{
+        } else{
             criteria.put("isTime", false);
-            System.out.println("!!!!!!!TIME DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
+
         if(activeGenre){
             criteria.put("genreName", selectedGenre);
             criteria.put("isGenre", true);
-            System.out.println("!!!!!!!GENRE ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-        else{
+        } else{
             criteria.put("isGenre", false);
-            System.out.println("!!!!!!!GENRE DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
+
         if(activeDirector && !directorName.equals("")){
             directorName = InputCleaner.cleanName(directorName);
             criteria.put("directorName", tfDirectorName.getText().toString());
             criteria.put("isDirector", true);
-            System.out.println("!!!!!!!DIRECTOR ENABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        }
-        else{
+        } else {
             criteria.put("isDirector", false);
-            System.out.println("!!!!!!!DIRECTOR DISABLED on Submit!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
 
-        if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals(""))){
+        if(activeCity) {
+            criteria.put("city", cleanCityStateInput(selectedCity));
+            criteria.put("isCity", true);
+            criteria.put("regionKind", regionKind);
+        } else {
+            criteria.put("isCity", false);
+        }
+        if(activeState) {
+            cleanCityStateInput(selectedState);
+            criteria.put("state", cleanCityStateInput(selectedState));
+            criteria.put("isState", true);
+            criteria.put("regionKind", regionKind);
+        } else {
+            criteria.put("isState", false);
+        }
+
+        if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState){
             Intent intent = new Intent(this, MovieList.class);
             intent.putExtra("criteria", criteria);
             startActivity(intent);
@@ -156,7 +168,9 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
          swGenre = (Switch) findViewById(R.id.swGenre);
          swDirector = (Switch) findViewById(R.id.swDirector);
          swCity = (Switch) findViewById(R.id.swCity);
-         swCountry = (Switch) findViewById(R.id.swCountry);
+         swState = (Switch) findViewById(R.id.swState);
+
+        regionKind = "set";
 
         final View panelActor = findViewById(R.id.panelActor);
         panelActor.setVisibility(View.VISIBLE);
@@ -282,13 +296,11 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
             }
         });
 
-
-
-
-
         setupSpinnerYearFrom();
         setupSpinnerYearTo();
         setupSpinnerGenre();
+        setupSpinnerCity();
+        setupSpinnerState();
 
         swActor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
@@ -321,70 +333,109 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         swCity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                activeDirector = b;
+                activeCity = b;
+                if(b) {
+                    swState.setChecked(false);
+                }
             }
         });
 
-        swCountry.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        swState.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                activeDirector = b;
+                activeState = b;
+                if(b) {
+                    swCity.setChecked(false);
+                }
             }
         });
     }
 
     private void setupSpinnerYearFrom(){
-        yearFrom = (Spinner) findViewById(R.id.spYearFrom);
+        spYearFrom = (Spinner) findViewById(R.id.spYearFrom);
         ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearFrom.setAdapter(adapterFrom);
-        yearFrom.setSelection(6);
-        yearFrom.offsetTopAndBottom(0);
-        yearFrom.offsetLeftAndRight(0);
-        yearFrom.setOnItemSelectedListener(this);
+        spYearFrom.setAdapter(adapterFrom);
+        spYearFrom.setSelection(6);
+        spYearFrom.offsetTopAndBottom(0);
+        spYearFrom.offsetLeftAndRight(0);
+        spYearFrom.setOnItemSelectedListener(this);
     }
 
     private void setupSpinnerYearTo(){
-        yearTo = (Spinner) findViewById(R.id.spYearTo);
+        spYearTo = (Spinner) findViewById(R.id.spYearTo);
         ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(this, R.array.year_array,android.R.layout.simple_spinner_item);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yearTo.setAdapter(adapterTo);
-        yearTo.setOnItemSelectedListener(this);
+        spYearTo.setAdapter(adapterTo);
+        spYearTo.setOnItemSelectedListener(this);
     }
 
     private void setupSpinnerGenre(){
-        genre = (Spinner) findViewById(R.id.spGenre);
+        spGenre = (Spinner) findViewById(R.id.spGenre);
         ArrayAdapter<CharSequence> adapterGenre = ArrayAdapter.createFromResource(this,R.array.genre_array,android.R.layout.simple_spinner_item);
         adapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genre.setAdapter(adapterGenre);
-        genre.setOnItemSelectedListener(this);
+        spGenre.setAdapter(adapterGenre);
+        spGenre.setOnItemSelectedListener(this);
     }
+
+    private void setupSpinnerCity(){
+        spCity = (Spinner) findViewById(R.id.spCity);
+        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(this,R.array.city_array,android.R.layout.simple_spinner_item);
+        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCity.setAdapter(adapterCity);
+        spCity.setOnItemSelectedListener(this);
+    }
+
+    private void setupSpinnerState(){
+        spState = (Spinner) findViewById(R.id.spState);
+        ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(this,R.array.state_array,android.R.layout.simple_spinner_item);
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spState.setAdapter(adapterState);
+        spState.setOnItemSelectedListener(this);
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item =  adapterView.getItemAtPosition(i).toString();
 
-        if(adapterView.getId() == genre.getId()){
+        if(adapterView.getId() == spGenre.getId()){
             selectedGenre=item;
         }
-        else if(adapterView.getId() == yearFrom.getId()){
+        else if(adapterView.getId() == spYearFrom.getId()){
             selectedFromDate=Integer.parseInt(item);
         }
-        else if (adapterView.getId() == yearTo.getId()){
+        else if (adapterView.getId() == spYearTo.getId()){
             selectedToDate =Integer.parseInt(item);
         }
-
-        System.out.println();
-        System.out.println("selectedActorName: " + selectedActorName);
-        System.out.println("selectedFromDate: " +selectedFromDate);
-        System.out.println("selectedToDate: " + selectedToDate);
-        System.out.println("selectedGenre: " +selectedGenre);
-        System.out.println();
+        else if(adapterView.getId() == spCity.getId()){
+            selectedCity=item;
+        }
+        else if(adapterView.getId() == spState.getId()){
+            selectedState=item;
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.radio_set:
+                if (checked)
+                    regionKind = "set";
+                    break;
+            case R.id.radio_shot:
+                if (checked)
+                    regionKind = "shot";
+                    break;
+        }
+    }
+
+    public void onGPSLocationClicked(View view) {
     }
 }
 

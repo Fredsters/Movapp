@@ -5,13 +5,10 @@
     android:layout_weight="1" android:orientation="vertical">
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
-        android:layout_height="wrap_content" android:text="@string/actor"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/actor"
         android:textColor="#FFFFFF"
-        android:layout_gravity="left"
-        android:singleLine="true">
+        android:background="@drawable/button_background_accordion">
         </Button>
-
-    <!-- android:background="@drawable/button_background_accordion" -->
 
     <LinearLayout android:id="@+id/panelActor"
         android:orientation="vertical" android:layout_width="fill_parent"
@@ -34,10 +31,11 @@
     </LinearLayout>
 
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/year"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/year"
+        android:background="@drawable/button_background_accordion"
         android:textColor="#FFFFFFFF"
      />
-    <!-- android:background="@drawable/button_background_accordion" -->
+
  <LinearLayout android:id="@+id/panelYear"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
@@ -88,9 +86,10 @@
 
 
  <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
-     android:layout_height="wrap_content" android:text="@string/genre"
+     android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/genre"
+     android:background="@drawable/button_background_accordion"
      android:textColor="#FFFFFFFF" />
-    <!-- android:background="@drawable/button_background_accordion" -->
+
  <LinearLayout android:id="@+id/panelGenre"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
@@ -115,9 +114,9 @@
  </LinearLayout>
 
  <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
-     android:layout_height="wrap_content" android:text="@string/director"
+     android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/director"
+     android:background="@drawable/button_background_accordion"
      android:textColor="#FFFFFFFF" />
-    <!-- android:background="@drawable/button_background_accordion" -->
  <LinearLayout android:id="@+id/panelDirector"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
@@ -140,9 +139,10 @@
  </LinearLayout>
 
     <Button android:id="@+id/btnRegion" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:text="@string/region"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/region"
+        android:background="@drawable/button_background_accordion"
         android:textColor="#FFFFFFFF" />
-    <!-- android:background="@drawable/button_background_accordion" -->
+
     <LinearLayout android:id="@+id/panelRegion"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
@@ -151,24 +151,33 @@
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <TextView android:id="@+id/tvCountryName" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="Country" />
-        <EditText android:id="@+id/tfCountryName" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" android:text="State/Country" />
+            <Spinner
+                android:id="@+id/spState"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                ></Spinner>
         </LinearLayout>
         <Switch
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/swCountry"
+            android:id="@+id/swState"
             android:layout_gravity="center_horizontal"
             android:checked="false"
             android:background="#B4CDCD" />
+
+
         <LinearLayout android:id="@+id/panelCityText"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
         <TextView android:id="@+id/tvCityName" android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:text="City" />
-        <EditText android:id="@+id/tfCityName" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/spCity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+             ></Spinner>
+
         </LinearLayout>
         <Switch
             android:layout_width="wrap_content"
@@ -177,6 +186,41 @@
             android:layout_gravity="center_horizontal"
             android:checked="false"
             android:background="#B4CDCD" />
+
+        <RelativeLayout android:id="@+id/radioSetShot" android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_gravity="bottom">
+            <RadioGroup
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set"
+                android:layout_centerVertical="true"
+                android:checked="true"
+                android:id="@+id/radio_set"
+                android:onClick="onRadioButtonClicked"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Shot"
+                android:id="@+id/radio_shot"
+                android:onClick="onRadioButtonClicked"/>
+            </RadioGroup>
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Use GPS"
+                android:id="@+id/gpsButton"
+                android:onClick="onGPSLocationClicked"/>
+        </RelativeLayout>
+
     </LinearLayout>
 
  <Button
@@ -187,9 +231,8 @@
      android:onClick="submitSearch"
      android:textSize="30dp"
      android:textColor="#FFFFFF"
-     android:layout_marginTop="@dimen/activity_vertical_margin" />
-
-    <!-- android:background="@drawable/button_background_submit" -->
+     android:background="@drawable/button_background_submit"
+     android:layout_margin="5dp" />
 </LinearLayout>
 
  <!-- Checkbox-Code:

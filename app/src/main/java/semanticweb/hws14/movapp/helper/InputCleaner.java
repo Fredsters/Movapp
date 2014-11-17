@@ -70,4 +70,10 @@ public class InputCleaner {
             return "";
         }
     }
+
+    public static String cleanCityStateInput (String region) {
+        region = region.trim();
+        region = region.replace(" ", "_");
+        return region;
+    }
 }

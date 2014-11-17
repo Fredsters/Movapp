@@ -27,7 +27,7 @@ import semanticweb.hws14.movapp.model.MovieDet;
  */
 
 public class HttpRequester {
-    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState) {
         for(final Movie movie : movieList) {
 
             String url = prepareURL(movie, false);
@@ -60,10 +60,10 @@ public class HttpRequester {
                                 }
                             }
                         } catch (JSONException e) {
-                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
+/*                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                 lastMovie = true;
                             }
-                            movieList.remove(movie);
+                            movieList.remove(movie);*/
                         }
 
                         if (!(movieList.indexOf(movie) == -1)) {
@@ -80,10 +80,10 @@ public class HttpRequester {
                                     }
                                 }
                             } catch (JSONException e) {
-                                if (movieList.size() <= movieList.indexOf(movie) + 1) {
+ /*                               if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                     lastMovie = true;
                                 }
-                                movieList.remove(movie);
+                                movieList.remove(movie); */
                             }
                             if (!(movieList.indexOf(movie) == -1)) {
                                 //IMDB ID
@@ -111,7 +111,7 @@ public class HttpRequester {
                             lastMovie = true;
                         }
 
-                        if (!isActor && !isDirector) {
+                        if (!isCity && !isState && !isActor && !isDirector && (isTime || isGenre )) {
                             movieList.remove(movie);
                         }
 
@@ -130,6 +130,11 @@ public class HttpRequester {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("JSONException", "RESPONSE FAILED");
+                    mlAdapter.clear();
+                    Collections.sort(movieList, new MovieComparator());
+                    mlAdapter.addAll(movieList);
+                    listActivity.setProgressBarIndeterminateVisibility(false);
+                    MovieList.staticMovieList = movieList;
                 }
             });
 
@@ -229,6 +234,7 @@ public class HttpRequester {
 
                 } else {
                     Log.e("FUCK", "THE SYSTEM");
+                    movie.geteListener().onFinished(movie);
                 }
 
             }
@@ -236,6 +242,7 @@ public class HttpRequester {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("JSONException", "RESPONSE FAILED");
+                movie.geteListener().onFinished(movie);
             }
         });
 

@@ -76,8 +76,9 @@ public class MovieDetail extends Activity {
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
                 //TODO THeme
                 //TODO Actor nach land und stadt und stadt nach GPS Tracking
-                //TODO Movie nach land und dropdown stadt
+                //TODO Movie nach mit gps tracking
                 //TODO ERROR bei kate winslet
+                //TODO add more cities and states in array
                 /*
 
                 The original movie ratings consisted of:
