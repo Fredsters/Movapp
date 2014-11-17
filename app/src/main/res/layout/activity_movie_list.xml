@@ -11,6 +11,6 @@
         android:id="@+id/movieList"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/list_item_odd"/>
-
+      />
+    <!--   android:background="@drawable/list_item_odd" -->
 </RelativeLayout>
