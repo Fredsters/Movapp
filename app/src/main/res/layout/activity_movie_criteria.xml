@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="#068C8A"
+    android:layout_height="fill_parent" android:background="#BBF2F1"
     android:layout_weight="1" android:orientation="vertical">
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
@@ -12,7 +12,7 @@
     <LinearLayout android:id="@+id/panelActor"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#068C8A">
+        android:background="#BBF2F1">
         <LinearLayout android:id="@+id/panelActorText"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -37,19 +37,19 @@
  <LinearLayout android:id="@+id/panelYear"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#068C8A">
+     android:background="#BBF2F1">
 
      <LinearLayout
          android:orientation="horizontal"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:baselineAligned="false"
-         android:background="#068C8A">
+         android:background="#BBF2F1">
 
          <LinearLayout android:id="@+id/panelYearFrom"
              android:orientation="horizontal" android:layout_width="fill_parent"
              android:layout_height="wrap_content" android:layout_weight="1"
-             android:background="#068C8A">
+             android:background="#BBF2F1">
              <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
                  android:layout_height="wrap_content" android:text="From" />
              <Spinner
@@ -62,7 +62,7 @@
          <LinearLayout android:id="@+id/panelYearTo"
              android:orientation="horizontal" android:layout_width="fill_parent"
              android:layout_height="wrap_content" android:layout_weight="1"
-             android:background="#068C8A">
+             android:background="#BBF2F1">
              <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
                  android:layout_height="wrap_content" android:text="To" />
              <Spinner
@@ -90,7 +90,7 @@
  <LinearLayout android:id="@+id/panelGenre"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#068C8A">
+     android:background="#BBF2F1">
      <LinearLayout android:id="@+id/panelGenreText"
          android:orientation="horizontal" android:layout_width="fill_parent"
          android:layout_height="wrap_content">
@@ -116,7 +116,7 @@
  <LinearLayout android:id="@+id/panelDirector"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#068C8A">
+     android:background="#BBF2F1">
      <LinearLayout android:id="@+id/panelDirectorText"
          android:orientation="horizontal" android:layout_width="fill_parent"
          android:layout_height="wrap_content">
@@ -140,7 +140,7 @@
     <LinearLayout android:id="@+id/panelRegion"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#068C8A">
+        android:background="#BBF2F1">
         <LinearLayout android:id="@+id/panelCountryText"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
