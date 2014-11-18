@@ -74,9 +74,7 @@ public class MovieDetail extends Activity {
                 //TODO nicer Layout in listview
                 //TODO nicer Layout in Criteriaview
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
-                //TODO THeme
                 //TODO Actor nach land und stadt und stadt nach GPS Tracking
-                //TODO Movie nach mit gps tracking
                 //TODO ERROR bei kate winslet
                 //TODO add more cities and states in array
                 /*
@@ -276,12 +274,27 @@ Rated X – Children under the age of 17 not admitted.
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-
+//TODO Test this stuff
                     if(soln.getLiteral("abs") != null && "".equals(movieDet.getWikiAbstract())) {
                         movieDet.setWikiAbstract(soln.getLiteral("abs").getString());
                     }
                     if(soln.getLiteral("bu") != null && "".equals(movieDet.getBudget())) {
                         movieDet.setBudget(soln.getLiteral("bu").getString());
+                    }
+                    if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
+                        movieDet.setRuntime(soln.getLiteral("r").getString());
+                    }
+                    if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
+                        movieDet.addActor(soln.getLiteral("aN").getString());
+                    }
+                    if (soln.getLiteral("dN") != null && !movieDet.getDirectors().contains(soln.getLiteral("dN").getString())) {
+                        movieDet.addDirector(soln.getLiteral("dN").getString());
+                    }
+                    if (soln.getLiteral("wN") != null && !movieDet.getWriters().contains(soln.getLiteral("wN").getString())) {
+                        movieDet.addWriter(soln.getLiteral("wN").getString());
+                    }
+                    if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
+                        movieDet.addGenre(soln.getLiteral("gN").getString());
                     }
                 }
             }catch (Exception e){

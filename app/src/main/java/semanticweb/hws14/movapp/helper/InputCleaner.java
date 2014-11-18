@@ -35,8 +35,11 @@ public class InputCleaner {
         Matcher m = p.matcher(yearString);
         if(m.find()) {
             yearString = m.group();
+            return Integer.parseInt(yearString);
+        } else {
+            return 0;
         }
-        return Integer.parseInt(yearString);
+
     }
 
     public static String cleanMovieTitle (Literal title) {

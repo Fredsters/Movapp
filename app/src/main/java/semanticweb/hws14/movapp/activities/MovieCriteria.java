@@ -1,11 +1,21 @@
 package semanticweb.hws14.movapp.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,9 +26,14 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.helper.GeoLocation;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
@@ -27,6 +42,7 @@ import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
 
 public class MovieCriteria extends Activity implements AdapterView.OnItemSelectedListener {
 
+    Activity that = this;
     int selectedFromDate;
     int selectedToDate;
     String selectedGenre;
@@ -63,9 +79,13 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
     boolean activeState = false;
     boolean activeCity = false;
 
+    LocationManager locMgr;
+    LocationListener locListner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_movie_criteria);
         initCriteriaView();
     }
@@ -135,9 +155,8 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.movie_criteria, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -146,7 +165,8 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.gps_location_button) {
+            getGpsLocation();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -349,6 +369,98 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
                 }
             }
         });
+
+        //Init geo location
+
+        locMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        locListner = new LocationListener() {
+
+            public void onProviderEnabled(String provider) {
+                Log.d("onProviderEnabled", provider.toString());
+
+            }
+
+            public void onProviderDisabled(String provider) {
+                Log.d("onProviderDisabled", provider.toString());
+
+            }
+
+            public void onLocationChanged(Location location) {
+
+                AlertDialog ad = new AlertDialog.Builder(that).create();
+                ad.setCancelable(false); // This blocks the 'BACK' button
+
+
+                Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                    if(addresses != null) {
+                        Address returnedAddress = addresses.get(0);
+                        final String strReturnedAdress = returnedAddress.getLocality();
+                        ad.setMessage("You are in: "+strReturnedAdress+"\nUse this location for the search?");
+
+                        ad.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                String[] cityArray = getResources().getStringArray(R.array.city_array);
+                                int position = 0;
+                                for(int i = 0 ; i < cityArray.length; i++) {
+                                    if(strReturnedAdress.equals(cityArray[i])) {
+                                        position = i;
+                                        break;
+                                    }
+                                }
+                                swCity.setChecked(true);
+                                spCity.setSelection(position);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        ad.setButton(DialogInterface.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                    else {
+                        ad.setMessage("No Address returned!");
+                        ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    ad.setMessage("Canont get Address!");
+                    ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+
+
+                ad.show();
+                setProgressBarIndeterminateVisibility(false);
+                locMgr.removeUpdates(locListner);
+
+            }
+
+            public void onStatusChanged(String provider, int status,
+                                        Bundle extras) {
+                Log.d("onStatusChanged", provider.toString());
+                Log.d("onStatusChanged", ""+status);
+                Log.d("onStatusChanged", extras.toString());
+
+            }
+        };
+
     }
 
     private void setupSpinnerYearFrom(){
@@ -357,8 +469,6 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spYearFrom.setAdapter(adapterFrom);
         spYearFrom.setSelection(6);
-        spYearFrom.offsetTopAndBottom(0);
-        spYearFrom.offsetLeftAndRight(0);
         spYearFrom.setOnItemSelectedListener(this);
     }
 
@@ -435,7 +545,9 @@ public class MovieCriteria extends Activity implements AdapterView.OnItemSelecte
         }
     }
 
-    public void onGPSLocationClicked(View view) {
+    public void getGpsLocation() {
+        setProgressBarIndeterminateVisibility(true);
+        locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListner);
     }
 }
 

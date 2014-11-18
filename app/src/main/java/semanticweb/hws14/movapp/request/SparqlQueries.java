@@ -63,7 +63,7 @@ public class SparqlQueries {
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL { ?m foaf:page ?p." +
             "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
-            "} LIMIT 100";
+            "} LIMIT 200";
 
         return queryString;
     }
@@ -125,7 +125,7 @@ public class SparqlQueries {
                         "OPTIONAL{?m dbpprop:released ?y.}";
             }
             queryString +=
-                    "} LIMIT 100";
+                    "} LIMIT 500";
         return queryString;
     }
 
@@ -179,16 +179,20 @@ public class SparqlQueries {
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
                 "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
-                "select ?abs ?bu where { " +
+                "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
                 "?m rdf:type dbpedia-owl:Film; "+
                 "rdfs:label '"+movie.getTitle()+"'@en. "+
-                "OPTIONAL {?m dbpedia-owl:abstract ?abs . " +
-                "FILTER(langMatches(lang(?abs ), 'EN')) " +
-                "} " +
+                "OPTIONAL {?m dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
                 "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
+                "OPTIONAL {?m dbpprop:runtime ?r.} "+
+                "OPTIONAL {?m dbpedia-owl:starring ?a. ?a rdfs:label ?aN. FILTER(langMatches(lang(?aN ), 'EN'))} "+
+                "OPTIONAL {?m dbpedia-owl:director ?d. ?d rdfs:label ?dN. FILTER(langMatches(lang(?dN), 'EN'))} "+
+                "OPTIONAL {?m dbpedia-owl:writer ?w. ?w rdfs:label ?wN. FILTER(langMatches(lang(?wN), 'EN'))} "+
+                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+
                 "} ";
         return queryString;
     }
+
 
     public String DBPEDIAActorDetailQuery(ActorDet actorDet) {
         String queryString =
@@ -220,7 +224,7 @@ public class SparqlQueries {
                 "OPTIONAL{?m dbpedia-owl:starring ?ac; rdfs:label ?mN. " +
                 "FILTER(langMatches(lang(?mN), 'EN'))} " +
                 "} " +
-                "} LIMIT 100";
+                "}";
         return queryString;
     }
 

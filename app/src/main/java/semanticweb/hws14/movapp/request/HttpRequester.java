@@ -47,7 +47,7 @@ public class HttpRequester {
 
                         //TIME
                         try {
-                            if (isTime && (isActor || isDirector ||isGenre)) {
+                            if (isTime && (isActor || isDirector)) {
                                 if (0 == movie.getReleaseYear()) {
                                     int releaseYear = r.getInt("Year");
                                     movie.setReleaseYear(releaseYear);
@@ -60,10 +60,7 @@ public class HttpRequester {
                                 }
                             }
                         } catch (JSONException e) {
-/*                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
-                                lastMovie = true;
-                            }
-                            movieList.remove(movie);*/
+                           movie.setImdbRating("0 Not sufficient data");
                         }
 
                         if (!(movieList.indexOf(movie) == -1)) {
@@ -80,14 +77,11 @@ public class HttpRequester {
                                     }
                                 }
                             } catch (JSONException e) {
- /*                               if (movieList.size() <= movieList.indexOf(movie) + 1) {
-                                    lastMovie = true;
-                                }
-                                movieList.remove(movie); */
+                                movie.setImdbRating("0 Not sufficient data");
                             }
+
                             if (!(movieList.indexOf(movie) == -1)) {
                                 //IMDB ID
-
                                 try {
                                     if ("0".equals(movie.getImdbId())) {
                                         String imdbID = r.getString("imdbID");
@@ -107,14 +101,7 @@ public class HttpRequester {
                             }
                         }
                     } else {
-                        if (movieList.size() <= movieList.indexOf(movie) + 1) {
-                            lastMovie = true;
-                        }
-
-                        if (!isCity && !isState && !isActor && !isDirector && (isTime || isGenre )) {
-                            movieList.remove(movie);
-                        }
-
+                        movie.setImdbRating("0 Not sufficient data");
                     }
 
                     if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {

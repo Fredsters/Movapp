@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="#B4CDCD"
+    android:layout_height="fill_parent" android:background="#068C8A"
     android:layout_weight="1" android:orientation="vertical">
 
     <Button android:id="@+id/btnActor" android:layout_width="match_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/actor"
-        android:textColor="#FFFFFF"
         android:background="@drawable/button_background_accordion">
         </Button>
 
     <LinearLayout android:id="@+id/panelActor"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#B4CDCD">
+        android:background="#068C8A">
         <LinearLayout android:id="@+id/panelActorText"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -33,25 +32,24 @@
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/year"
         android:background="@drawable/button_background_accordion"
-        android:textColor="#FFFFFFFF"
      />
 
  <LinearLayout android:id="@+id/panelYear"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#B4CDCD">
+     android:background="#068C8A">
 
      <LinearLayout
          android:orientation="horizontal"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:baselineAligned="false"
-         android:background="#B4CDCD">
+         android:background="#068C8A">
 
          <LinearLayout android:id="@+id/panelYearFrom"
              android:orientation="horizontal" android:layout_width="fill_parent"
              android:layout_height="wrap_content" android:layout_weight="1"
-             android:background="#B4CDCD">
+             android:background="#068C8A">
              <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
                  android:layout_height="wrap_content" android:text="From" />
              <Spinner
@@ -64,7 +62,7 @@
          <LinearLayout android:id="@+id/panelYearTo"
              android:orientation="horizontal" android:layout_width="fill_parent"
              android:layout_height="wrap_content" android:layout_weight="1"
-             android:background="#B4CDCD">
+             android:background="#068C8A">
              <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
                  android:layout_height="wrap_content" android:text="To" />
              <Spinner
@@ -87,13 +85,12 @@
 
  <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
      android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/genre"
-     android:background="@drawable/button_background_accordion"
-     android:textColor="#FFFFFFFF" />
+     android:background="@drawable/button_background_accordion" />
 
  <LinearLayout android:id="@+id/panelGenre"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#B4CDCD">
+     android:background="#068C8A">
      <LinearLayout android:id="@+id/panelGenreText"
          android:orientation="horizontal" android:layout_width="fill_parent"
          android:layout_height="wrap_content">
@@ -115,12 +112,11 @@
 
  <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
      android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/director"
-     android:background="@drawable/button_background_accordion"
-     android:textColor="#FFFFFFFF" />
+     android:background="@drawable/button_background_accordion" />
  <LinearLayout android:id="@+id/panelDirector"
      android:orientation="vertical" android:layout_width="fill_parent"
      android:layout_height="wrap_content" android:layout_weight="1"
-     android:background="#B4CDCD">
+     android:background="#068C8A">
      <LinearLayout android:id="@+id/panelDirectorText"
          android:orientation="horizontal" android:layout_width="fill_parent"
          android:layout_height="wrap_content">
@@ -134,19 +130,17 @@
          android:layout_height="wrap_content"
          android:id="@+id/swDirector"
          android:layout_gravity="center_horizontal"
-         android:checked="false"
-         android:background="#B4CDCD" />
+         android:checked="false" />
  </LinearLayout>
 
     <Button android:id="@+id/btnRegion" android:layout_width="fill_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/region"
-        android:background="@drawable/button_background_accordion"
-        android:textColor="#FFFFFFFF" />
+        android:background="@drawable/button_background_accordion" />
 
     <LinearLayout android:id="@+id/panelRegion"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#B4CDCD">
+        android:background="#068C8A">
         <LinearLayout android:id="@+id/panelCountryText"
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -163,8 +157,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/swState"
             android:layout_gravity="center_horizontal"
-            android:checked="false"
-            android:background="#B4CDCD" />
+            android:checked="false"/>
 
 
         <LinearLayout android:id="@+id/panelCityText"
@@ -184,42 +177,30 @@
             android:layout_height="wrap_content"
             android:id="@+id/swCity"
             android:layout_gravity="center_horizontal"
-            android:checked="false"
-            android:background="#B4CDCD" />
+            android:checked="false" />
 
-        <RelativeLayout android:id="@+id/radioSetShot" android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_gravity="bottom">
-            <RadioGroup
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal">
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Set"
-                android:layout_centerVertical="true"
-                android:checked="true"
-                android:id="@+id/radio_set"
-                android:onClick="onRadioButtonClicked"/>
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Set"
+            android:layout_centerVertical="true"
+            android:checked="true"
+            android:id="@+id/radio_set"
+            android:onClick="onRadioButtonClicked"/>
 
-            <RadioButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Shot"
-                android:id="@+id/radio_shot"
-                android:onClick="onRadioButtonClicked"/>
-            </RadioGroup>
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="Use GPS"
-                android:id="@+id/gpsButton"
-                android:onClick="onGPSLocationClicked"/>
-        </RelativeLayout>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Shot"
+            android:id="@+id/radio_shot"
+            android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
 
     </LinearLayout>
 

@@ -25,12 +25,14 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
+import semanticweb.hws14.movapp.model.MovieComparator;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
@@ -57,6 +59,7 @@ public class MovieList extends Activity {
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         ListView listView = (ListView) findViewById(R.id.movieList);
 
+        //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria)) {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
 
@@ -87,9 +90,8 @@ public class MovieList extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.movie_list, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -98,10 +100,16 @@ public class MovieList extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.imdb_rating_button) {
+            queryForImdbRating();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void queryForImdbRating () {
+        that.setProgressBarIndeterminateVisibility(true);
+        HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
     }
 
 
@@ -168,7 +176,6 @@ public class MovieList extends Activity {
                     String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
                     Literal releaseYearLiteral = soln.getLiteral("y");
                     String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
-
                     Movie movie = new Movie(title, 0, InputCleaner.cleanReleaseYear(releaseYearLiteral), genreName);
                     movieList.add(movie);
                 }
@@ -239,9 +246,25 @@ public class MovieList extends Activity {
                     }
                 }
 
+                if ((Boolean) criteria.get("isGenre")) {
+                    Iterator<Movie> i = movieList.iterator();
+                    while (i.hasNext()) {
+                        Movie movie = i.next();
+                        if (!"".equals(movie.getGenre()) && SparqlQueries.filterGenre(movie)) {
+                            i.remove();
+                        }
+                    }
+                }
+
                 mlAdapter.addAll(movieList);
-                //TODO start HttpRequester on Button Click. and Set sparql limit up
-                HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+                if((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector")) {
+                    HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+                } else {
+                    mlAdapter.clear();
+                    mlAdapter.addAll(movieList);
+                    that.setProgressBarIndeterminateVisibility(false);
+                    MovieList.staticMovieList = movieList;
+                }
             } else {
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No movies found!");

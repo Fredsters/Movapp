@@ -9,8 +9,8 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/movieList"
-        android:background="@drawable/list_item_odd"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+
       />
+
+    <!-- android:background="@drawable/list_item_odd" -->
 </RelativeLayout>
