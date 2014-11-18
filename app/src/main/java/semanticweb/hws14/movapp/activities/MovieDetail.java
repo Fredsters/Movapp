@@ -72,11 +72,14 @@ public class MovieDetail extends Activity {
                 //TODO Mapping from rated to age
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
-                //TODO nicer Layout in Criteriaview
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
-                //TODO Actor nach land und stadt und stadt nach GPS Tracking
+                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity?
                 //TODO ERROR bei kate winslet
                 //TODO add more cities and states in array
+                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden
+                //TODO make gps result again useable
+                //TODO Name Tabs correct
+                //TODO Make second tab for actors
                 /*
 
                 The original movie ratings consisted of:
@@ -106,7 +109,7 @@ Rated X – Children under the age of 17 not admitted.
                             img.setImageBitmap(bitmap);
 
                         } catch (Exception ex) {
-                            //TOdo Handle Exception
+                            Log.d("MovieDetail Picture Error ", ex.toString());
                         }
                     }
                 });

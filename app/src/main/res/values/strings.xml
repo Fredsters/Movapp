@@ -19,6 +19,7 @@
     <string name="toMovieList">Movie Detail List</string>
     <string name="linkToActor">Link to Actors Page</string>
     <string name="region">Region</string>
+
     <string-array name="year_array">
         <item>2016</item>
         <item>2014</item>
@@ -75,7 +76,6 @@
         <item>War</item>
         <item>Western</item>
     </string-array>
-
     <string-array name="city_array">
         <item>New York City</item>
         <item>Dallas, Texas</item>
@@ -83,7 +83,6 @@
         <item>Heidelberg</item>
         <item>Mannheim</item>
     </string-array>
-
     <string-array name="state_array">
         <item>Germany</item>
         <item>the United States</item>
@@ -91,5 +90,10 @@
 
     <string name="title_activity_actor_list">ActorList</string>
     <string name="title_activity_actor_detail">ActorDetail</string>
+    <string name="title_activity_my">MyActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
