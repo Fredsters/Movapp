@@ -2,29 +2,23 @@ package semanticweb.hws14.movapp.activities;
 
 import android.app.ActionBar;
 import android.app.Activity;
-
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.Window;
-
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +31,7 @@ import semanticweb.hws14.movapp.fragments.CriteriaPagerAdapter;
 public class Criteria extends FragmentActivity {
 
     Activity that = this;
+
     LocationManager locMgr;
     LocationListener locListner;
 
@@ -50,6 +45,8 @@ public class Criteria extends FragmentActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_criteria);
         initCriteriaView();
+
+
 
         criteriaPagerAdapter = new CriteriaPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);

@@ -33,6 +33,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.model.EventListener;
@@ -69,7 +70,6 @@ public class MovieDetail extends Activity {
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
                 //TODO Buttons colored
-                //TODO Mapping from rated to age
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
@@ -118,43 +118,207 @@ Rated X – Children under the age of 17 not admitted.
                 picThread.start();
 
                 TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
-                moviePlot.setText(movieD.getPlot());
+                String moviePlotText = movieD.getPlot();
 
+                if(moviePlotText.equals("")){
+                    moviePlot.setVisibility(View.GONE);
+                }
+                else{
+                    moviePlot.setVisibility(View.VISIBLE);
+                    moviePlot.setText(moviePlotText);
+                }
+
+                TextView tvActorsHc = (TextView) findViewById(R.id.tvActorsHC);
                 TextView actors = (TextView) findViewById(R.id.tvActors);
-                actors.setText(String.valueOf(movieD.createTvOutOfList(movieD.getActors())));
+                ArrayList<String> actorsList = movieD.getActors();
 
+                if(actorsList.size() == 0){
+                    actors.setVisibility(View.GONE);
+                    tvActorsHc.setVisibility(View.GONE);
+                }
+                else{
+                    actors.setVisibility(View.VISIBLE);
+                    tvActorsHc.setVisibility(View.VISIBLE);
+                    actors.setText(String.valueOf(movieD.createTvOutOfList(actorsList)));
+                }
+
+
+                TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
                 TextView directors = (TextView) findViewById(R.id.tvDirectors);
-                directors.setText(String.valueOf(movieD.createTvOutOfList(movieD.getDirectors())));
+                ArrayList<String> directorslist = movieD.getDirectors();
 
+                if(directorslist.size() == 0){
+                    directors.setVisibility(View.GONE);
+                    tvDirHc.setVisibility(View.GONE);
+                }
+                else{
+                    directors.setVisibility(View.VISIBLE);
+                    tvDirHc.setVisibility(View.VISIBLE);
+                    directors.setText(String.valueOf(movieD.createTvOutOfList(directorslist)));
+                }
+
+                TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
                 TextView writers = (TextView) findViewById(R.id.tvWriters);
-                writers.setText(String.valueOf(movieD.createTvOutOfList(movieD.getWriters())));
+                ArrayList<String> writerslist = movieD.getWriters();
 
+                if(writerslist.size() == 0){
+                    writers.setVisibility(View.GONE);
+                    tvWriterHc.setVisibility(View.GONE);
+                }
+                else{
+                    writers.setVisibility(View.VISIBLE);
+                    tvWriterHc.setVisibility(View.VISIBLE);
+                    writers.setText(String.valueOf(movieD.createTvOutOfList(writerslist)));
+                }
+
+
+                TextView tvGenreHc = (TextView) findViewById(R.id.tvGenreHC);
                 TextView genre = (TextView) findViewById(R.id.tvGenre);
-                genre.setText(String.valueOf(movieD.createTvOutOfList(movieD.getGenres())));
+                ArrayList<String> genreList = movieD.getGenres();
+
+                if(genreList.size() == 0){
+                    genre.setVisibility(View.GONE);
+                    tvGenreHc.setVisibility(View.GONE);
+                }
+                else{
+                    genre.setVisibility(View.VISIBLE);
+                    tvGenreHc.setVisibility(View.VISIBLE);
+                    genre.setText(String.valueOf(movieD.createTvOutOfList(genreList)));
+                }
+
 
                 TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
-                releaseYear.setText(String.valueOf(movie.getReleaseYear()) );
+                TextView releaseYearHc = (TextView) findViewById(R.id.tvReleaseYearHC);
+                int releaseYearText = movie.getReleaseYear();
+
+                if(releaseYearText == 0){
+                    releaseYear.setVisibility(View.GONE);
+                    releaseYearHc.setVisibility(View.GONE);
+                }
+                else{
+                    releaseYear.setVisibility(View.VISIBLE);
+                    releaseYearHc.setVisibility(View.VISIBLE);
+                    releaseYear.setText(String.valueOf(releaseYearText) );
+                }
 
                 TextView runtime = (TextView) findViewById(R.id.tvRuntime);
-                runtime.setText(String.valueOf(movie.getRuntime()) );
+                TextView runTimeHc = (TextView) findViewById(R.id.tvRuntimeHC);
+                String runtimeText = movie.getRuntime();
+
+                if(runtimeText.equals("")){
+                    runtime.setVisibility(View.GONE);
+                    runTimeHc.setVisibility(View.GONE);
+                }
+                else{
+                    runtime.setVisibility(View.VISIBLE);
+                    runTimeHc.setVisibility(View.VISIBLE);
+                    runtime.setText(String.valueOf(movie.getRuntime() + " minutes") );
+                }
+
+
 
                 TextView ageRestriction = (TextView) findViewById(R.id.tvAgeRestriction);
-                ageRestriction.setText(String.valueOf(movie.getRated()) );
+                TextView arHc = (TextView) findViewById(R.id.tvAgeRestrictionHC);
+                String aR = String.valueOf(movie.getRated());
+
+
+                if(aR.equals("")){
+                    ageRestriction.setVisibility(View.GONE);
+                    arHc.setVisibility(View.GONE);
+                }
+                else{
+                    ageRestriction.setVisibility(View.VISIBLE);
+                    arHc.setVisibility(View.VISIBLE);
+                }
+
+                if(aR.equals("X")){
+                    ageRestriction.setText("18+");
+                }
+                else if(aR.equals("R")){
+                    ageRestriction.setText("16+");
+                }
+                else if(aR.equals("M")){
+                    ageRestriction.setText("12+");
+                }
+                else if(aR.equals("G")){
+                    ageRestriction.setText("6+");
+                }
+                else{
+                    ageRestriction.setVisibility(View.GONE);
+                    arHc.setVisibility(View.GONE);
+                }
+
 
                 TextView budget = (TextView) findViewById(R.id.tvBudget);
-                budget.setText(String.valueOf(movie.getBudget()) );
+                TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
+                String budgetText = movie.getBudget();
+
+                if(budgetText.equals("")){
+                    budget.setVisibility(View.GONE);
+                    budgetHc.setVisibility(View.GONE);
+                }
+                else{
+                    budget.setVisibility(View.VISIBLE);
+                    budgetHc.setVisibility(View.VISIBLE);
+                    budget.setText(String.valueOf(budgetText + " $") );
+                }
 
                 TextView awards = (TextView) findViewById(R.id.tvAwards);
-                awards.setText(String.valueOf(movie.getAwards()) );
+                TextView awardsHc = (TextView) findViewById(R.id.tvAwardsHC);
+                String awardsText = movie.getAwards();
+
+                if(awardsText.equals("")){
+                    awards.setVisibility(View.GONE);
+                    awardsHc.setVisibility(View.GONE);
+                }
+                else{
+                    awards.setVisibility(View.VISIBLE);
+                    awardsHc.setVisibility(View.VISIBLE);
+                    awards.setText(awardsText);
+                }
 
                 TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
-                metaScore.setText(String.valueOf(movie.getMetaScore()+"/100"));
+                TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
+                int metaSoreText = movie.getMetaScore();
+
+                if(metaSoreText == 0){
+                    metaScore.setVisibility(View.GONE);
+                    metaScoreHc.setVisibility(View.GONE);
+                }
+                else{
+                    metaScore.setVisibility(View.VISIBLE);
+                    metaScoreHc.setVisibility(View.VISIBLE);
+                    metaScore.setText(String.valueOf(metaSoreText+"/100"));
+                }
+
 
                 TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
-                wikiAbstract.setText((String.valueOf(movie.getWikiAbstract())));
+                String wikiAbstractText = movie.getWikiAbstract();
+
+                if(wikiAbstract.equals("")){
+                    wikiAbstract.setVisibility(View.GONE);
+                }
+                else{
+                    wikiAbstract.setVisibility(View.VISIBLE);
+                    wikiAbstract.setText((String.valueOf(wikiAbstractText)));
+                }
 
                 TextView ratingCount = (TextView) findViewById(R.id.tvMovieRatingCount);
-                ratingCount.setText((String.valueOf(movie.getVoteCount())));
+                TextView ratingCountHc = (TextView) findViewById(R.id.tvMovieRatingCountHC);
+                String ratingCountText = movie.getVoteCount();
+
+                if(ratingCountText.equals("")){
+                    ratingCount.setVisibility(View.GONE);
+                    ratingCountHc.setVisibility(View.GONE);
+                }
+                else{
+                    ratingCount.setVisibility(View.VISIBLE);
+                    ratingCountHc.setVisibility(View.VISIBLE);
+                    ratingCount.setText((String.valueOf(ratingCountText)));
+                }
+
+
+;
 
                 TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
                 movieRating.setText(movie.getImdbRating()+"/10");
