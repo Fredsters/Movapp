@@ -69,7 +69,8 @@ public class MovieDetail extends Activity {
             @Override
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
-                //TODO Buttons colored
+
+                //TODO Buttons colored  different when criteria is active
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
@@ -81,14 +82,22 @@ public class MovieDetail extends Activity {
                 //TODO Name Tabs correct
                 //TODO Make second tab for actors
                 //TODO Free more ram
-                /*
+                //TODO use dbpedia for more moviedetails when lmdb does not have any
+                //TODO Use Foaf (other) database for better actor info
+                //TODO Animate the panel open close in criteria view
+                //TODO Kill proces when activity is changed during loading so that app does not crash
+                //TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
+                //TODO implement a back button (olli)
+                //TODO Close keyboard with return button
+                //TODO Actor criteria: movie, birthplace and schoolplace, birthdate
+                //TODO have a close look again at genre and time criteria when used together (adventure, 1970 Yu GI OH)
+                //TODO on actor detail "To Movie List" does not work ??!
+                //TODO include shooting and setting in movie detail view
+                //TODO check bug with martin freeman and worlds end
+                //TODO Display "load imdb Rating" button only when its not already loaded .... still considering
+                //TODO custom ListItem, style listitem.
+                //TODO style detail views
 
-                The original movie ratings consisted of:
-Rated G – Acceptable to "general" audiences, including children.
-Rated M – For "Mature" audiences.
-Rated R – Restricted. Children under the age of 17 must be accompanied by a parent or "guardian" (i.e., supervised by an adult).
-Rated X – Children under the age of 17 not admitted.
-*/
                 Thread picThread = new Thread(new Runnable() {
                     public void run() {
                         try {
@@ -442,7 +451,6 @@ Rated X – Children under the age of 17 not admitted.
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-//TODO Test this stuff
                     if(soln.getLiteral("abs") != null && "".equals(movieDet.getWikiAbstract())) {
                         movieDet.setWikiAbstract(soln.getLiteral("abs").getString());
                     }
