@@ -253,6 +253,39 @@ Rated X – Children under the age of 17 not admitted.
                 TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
                 String budgetText = movie.getBudget();
 
+
+                if(budgetText.contains("E")){
+
+                    int ePos = budgetText.indexOf("E");
+                    int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
+
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
+
+                    for(int i=0;i<zeroCount-1;i++){
+                        if(zeroCount%3==1 && i%3==0){
+                            budgetText += ".";
+                        }
+                        else if(zeroCount%3==2 && i%3==1){
+                            budgetText += ".";
+                        }
+                        else if(zeroCount%3==0 && i%3==2){
+                            budgetText += ".";
+                        }
+
+                        budgetText += "0";
+
+
+
+
+                    }
+
+
+
+
+                }
+
                 if(budgetText.equals("")){
                     budget.setVisibility(View.GONE);
                     budgetHc.setVisibility(View.GONE);
