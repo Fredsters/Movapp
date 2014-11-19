@@ -184,11 +184,11 @@ public class SparqlQueries {
                 "rdfs:label '"+movie.getTitle()+"'@en. "+
                 "OPTIONAL {?m dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
                 "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
-                "OPTIONAL {?m dbpprop:runtime ?r.} "+
+     /*           "OPTIONAL {?m dbpprop:runtime ?r.} "+
                 "OPTIONAL {?m dbpedia-owl:starring ?a. ?a rdfs:label ?aN. FILTER(langMatches(lang(?aN ), 'EN'))} "+
                 "OPTIONAL {?m dbpedia-owl:director ?d. ?d rdfs:label ?dN. FILTER(langMatches(lang(?dN), 'EN'))} "+
                 "OPTIONAL {?m dbpedia-owl:writer ?w. ?w rdfs:label ?wN. FILTER(langMatches(lang(?wN), 'EN'))} "+
-                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+
+                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+ */
                 "} ";
         return queryString;
     }

@@ -80,6 +80,7 @@ public class MovieDetail extends Activity {
                 //TODO make gps result again useable
                 //TODO Name Tabs correct
                 //TODO Make second tab for actors
+                //TODO Free more ram
                 /*
 
                 The original movie ratings consisted of:
@@ -284,7 +285,7 @@ Rated X – Children under the age of 17 not admitted.
                     if(soln.getLiteral("bu") != null && "".equals(movieDet.getBudget())) {
                         movieDet.setBudget(soln.getLiteral("bu").getString());
                     }
-                    if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
+   /*                 if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
                         movieDet.setRuntime(soln.getLiteral("r").getString());
                     }
                     if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
@@ -298,7 +299,7 @@ Rated X – Children under the age of 17 not admitted.
                     }
                     if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
                         movieDet.addGenre(soln.getLiteral("gN").getString());
-                    }
+                    } */
                 }
             }catch (Exception e){
                 Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN "+ e.toString());
