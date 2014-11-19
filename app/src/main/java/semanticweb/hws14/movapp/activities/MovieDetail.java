@@ -69,7 +69,7 @@ public class MovieDetail extends Activity {
             @Override
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
-
+                //TODO Buttons colored
                 //TODO nicer layout in Detail
                 //TODO nicer Layout in listview
                 //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
