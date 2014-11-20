@@ -58,12 +58,12 @@ public class MovieDetail extends Activity {
         if(rowCount%2==0){
 
             //darker color - intvalue: 1947832
-            p.setBackgroundColor(Color.rgb(25,186,186));
+            p.setBackgroundColor(Color.rgb(206,238,237));
 
         }
         else{
             //brighter color - intvalue: 16764144
-            p.setBackgroundColor(Color.rgb(204,240,239));
+            p.setBackgroundColor(Color.rgb(236,248,248));
         }
         rowCount++;
     }

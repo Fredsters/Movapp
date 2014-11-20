@@ -11,13 +11,14 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
         <Button android:id="@+id/btnActor" android:layout_width="match_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/actor"
-            android:background="@drawable/button_background_accordion">
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF">
         </Button>
 
         <LinearLayout android:id="@+id/panelActor"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#BBF2F1">
+            android:background="#ffffffff">
             <LinearLayout android:id="@+id/panelActorText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -37,12 +38,12 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/year"
             android:background="@drawable/button_background_accordion"
-            />
+            android:textColor="#FFFFFF" />
 
         <LinearLayout android:id="@+id/panelYear"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#BBF2F1">
+            android:background="#ffffffff">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -54,7 +55,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                 <LinearLayout android:id="@+id/panelYearFrom"
                     android:orientation="horizontal" android:layout_width="fill_parent"
                     android:layout_height="wrap_content" android:layout_weight="1"
-                    android:background="#BBF2F1">
+                    android:background="#FFFFFF">
                     <TextView android:id="@+id/tvYearFrom" android:layout_width="45dp"
                         android:layout_height="wrap_content" android:text="From" />
                     <Spinner
@@ -67,7 +68,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                 <LinearLayout android:id="@+id/panelYearTo"
                     android:orientation="horizontal" android:layout_width="fill_parent"
                     android:layout_height="wrap_content" android:layout_weight="1"
-                    android:background="#BBF2F1">
+                    android:background="#FFFFFF">
                     <TextView android:id="@+id/tvYearTo" android:layout_width="45dp"
                         android:layout_height="wrap_content" android:text="To" />
                     <Spinner
@@ -90,12 +91,13 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
         <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/genre"
-            android:background="@drawable/button_background_accordion" />
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF" />
 
         <LinearLayout android:id="@+id/panelGenre"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#BBF2F1">
+            android:background="#ffffffff">
             <LinearLayout android:id="@+id/panelGenreText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -117,11 +119,12 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
         <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/director"
-            android:background="@drawable/button_background_accordion" />
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF" />
         <LinearLayout android:id="@+id/panelDirector"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#BBF2F1">
+            android:background="#ffffffff">
             <LinearLayout android:id="@+id/panelDirectorText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -140,12 +143,13 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
         <Button android:id="@+id/btnRegion" android:layout_width="fill_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/region"
-            android:background="@drawable/button_background_accordion" />
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF" />
 
         <LinearLayout android:id="@+id/panelRegion"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#BBF2F1">
+            android:background="#ffffffff">
             <LinearLayout android:id="@+id/panelCountryText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
