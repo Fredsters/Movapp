@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +41,13 @@ import semanticweb.hws14.movapp.model.ActorDet;
 import semanticweb.hws14.movapp.model.EventActorListener;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
+
+
 public class ActorDetail extends Activity {
     private Activity that = this;
     private ActorDet actorDet;
+    int rowCount=0; //needed to color
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -336,6 +342,22 @@ public class ActorDetail extends Activity {
         else{
             tv.setVisibility(View.VISIBLE);
             tvHc.setVisibility(View.VISIBLE);
+            colorIt(tvHc);
         }
+    }
+
+    public void colorIt(TextView tv){
+        LinearLayout p = (LinearLayout) tv.getParent();
+        if(rowCount%2==0){
+
+            //darker color - intvalue: 1947832
+            p.setBackgroundColor(Color.rgb(206, 238, 237));
+
+        }
+        else{
+            //brighter color - intvalue: 16764144
+            p.setBackgroundColor(Color.rgb(236,248,248));
+        }
+        rowCount++;
     }
 }
