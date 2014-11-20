@@ -3,7 +3,6 @@ package semanticweb.hws14.movapp.activities;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -38,6 +38,7 @@ public class Criteria extends FragmentActivity {
     CriteriaPagerAdapter criteriaPagerAdapter;
     ViewPager mViewPager;
     Fragment currentFragment;
+    android.support.v4.app.FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class Criteria extends FragmentActivity {
 
 
         criteriaPagerAdapter = new CriteriaPagerAdapter(getSupportFragmentManager());
+        fragmentManager = getSupportFragmentManager();
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(criteriaPagerAdapter);
 
@@ -71,7 +73,7 @@ public class Criteria extends FragmentActivity {
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
                 mViewPager.setCurrentItem(tab.getPosition());
-               // currentFragment =
+                currentFragment = fragmentManager.findFragmentById(tab.getPosition());
             }
 
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -83,13 +85,8 @@ public class Criteria extends FragmentActivity {
             }
         };
 
-        // Add 3 tabs, specifying the tab's text and TabListener
-        for (int i = 0; i < 2; i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText("Tab " + (i + 1))
-                            .setTabListener(tabListener));
-        }
+        actionBar.addTab(actionBar.newTab().setText("Movies").setTabListener(tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Actors").setTabListener(tabListener));
     }
 
     @Override
@@ -156,7 +153,6 @@ public class Criteria extends FragmentActivity {
                                     }
                                 }
                                 //TODO get Fragment
-
                          //       swCity.setChecked(true);
                          //       spCity.setSelection(position);
                                 dialog.dismiss();

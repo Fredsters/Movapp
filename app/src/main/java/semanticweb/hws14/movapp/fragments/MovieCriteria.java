@@ -68,8 +68,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     boolean activeState = false;
     boolean activeCity = false;
 
-    /*
-
+/*
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -95,25 +94,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         // Required empty public constructor
     }
 
-*/
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        that = this;
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View movieCriteriaView = inflater.inflate(R.layout.fragment_movie_criteria, container, false);
-        initCriteriaView(movieCriteriaView);
-        return movieCriteriaView;
-    }
-
-/*
-
-    /
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -137,6 +117,22 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         mListener = null;
     }
 */
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        that = this;
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View movieCriteriaView = inflater.inflate(R.layout.fragment_movie_criteria, container, false);
+        initCriteriaView(movieCriteriaView);
+        return movieCriteriaView;
+    }
 
     public void submitSearch(View view) {
         HashMap<String, Object> criteria = new HashMap<String, Object>();
@@ -189,7 +185,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         } else {
             criteria.put("isState", false);
         }
-
         if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState){
             Intent intent = new Intent(getActivity(), MovieList.class);
             intent.putExtra("criteria", criteria);
@@ -198,7 +193,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         else{
             Toast.makeText(getActivity(), "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void initCriteriaView(View view){
@@ -224,123 +218,69 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         final View panelActor = view.findViewById(R.id.panelActor);
         panelActor.setVisibility(View.VISIBLE);
 
-        View panelYear = view.findViewById(R.id.panelYear);
+        final View panelYear = view.findViewById(R.id.panelYear);
         panelYear.setVisibility(View.GONE);
 
-        View panelGenre = view.findViewById(R.id.panelGenre);
+        final View panelGenre = view.findViewById(R.id.panelGenre);
         panelGenre.setVisibility(View.GONE);
 
-        View panelDirector = view.findViewById(R.id.panelDirector);
+        final View panelDirector = view.findViewById(R.id.panelDirector);
         panelDirector.setVisibility(View.GONE);
 
-        View panelRegion = view.findViewById(R.id.panelRegion);
+        final View panelRegion = view.findViewById(R.id.panelRegion);
         panelRegion.setVisibility(View.GONE);
 
         btnActor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DO STUFF
-                View panelActor = getView().findViewById(R.id.panelActor);
                 panelActor.setVisibility(View.VISIBLE);
-
-                View panelYear = getView().findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
-
-                View panelGenre = getView().findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
-
-                View panelDirector = getView().findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
-
-                View panelRegion = getView().findViewById(R.id.panelRegion);
                 panelRegion.setVisibility(View.GONE);
-
             }
         });
 
         btnYear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DO STUFF
-                View panelActor = getView().findViewById(R.id.panelActor);
                 panelActor.setVisibility(View.GONE);
-
-                View panelYear = getView().findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.VISIBLE);
-
-                View panelGenre = getView().findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
-
-                View panelDirector = getView().findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
-
-                View panelRegion = getView().findViewById(R.id.panelRegion);
                 panelRegion.setVisibility(View.GONE);
-
             }
         });
 
         btnGenre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DO STUFF
-                View panelActor = getView().findViewById(R.id.panelActor);
                 panelActor.setVisibility(View.GONE);
-
-                View panelYear = getView().findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
-
-                View panelGenre = getView().findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.VISIBLE);
-
-                View panelDirector = getView().findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
-
-                View panelRegion = getView().findViewById(R.id.panelRegion);
                 panelRegion.setVisibility(View.GONE);
-
             }
         });
 
         btnDirector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DO STUFF
-                View panelActor = getView().findViewById(R.id.panelActor);
                 panelActor.setVisibility(View.GONE);
-
-                View panelYear = getView().findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
-
-                View panelGenre = getView().findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
-
-                View panelDirector = getView().findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.VISIBLE);
-
-                View panelRegion = getView().findViewById(R.id.panelRegion);
                 panelRegion.setVisibility(View.GONE);
-
             }
         });
 
         btnRegion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // DO STUFF
-                View panelActor = getView().findViewById(R.id.panelActor);
                 panelActor.setVisibility(View.GONE);
-
-                View panelYear = getView().findViewById(R.id.panelYear);
                 panelYear.setVisibility(View.GONE);
-
-                View panelGenre = getView().findViewById(R.id.panelGenre);
                 panelGenre.setVisibility(View.GONE);
-
-                View panelDirector = getView().findViewById(R.id.panelDirector);
                 panelDirector.setVisibility(View.GONE);
-
-                View panelRegion = getView().findViewById(R.id.panelRegion);
                 panelRegion.setVisibility(View.VISIBLE);
             }
         });
@@ -505,23 +445,5 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 break;
         }
     }
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-
-        public void onFragmentInteraction(Uri uri);
-    }
-
-
 
 }

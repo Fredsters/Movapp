@@ -256,15 +256,15 @@ public class MovieList extends Activity {
                     }
                 }
 
-                mlAdapter.addAll(movieList);
-                if((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector")) {
-                    HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
-                } else {
+
+             //   if((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector")) {
+            //        HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+            //    } else {
                     mlAdapter.clear();
                     mlAdapter.addAll(movieList);
                     that.setProgressBarIndeterminateVisibility(false);
                     MovieList.staticMovieList = movieList;
-                }
+          //      }
             } else {
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No movies found!");

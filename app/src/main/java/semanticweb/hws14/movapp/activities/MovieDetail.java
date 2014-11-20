@@ -90,26 +90,37 @@ public class MovieDetail extends Activity {
             @Override
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
-                //TODO Buttons colored
-                //TODO nicer layout in Detail
-                //TODO nicer Layout in listview
-                //TODO check in movie_detail and actor_Detail if property is there and if not then dont display it
-                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity?
-                //TODO ERROR bei kate winslet
-                //TODO add more cities and states in array
-                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden
-                //TODO make gps result again useable
-                //TODO Name Tabs correct
-                //TODO Make second tab for actors
-                //TODO Free more ram
-                /*
 
-                The original movie ratings consisted of:
-Rated G – Acceptable to "general" audiences, including children.
-Rated M – For "Mature" audiences.
-Rated R – Restricted. Children under the age of 17 must be accompanied by a parent or "guardian" (i.e., supervised by an adult).
-Rated X – Children under the age of 17 not admitted.
-*/
+                //TODO Buttons colored  different when criteria is active
+                //TODO nicer layout in Detail( Texts should always have same offset, so that the lengt hof the label does not matter)
+                //TODO nicer Layout in listview
+                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity? (fred)
+                //TODO ERROR bei kate winslet (fred)
+                //TODO add more cities and states in array
+                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
+                //TODO make gps result again useable (fred)
+                //TODO Name Tabs correct (fred)
+                //TODO Make second tab for actors (fred)
+                //TODO use dbpedia for more moviedetails when lmdb does not have any (fred)
+                //TODO Use Foaf (other) database for better actor info
+                //TODO Animate the panel open close in criteria view
+                //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
+                //TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
+                //TODO implement a back button (olli)
+                //TODO Close keyboard with return button
+                //TODO Actor criteria: movie, birthplace and schoolplace, birthdate (fred)
+                //TODO have a close look again at genre and time criteria when used together (adventure, 1970 Yu GI OH) (fred)
+                //TODO on actor detail "To Movie List" does not work ??! (fred)
+                //TODO include shooting and setting in movie detail view (fred)
+                //TODO check bug with martin freeman and worlds end (fred)
+                //TODO Display "load imdb Rating" button only when its not already loaded .... still considering
+                //TODO custom ListItem, style listitem.
+                //TODO style detail views
+                //TODO additional actor criteria : nationality ? or something else ?
+                //TODO save ressource also for movie and actor
+                //TODO Change titles of activities (that what is displayed in the action bar)
+
+
                 Thread picThread = new Thread(new Runnable() {
                     public void run() {
                         try {
@@ -501,6 +512,8 @@ Rated X – Children under the age of 17 not admitted.
             tLMDBDetail.start();
         /* DPBEDIA */
 
+
+
             String dbPediaSparqlQueryString = sparqler.DBPEDIADetailQuery(movieDet);
             Query query = QueryFactory.create(dbPediaSparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
@@ -516,7 +529,7 @@ Rated X – Children under the age of 17 not admitted.
                     if(soln.getLiteral("bu") != null && "".equals(movieDet.getBudget())) {
                         movieDet.setBudget(soln.getLiteral("bu").getString());
                     }
-   /*                 if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
+                    if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
                         movieDet.setRuntime(soln.getLiteral("r").getString());
                     }
                     if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
@@ -530,7 +543,7 @@ Rated X – Children under the age of 17 not admitted.
                     }
                     if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
                         movieDet.addGenre(soln.getLiteral("gN").getString());
-                    } */
+                    }
                 }
             }catch (Exception e){
                 Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN "+ e.toString());
@@ -543,6 +556,7 @@ Rated X – Children under the age of 17 not admitted.
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
 
             return movieDet;
         }

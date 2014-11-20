@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:background="#BBF2F1"
+    android:layout_weight="1" android:orientation="vertical">
+
+    <Button android:id="@+id/btnMovie" android:layout_width="fill_parent"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/movie"
+        android:background="@drawable/button_background_accordion" />
+    <LinearLayout android:id="@+id/panelMovie"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#BBF2F1">
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView  android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Name of Movie" />
+            <EditText android:id="@+id/tfMovieName" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swMovie"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+    </LinearLayout>
+
+    <Button android:id="@+id/btnActorYear" android:layout_width="fill_parent"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="Birthyear"
+        android:background="@drawable/button_background_accordion"
+        />
+
+    <LinearLayout android:id="@+id/panelActorYear"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#BBF2F1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:background="#BBF2F1">
+
+            <LinearLayout
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_weight="1"
+                android:background="#BBF2F1">
+                <TextView android:layout_width="45dp"
+                    android:layout_height="wrap_content" android:text="From" />
+                <Spinner
+                    android:id="@+id/spActorYearFrom"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></Spinner>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_weight="1"
+                android:background="#BBF2F1">
+                <TextView android:layout_width="45dp"
+                    android:layout_height="wrap_content" android:text="To" />
+                <Spinner
+                    android:id="@+id/spActorYearTo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"></Spinner>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swActorYear"
+            android:layout_gravity="top|center_horizontal"
+            android:checked="false" />
+    </LinearLayout>
+
+        <Button android:id="@+id/btnActorRegion" android:layout_width="fill_parent"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="Birthplace"
+        android:background="@drawable/button_background_accordion" />
+
+    <LinearLayout android:id="@+id/panelActorRegion"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#BBF2F1">
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView android:id="@+id/tvCountryName" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="State/Country" />
+            <Spinner
+                android:id="@+id/spActorState"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                ></Spinner>
+        </LinearLayout>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swActorState"
+            android:layout_gravity="center_horizontal"
+            android:checked="false"/>
+
+
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="City" />
+            <Spinner
+                android:id="@+id/spActorCity"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                ></Spinner>
+
+        </LinearLayout>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swActorCity"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="58dp"
+        android:text="@string/submit"
+        android:id="@+id/submit_button"
+        android:textSize="30dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_background_submit"
+        android:layout_margin="5dp" />
+</LinearLayout>
+    <!--</FrameLayout> -->

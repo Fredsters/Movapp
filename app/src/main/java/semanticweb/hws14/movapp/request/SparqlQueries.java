@@ -179,16 +179,18 @@ public class SparqlQueries {
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
                 "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+                "PREFIX dbpprop: <http://dbpedia.org/property/> "+
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
                 "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
-                "?m rdf:type dbpedia-owl:Film; "+
-                "rdfs:label '"+movie.getTitle()+"'@en. "+
+                "?m rdf:type <http://schema.org/Movie>; "+
+                "foaf:name '"+movie.getTitle()+"'@en. "+
                 "OPTIONAL {?m dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
                 "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
-     /*           "OPTIONAL {?m dbpprop:runtime ?r.} "+
+                "OPTIONAL {?m dbpprop:runtime ?r.} "+
                 "OPTIONAL {?m dbpedia-owl:starring ?a. ?a rdfs:label ?aN. FILTER(langMatches(lang(?aN ), 'EN'))} "+
                 "OPTIONAL {?m dbpedia-owl:director ?d. ?d rdfs:label ?dN. FILTER(langMatches(lang(?dN), 'EN'))} "+
                 "OPTIONAL {?m dbpedia-owl:writer ?w. ?w rdfs:label ?wN. FILTER(langMatches(lang(?wN), 'EN'))} "+
-                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+ */
+                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+
                 "} ";
         return queryString;
     }

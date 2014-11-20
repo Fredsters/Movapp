@@ -142,6 +142,13 @@ public class HttpRequester {
                 }
                 if(response) {
                     try {
+                        double imdbRating = r.getDouble("imdbRating");
+                        movie.setImdbRating(String.valueOf(imdbRating));
+                    } catch (JSONException e) {
+                        movie.setImdbRating("0 No Rating");
+                    }
+
+                    try {
                         String rated = r.getString("Rated");
                         movie.setRated(rated);
                     } catch (JSONException e) {
@@ -187,8 +194,10 @@ public class HttpRequester {
                     }
 
                     try {
-                        int metascore = r.getInt("Metascore");
-                        movie.setMetaScore(metascore);
+                        String metascore = r.getString("Metascore");
+                        if(!metascore.equals("N/A")) {
+                            movie.setMetaScore(Integer.parseInt(metascore));
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -215,10 +224,7 @@ public class HttpRequester {
                             e.printStackTrace();
                         }
                     }
-
-
                     movie.geteListener().onFinished(movie);
-
                 } else {
                     Log.e("FUCK", "THE SYSTEM");
                     movie.geteListener().onFinished(movie);

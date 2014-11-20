@@ -12,6 +12,7 @@
     <string name="actor">Actor</string>
     <string name="genre">Genre</string>
     <string name="director">Director</string>
+    <string name="movie">Movie</string>
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>
     <string name="link">Link to Imdb page</string>

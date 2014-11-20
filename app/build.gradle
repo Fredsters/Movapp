@@ -17,9 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dexOptions {
+    /*dexOptions {
         preDexLibraries = false
-    }
+    }*/
 }
 
 dependencies {
@@ -33,6 +33,8 @@ dependencies {
     compile files('libs/lib/slf4j-android-1.6.1-RC1.jar')
     compile files('libs/simple-xml-2.4.1.jar')
     compile files('libs/volley.jar')
+    compile ('com.android.support:support-v13:20.0.0') {
+        exclude module: 'support-v4'
+    }
     compile files('libs/android-support-v4.jar')
-    compile 'com.android.support:support-v13:20.0.0'
 }
