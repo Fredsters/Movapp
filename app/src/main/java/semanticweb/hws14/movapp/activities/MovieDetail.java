@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,25 @@ public class MovieDetail extends Activity {
     private Activity that = this;
     MovieDet movieDet;
     Button btnSpoiler;
+    Button btnActorList;
+    int rowCount=0;
+
+    public void colorIt(TextView tv){
+        LinearLayout p = (LinearLayout) tv.getParent();
+        if(rowCount%2==0){
+
+            //darker color - intvalue: 1947832
+            p.setBackgroundColor(Color.rgb(25,186,186));
+
+        }
+        else{
+            //brighter color - intvalue: 16764144
+            p.setBackgroundColor(Color.rgb(204,240,239));
+        }
+        rowCount++;
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +138,8 @@ Rated X – Children under the age of 17 not admitted.
 
                 picThread.start();
 
+
+
                 TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
                 String moviePlotText = movieD.getPlot();
 
@@ -126,51 +149,9 @@ Rated X – Children under the age of 17 not admitted.
                 else{
                     moviePlot.setVisibility(View.VISIBLE);
                     moviePlot.setText(moviePlotText);
+
+
                 }
-
-                TextView tvActorsHc = (TextView) findViewById(R.id.tvActorsHC);
-                TextView actors = (TextView) findViewById(R.id.tvActors);
-                ArrayList<String> actorsList = movieD.getActors();
-
-                if(actorsList.size() == 0){
-                    actors.setVisibility(View.GONE);
-                    tvActorsHc.setVisibility(View.GONE);
-                }
-                else{
-                    actors.setVisibility(View.VISIBLE);
-                    tvActorsHc.setVisibility(View.VISIBLE);
-                    actors.setText(String.valueOf(movieD.createTvOutOfList(actorsList)));
-                }
-
-
-                TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
-                TextView directors = (TextView) findViewById(R.id.tvDirectors);
-                ArrayList<String> directorslist = movieD.getDirectors();
-
-                if(directorslist.size() == 0){
-                    directors.setVisibility(View.GONE);
-                    tvDirHc.setVisibility(View.GONE);
-                }
-                else{
-                    directors.setVisibility(View.VISIBLE);
-                    tvDirHc.setVisibility(View.VISIBLE);
-                    directors.setText(String.valueOf(movieD.createTvOutOfList(directorslist)));
-                }
-
-                TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
-                TextView writers = (TextView) findViewById(R.id.tvWriters);
-                ArrayList<String> writerslist = movieD.getWriters();
-
-                if(writerslist.size() == 0){
-                    writers.setVisibility(View.GONE);
-                    tvWriterHc.setVisibility(View.GONE);
-                }
-                else{
-                    writers.setVisibility(View.VISIBLE);
-                    tvWriterHc.setVisibility(View.VISIBLE);
-                    writers.setText(String.valueOf(movieD.createTvOutOfList(writerslist)));
-                }
-
 
                 TextView tvGenreHc = (TextView) findViewById(R.id.tvGenreHC);
                 TextView genre = (TextView) findViewById(R.id.tvGenre);
@@ -184,8 +165,8 @@ Rated X – Children under the age of 17 not admitted.
                     genre.setVisibility(View.VISIBLE);
                     tvGenreHc.setVisibility(View.VISIBLE);
                     genre.setText(String.valueOf(movieD.createTvOutOfList(genreList)));
+                    colorIt(tvGenreHc);
                 }
-
 
                 TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
                 TextView releaseYearHc = (TextView) findViewById(R.id.tvReleaseYearHC);
@@ -199,6 +180,7 @@ Rated X – Children under the age of 17 not admitted.
                     releaseYear.setVisibility(View.VISIBLE);
                     releaseYearHc.setVisibility(View.VISIBLE);
                     releaseYear.setText(String.valueOf(releaseYearText) );
+                    colorIt(releaseYear);
                 }
 
                 TextView runtime = (TextView) findViewById(R.id.tvRuntime);
@@ -213,7 +195,112 @@ Rated X – Children under the age of 17 not admitted.
                     runtime.setVisibility(View.VISIBLE);
                     runTimeHc.setVisibility(View.VISIBLE);
                     runtime.setText(String.valueOf(movie.getRuntime() + " minutes") );
+                    colorIt(runTimeHc);
                 }
+
+                TextView budget = (TextView) findViewById(R.id.tvBudget);
+                TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
+                String budgetText = movie.getBudget();
+
+
+                if(budgetText.contains("E")){
+
+                    int ePos = budgetText.indexOf("E");
+                    int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
+
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
+                    budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
+
+                    for(int i=0;i<zeroCount-1;i++){
+                        if(zeroCount%3==1 && i%3==0){
+                            budgetText += ".";
+                        }
+                        else if(zeroCount%3==2 && i%3==1){
+                            budgetText += ".";
+                        }
+                        else if(zeroCount%3==0 && i%3==2){
+                            budgetText += ".";
+                        }
+
+                        budgetText += "0";
+                    }
+                }
+
+                if(budgetText.equals("")){
+                    budget.setVisibility(View.GONE);
+                    budgetHc.setVisibility(View.GONE);
+                }
+                else{
+                    budget.setVisibility(View.VISIBLE);
+                    budgetHc.setVisibility(View.VISIBLE);
+                    budget.setText(String.valueOf(budgetText + " $") );
+                    colorIt(budgetHc);
+                }
+
+                TextView awards = (TextView) findViewById(R.id.tvAwards);
+                TextView awardsHc = (TextView) findViewById(R.id.tvAwardsHC);
+                String awardsText = movie.getAwards();
+
+                if(awardsText.equals("")){
+                    awards.setVisibility(View.GONE);
+                    awardsHc.setVisibility(View.GONE);
+                }
+                else{
+                    awards.setVisibility(View.VISIBLE);
+                    awardsHc.setVisibility(View.VISIBLE);
+                    awards.setText(awardsText);
+                    colorIt(awardsHc);
+                }
+
+                TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
+                TextView directors = (TextView) findViewById(R.id.tvDirectors);
+                ArrayList<String> directorslist = movieD.getDirectors();
+
+                if(directorslist.size() == 0){
+                    directors.setVisibility(View.GONE);
+                    tvDirHc.setVisibility(View.GONE);
+                }
+                else{
+                    directors.setVisibility(View.VISIBLE);
+                    tvDirHc.setVisibility(View.VISIBLE);
+                    directors.setText(String.valueOf(movieD.createTvOutOfList(directorslist)));
+                    colorIt(tvDirHc);
+                }
+
+                TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
+                TextView writers = (TextView) findViewById(R.id.tvWriters);
+                ArrayList<String> writerslist = movieD.getWriters();
+
+                if(writerslist.size() == 0){
+                    writers.setVisibility(View.GONE);
+                    tvWriterHc.setVisibility(View.GONE);
+                }
+                else{
+                    writers.setVisibility(View.VISIBLE);
+                    tvWriterHc.setVisibility(View.VISIBLE);
+                    writers.setText(String.valueOf(movieD.createTvOutOfList(writerslist)));
+                    colorIt(tvWriterHc);
+                }
+
+                TextView tvActorsHc = (TextView) findViewById(R.id.tvActorsHC);
+                TextView actors = (TextView) findViewById(R.id.tvActors);
+                ArrayList<String> actorsList = movieD.getActors();
+
+                if(actorsList.size() == 0){
+                    actors.setVisibility(View.GONE);
+                    tvActorsHc.setVisibility(View.GONE);
+                    btnActorList.setVisibility(View.GONE);
+                }
+                else{
+                    actors.setVisibility(View.VISIBLE);
+                    tvActorsHc.setVisibility(View.VISIBLE);
+                    btnActorList.setVisibility(View.VISIBLE);
+                    actors.setText(String.valueOf(movieD.createTvOutOfList(actorsList)));
+                    colorIt(tvActorsHc);
+                }
+
+
 
 
 
@@ -249,66 +336,9 @@ Rated X – Children under the age of 17 not admitted.
                 }
 
 
-                TextView budget = (TextView) findViewById(R.id.tvBudget);
-                TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
-                String budgetText = movie.getBudget();
-
-
-                if(budgetText.contains("E")){
-
-                    int ePos = budgetText.indexOf("E");
-                    int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
-
-                    budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
-                    budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
-                    budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
-
-                    for(int i=0;i<zeroCount-1;i++){
-                        if(zeroCount%3==1 && i%3==0){
-                            budgetText += ".";
-                        }
-                        else if(zeroCount%3==2 && i%3==1){
-                            budgetText += ".";
-                        }
-                        else if(zeroCount%3==0 && i%3==2){
-                            budgetText += ".";
-                        }
-
-                        budgetText += "0";
 
 
 
-
-                    }
-
-
-
-
-                }
-
-                if(budgetText.equals("")){
-                    budget.setVisibility(View.GONE);
-                    budgetHc.setVisibility(View.GONE);
-                }
-                else{
-                    budget.setVisibility(View.VISIBLE);
-                    budgetHc.setVisibility(View.VISIBLE);
-                    budget.setText(String.valueOf(budgetText + " $") );
-                }
-
-                TextView awards = (TextView) findViewById(R.id.tvAwards);
-                TextView awardsHc = (TextView) findViewById(R.id.tvAwardsHC);
-                String awardsText = movie.getAwards();
-
-                if(awardsText.equals("")){
-                    awards.setVisibility(View.GONE);
-                    awardsHc.setVisibility(View.GONE);
-                }
-                else{
-                    awards.setVisibility(View.VISIBLE);
-                    awardsHc.setVisibility(View.VISIBLE);
-                    awards.setText(awardsText);
-                }
 
                 TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
                 TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
@@ -322,7 +352,7 @@ Rated X – Children under the age of 17 not admitted.
                     metaScore.setVisibility(View.VISIBLE);
                     metaScoreHc.setVisibility(View.VISIBLE);
                     metaScore.setText(String.valueOf(metaSoreText+"/100"));
-                }
+                    }
 
 
                 TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
@@ -409,6 +439,9 @@ Rated X – Children under the age of 17 not admitted.
 
             }
         });
+
+        btnActorList =  (Button) findViewById(R.id.btnToActorList);
+        btnActorList.setVisibility(View.GONE);
     }
 
     public void linkToImdb(View view){
@@ -422,6 +455,7 @@ Rated X – Children under the age of 17 not admitted.
         intent.putStringArrayListExtra("actorList", movieDet.getActors());
         startActivity(intent);
     }
+
 
     private class queryForMovieData extends AsyncTask<MovieDet, String, MovieDet> {
 
@@ -526,6 +560,8 @@ Rated X – Children under the age of 17 not admitted.
             HttpRequester.loadWebServiceData(that, movieDet);
         }
     }
+
+
 
 
 }

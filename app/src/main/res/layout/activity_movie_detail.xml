@@ -161,7 +161,9 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="15dp" >
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:background="#c53e98ff">
 
         <TextView
             android:id="@+id/tvGenreHC"
@@ -190,7 +192,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="15dp" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvReleaseYearHC"
@@ -200,7 +202,7 @@
             android:layout_height="wrap_content"
 
 
-        />
+            android:layout_marginBottom="10dp" />
         <TextView
             android:id="@+id/tvReleaseYear"
             android:text=""
@@ -218,7 +220,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="15dp" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvRuntimeHC"
@@ -246,7 +248,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="1dp" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvBudgetHC"
@@ -272,7 +274,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="1dp" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvAwardsHC"
@@ -296,14 +298,15 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/activity_horizontal_margin" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvDirectorsHC"
             android:text="Directors:"
 
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/tvDirectors"
@@ -322,7 +325,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/activity_horizontal_margin" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvWritersHC"
@@ -348,7 +351,7 @@
         android:layout_height="wrap_content"
 
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/activity_horizontal_margin" >
+        android:layout_marginBottom="@dimen/activity_vertical_margin">
 
         <TextView
             android:id="@+id/tvActorsHC"
@@ -374,7 +377,8 @@
         android:text="@string/toActorList"
         android:onClick="toActorList"
         android:background="@drawable/button_background_accordion"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
     <Button android:id="@+id/btnLink"
         android:layout_width="match_parent"
@@ -382,7 +386,8 @@
         android:text="@string/link"
         android:onClick="linkToImdb"
         android:background="@drawable/button_background_accordion"
-        android:textSize="15dp" />
+        android:textSize="15dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
 
     <Button android:id="@+id/btnSpoiler" android:layout_width="match_parent"
@@ -393,7 +398,7 @@
         android:textSize="15dp" />
     <LinearLayout android:id="@+id/panelSpoiler"
         android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:background="#FFFFFFFF">
 
         <TextView
