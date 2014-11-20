@@ -100,38 +100,96 @@ public class ActorDetail extends Activity {
                 actorDetailName.setText(actorDet.getName());
 
                 TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
-                wikiAbstract.setText(actorDet.getWikiAbstract());
+                String wikiAbstractText = actorDet.getWikiAbstract();
+
+                if(wikiAbstractText.equals("")|| wikiAbstractText.equals("N/A")){
+                    String sorry = "Sorry...There is no detailed description available for this actor.";
+                    wikiAbstract.setText(sorry);
+                }
+                else{
+
+                    wikiAbstract.setVisibility(View.VISIBLE);
+
+                }
+
+
+                //HC = "Hard-Coded" textviews are the corresponding labes
 
                 TextView birthName = (TextView) findViewById(R.id.tvBirthName);
-                birthName.setText(actorDet.getBirthName());
+                TextView birthNameHc = (TextView) findViewById(R.id.tvBirthNameHC);
+                String birthNameText = actorDet.getBirthName();
+                birthName.setText(birthNameText);
+
+                manageEmptyTextfields(birthNameHc,birthName,birthNameText);
+
 
                 TextView birthDate = (TextView) findViewById(R.id.tvBirthDate);
-                birthDate.setText(actorDet.getBirthDate());
+                TextView birthDateHc = (TextView) findViewById(R.id.tvBirthDateHC);
+                String birthDateText =actorDet.getBirthDate();
+
+                if(birthDateText.contains("+")){
+                  // birthDateText=birthDateText.replace(birthDateText.substring('+'),"");
+                  //birthDateText= birthDateText.substring(birthDateText.charAt(0), '+');
+                }
+                birthDate.setText(birthDateText);
+
+                manageEmptyTextfields(birthDateHc,birthDate,birthDateText);
 
                 TextView birthPlace = (TextView) findViewById(R.id.tvBirthPlace);
-                birthPlace.setText(actorDet.getBirthPlace());
+                TextView birthPlaceHc = (TextView) findViewById(R.id.tvBirthPlaceHC);
+                String birthPlaceText = actorDet.getBirthPlace();
+                birthPlace.setText(birthPlaceText);
+
+                manageEmptyTextfields(birthPlaceHc,birthPlace,birthPlaceText);
 
                 TextView partner = (TextView) findViewById(R.id.tvPartner);
-                partner.setText(actorDet.getPartner());
+                TextView partnerHc = (TextView) findViewById(R.id.tvPartnerHC);
+                String partnerText= actorDet.getPartner();
+                partner.setText(partnerText);
+
+                manageEmptyTextfields(partnerHc,partner,partnerText);
 
                 TextView parent = (TextView) findViewById(R.id.tvParent);
-                parent.setText(actorDet.getParent());
+                TextView parentHc = (TextView) findViewById(R.id.tvParentHC);
+                String parentText = actorDet.getParent();
+                parent.setText(parentText);
+
+                manageEmptyTextfields(parentHc,parent,parentText);
 
                 TextView children = (TextView) findViewById(R.id.tvChildren);
-                children.setText(String.valueOf(actorDet.getChildren()));
+                TextView childrenHc = (TextView) findViewById(R.id.tvChildrenHC);
+                String childrenText = String.valueOf(actorDet.getChildren());
+                children.setText(childrenText);
+
+                manageEmptyTextfields(childrenHc,children,childrenText);
 
                 TextView nationality = (TextView) findViewById(R.id.tvNationality);
-                nationality.setText(actorDet.getNationality());
+                TextView nationalityHc = (TextView) findViewById(R.id.tvNationalityHC);
+                String nationalityText = actorDet.getNationality();
+                nationality.setText(nationalityText);
+
+                manageEmptyTextfields(nationalityHc,nationality,nationalityText);
 
                 TextView occupation = (TextView) findViewById(R.id.tvOccupation);
-                occupation.setText(actorDet.getOccupation());
+                TextView occupationHc = (TextView) findViewById(R.id.tvOccupationHC);
+                String occupationText = actorDet.getOccupation();
+                occupation.setText(occupationText);
+
+                manageEmptyTextfields(occupationHc,occupation,occupationText);
 
                 TextView activeYear = (TextView) findViewById(R.id.tvActiveYear);
-                activeYear.setText(String.valueOf(actorDet.getActiveYear()));
+                TextView activeYearHc = (TextView) findViewById(R.id.tvActiveYearHC);
+                String activeYearText = String.valueOf(actorDet.getActiveYear());
+                activeYear.setText(activeYearText);
+
+                manageEmptyTextfields(activeYearHc,activeYear,activeYearText);
 
                 TextView movies = (TextView) findViewById(R.id.tvMovies);
-                movies.setText(String.valueOf(actorDet.createTvOutOfList(actorDet.getMovies())));
+                TextView moviesHc = (TextView) findViewById(R.id.tvMoviesHC);
+                String moviesText = String.valueOf(actorDet.createTvOutOfList(actorDet.getMovies()));
+                movies.setText(moviesText);
 
+                manageEmptyTextfields(moviesHc,movies,moviesText);
 
                 try {
                     picThread.join();
@@ -264,6 +322,20 @@ public class ActorDetail extends Activity {
         public void onPostExecute(ActorDet actorDet) {
             actorDet.geteListener().onFinished(actorDet);
          //   setProgressBarIndeterminateVisibility(false);
+        }
+
+
+    }
+
+    //Defines Visibility of Textviews in Actor Detail
+    public void manageEmptyTextfields(TextView tvHc, TextView tv, String text){
+        if(text.equals("")|| ( text.equals("N/A") || text.equals("0"))){
+            tv.setVisibility(View.GONE);
+            tvHc.setVisibility(View.GONE);
+        }
+        else{
+            tv.setVisibility(View.VISIBLE);
+            tvHc.setVisibility(View.VISIBLE);
         }
     }
 }
