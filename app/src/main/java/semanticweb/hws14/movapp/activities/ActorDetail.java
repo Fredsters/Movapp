@@ -129,7 +129,7 @@ public class ActorDetail extends Activity {
 
                 if(birthDateText.contains("+")){
                   // birthDateText=birthDateText.replace(birthDateText.substring('+'),"");
-                  //birthDateText= birthDateText.substring(birthDateText.charAt(0), '+');
+                  birthDateText= birthDateText.substring(0, birthDateText.indexOf("+"));
                 }
                 birthDate.setText(birthDateText);
 
