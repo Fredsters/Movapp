@@ -108,12 +108,12 @@ public class ActorDetail extends Activity {
                 TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
                 String wikiAbstractText = actorDet.getWikiAbstract();
 
-                if(wikiAbstractText.equals("")|| wikiAbstractText.equals("N/A")){
+                if(wikiAbstractText.equals("") || wikiAbstractText.equals("N/A")){
                     String sorry = "Sorry...There is no detailed description available for this actor.";
                     wikiAbstract.setText(sorry);
                 }
                 else{
-
+                    wikiAbstract.setText(wikiAbstractText);
                     wikiAbstract.setVisibility(View.VISIBLE);
 
                 }
@@ -143,8 +143,9 @@ public class ActorDetail extends Activity {
 
                 TextView birthPlace = (TextView) findViewById(R.id.tvBirthPlace);
                 TextView birthPlaceHc = (TextView) findViewById(R.id.tvBirthPlaceHC);
-                String birthPlaceText = actorDet.getBirthPlace();
+                String birthPlaceText = String.valueOf(actorDet.createTvOutOfList(actorDet.getBirthPlace()));
                 birthPlace.setText(birthPlaceText);
+
 
                 manageEmptyTextfields(birthPlaceHc,birthPlace,birthPlaceText);
 
@@ -157,7 +158,7 @@ public class ActorDetail extends Activity {
 
                 TextView parent = (TextView) findViewById(R.id.tvParent);
                 TextView parentHc = (TextView) findViewById(R.id.tvParentHC);
-                String parentText = actorDet.getParent();
+                String parentText = String.valueOf(actorDet.createTvOutOfList(actorDet.getParent()));
                 parent.setText(parentText);
 
                 manageEmptyTextfields(parentHc,parent,parentText);
@@ -275,8 +276,8 @@ public class ActorDetail extends Activity {
                     if (soln.getLiteral("birthD") != null && "".equals(actorDet.getBirthDate())) {
                         actorDet.setBirthDate(soln.getLiteral("birthD").getString());
                     }
-                    if (soln.getLiteral("birthP") != null && "".equals(actorDet.getBirthPlace())) {
-                        actorDet.setBirthPlace(soln.getLiteral("birthP").getString());
+                    if (soln.getLiteral("bPN") != null) {
+                        actorDet.addBirthPlace(soln.getLiteral("bPN").getString());
                     }
                     if (soln.getLiteral("natN") != null && "".equals(actorDet.getNationality())) {
                         actorDet.setNationality(soln.getLiteral("natN").getString());
@@ -284,9 +285,13 @@ public class ActorDetail extends Activity {
                     if (soln.getLiteral("citS") != null && "".equals(actorDet.getNationality())) {
                         actorDet.setNationality(soln.getLiteral("citS").getString());
                     }
+                    try {
                     if (soln.getLiteral("childC") != null && 0 == actorDet.getChildren()) {
                         actorDet.setChildren(soln.getLiteral("childC").getInt());
+                    }} catch (Exception e){
+                        Log.d("childC Problem", e.toString());
                     }
+
                     if (soln.getLiteral("yearA") != null && 0 == actorDet.getActiveYear()) {
                         actorDet.setActiveYear(soln.getLiteral("yearA").getInt());
                     }
@@ -302,8 +307,8 @@ public class ActorDetail extends Activity {
                     if (soln.getLiteral("partnerN") != null && "".equals(actorDet.getPartner())) {
                         actorDet.setPartner(soln.getLiteral("partnerN").getString());
                     }
-                    if (soln.getLiteral("parentN") != null && "".equals(actorDet.getParent())) {
-                        actorDet.setParent(soln.getLiteral("parentN").getString());
+                    if (soln.getLiteral("parentN") != null) {
+                        actorDet.addChild(soln.getLiteral("parentN").getString());
                     }
                     if (soln.getLiteral("mN") != null) {
                         actorDet.addMovie(soln.getLiteral("mN").getString());

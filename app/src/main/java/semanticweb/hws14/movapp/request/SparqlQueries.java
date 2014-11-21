@@ -223,22 +223,22 @@ public class SparqlQueries {
                 "PREFIX dbpprop: <http://dbpedia.org/property/> "+
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
                 "PREFIX yago: <http://dbpedia.org/class/yago/> " +
-                "select distinct ?wA ?birthN ?birthD ?birthP ?citS ?natN ?childC ?oC ?picLink ?yearA ?hp ?partnerN ?parentN ?mN " +
+                "select distinct ?wA ?birthN ?birthD ?bPN ?citS ?natN ?childC ?oC ?picLink ?yearA ?hp ?partnerN ?parentN ?mN " +
                 "where {" +
                 "{?ac rdfs:label '"+actorDet.getName()+"'@en; " +
                 "rdf:type yago:Actor109765278. " +
                 "OPTIONAL{?ac dbpedia-owl:abstract ?wA. FILTER(langMatches(lang(?wA), 'EN'))} " +
                 "OPTIONAL{?ac dbpedia-owl:birthName ?birthN.} " +
                 "OPTIONAL{?ac dbpedia-owl:birthDate ?birthD.} " +
-                "OPTIONAL{?ac dbpprop:birthPlace ?birthP.} " +
+                "OPTIONAL{?ac dbpedia-owl:birthPlace ?birthP. ?birthP foaf:name ?bPN.} " +
                 "OPTIONAL{?ac dbpprop:citizenship ?citS.} " +
                 "OPTIONAL{?ac dbpedia-owl:nationality ?n. ?n rdfs:label ?natN.} " +
                 "OPTIONAL{?ac dbpprop:occupation ?oC.} " +
                 "OPTIONAL{?ac dbpedia-owl:thumbnail ?picLink.} " +
                 "OPTIONAL{?ac dbpprop:children ?childC.} " +
-                "OPTIONAL{?ac dbpprop:yearsActive ?yearA.} " +
+                "OPTIONAL{{?ac dbpprop:yearsActive ?yearA.} UNION {?ac dbpprop:yearsactive ?yearA.}} " +
                 "OPTIONAL{?ac foaf:homepage ?hp.} " +
-                "OPTIONAL{?partner dbpedia-owl:partner ?ac; rdfs:label ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))} " +
+                "OPTIONAL{{?partner dbpedia-owl:partner ?ac; rdfs:label ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))} UNION {?ac dbpprop:spouse ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))}} "+
                 "OPTIONAL{?parent dbpedia-owl:parent ?ac; rdfs:label ?parentN. FILTER(langMatches(lang(?parentN), 'EN'))} " +
                 "} UNION " +
                 "{?ac rdfs:label '"+actorDet.getName()+"'@en; rdf:type yago:Actor109765278. " +
@@ -249,4 +249,41 @@ public class SparqlQueries {
         return queryString;
     }
 
+    public String LMDBActorQuery() {
+        String queryString =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+        "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> "+
+        "SELECT ?aN WHERE {" +
+        "?m rdfs:label '"+criteria.get("movieName")+"'; movie:actor ?a. " +
+        "?a movie:actor_name ?aN.} ";
+        return queryString;
+    }
+
+    //FILTERS are slow, but I think its worth, unless it feels to slow.
+    public String DBPEDIAActorQuery() {
+        String queryString =
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+        "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
+        "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
+        "PREFIX yago: <http://dbpedia.org/class/yago/> " +
+        "select distinct ?aN where{ "+
+        "?a rdf:type yago:Actor109765278; rdfs:label ?aN. FILTER(langMatches(lang(?aN ), 'EN'))";
+        if((Boolean) criteria.get("isTime")) {
+            queryString += "?a dbpedia-owl:birthYear ?by. FILTER(?by >= \""+ ((TimePeriod) criteria.get("timePeriod")).getFrom() +"-01-01\"^^xsd:date && ?by <= \""+ ((TimePeriod) criteria.get("timePeriod")).getTo() +"-12-31\"^^xsd:date)";
+        }
+        if((Boolean) criteria.get("isCity")) {
+            queryString += "?a dbpedia-owl:birthPlace ?bP.{?bP foaf:name ?bPN. FILTER (REGEX(?bPN, \""+criteria.get("city")+"\", \"i\"))} UNION {?bP rdfs:label ?bPN. FILTER (REGEX(?bPN, \""+criteria.get("city")+"\", \"i\"))}";
+        }
+        if((Boolean) criteria.get("isState")) {
+            queryString += "?a dbpedia-owl:birthPlace ?bP. ?bP dbpedia-owl:country ?c. ?c foaf:name \""+criteria.get("state")+"\"@en. ";
+        }
+        if((Boolean) criteria.get("isMovie")) {
+            queryString += "?m dbpedia-owl:starring ?a. ?m foaf:name ?mN. FILTER (REGEX(?mN, \""+criteria.get("movieName")+"\", \"i\"))";
+        }
+        queryString += "}";
+
+        return queryString;
+    }
 }

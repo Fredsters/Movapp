@@ -64,7 +64,6 @@ public class MovieList extends Activity {
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria)) {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
-
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
 

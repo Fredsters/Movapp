@@ -97,24 +97,25 @@ public class MovieDetail extends Activity {
                 //TODO implement a back button (olli)
                 //TODO Close keyboard with return button(olli)
                 //TODO Link to imdb and actor page ( only display button when link is available) (olli)
+                //TODO Style for criteria actor (olli)
 
-                //TODO add more cities and states in array
+
                 //TODO Use Foaf (other) database for better actor info
                 //TODO Animate the panel open close in criteria view
                 //TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
                 //TODO additional actor criteria : nationality ? or something else ?
                 //TODO Change titles of activities (that what is displayed in the action bar)
 
-
                 //TODO include shooting and setting in movie detail view (not possible)
 
-                //TODO Add functionality for actor criteria (fred)
-                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity? (fred)
+                //TODO GPS Tracking for actor and movie (fred)
                 //TODO ERROR bei kate winslet (fred)
                 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
-                //TODO make gps result again useable (fred)
                 //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
                 //TODO check bug with martin freeman and worlds end (fred)
+                //TODO make year array bigger. Every number (fred)
+                //TODO add more cities and states in array (fred)
+                //TODO Kate Upton not born in USA?
 
                 Thread picThread = new Thread(new Runnable() {
                     public void run() {

@@ -11,7 +11,7 @@ public class ActorDet {
     private String birthName; //dbpedia-owl:birthName domain
     private String birthDate; //dbpedia-owl:birthDate domain
     private String name; //foaf:name domain rdfs:label domain
-    private String birthPlace;  //dbpedia-owl:birthPlace domain ressoruce //rdfs:label or foaf:name         // dbpprop:birthPlace
+    private ArrayList<String> birthPlace;  //dbpedia-owl:birthPlace domain ressoruce //rdfs:label or foaf:name         // dbpprop:birthPlace
     private String nationality; // dbpedia-owl:nationality // foaf:name
     private String occupation; //dbpedia-owl:occupation //dbpedia-owl:title    //dbpprop:occupation
     private String pictureURL; //dbpedia-owl:thumbnail
@@ -20,13 +20,13 @@ public class ActorDet {
     private String homepage;   //foaf:homepage domain
     private ArrayList<String> movies;  //dbpedia-owl:starring range
     private String partner; //dbpedia-owl:partner
-    private String parent; //dbpedia-owl:parent range
+    private ArrayList<String> parent; //dbpedia-owl:parent range
    // String spouse; //dbpprop:spouse
 
     private EventActorListener eventActorListener = null;
 
 
-    public ActorDet(String wikiAbstract, String birthName, String birthDate, String name, String birthPlace, String nationality, String occupation, String pictureURL, int children, int activeYear, String homepage, ArrayList<String> movies, String partner, String parent) {
+    public ActorDet(String wikiAbstract, String birthName, String birthDate, String name, ArrayList<String> birthPlace, String nationality, String occupation, String pictureURL, int children, int activeYear, String homepage, ArrayList<String> movies, String partner, ArrayList<String> parent) {
         this.wikiAbstract = wikiAbstract;
         this.birthName = birthName;
         this.birthDate = birthDate;
@@ -48,7 +48,7 @@ public class ActorDet {
         this.birthName = "";
         this.birthDate = "";
         this.name = "";
-        this.birthPlace = "";
+        this.birthPlace = new ArrayList<String>();
         this.nationality = "";
         this.occupation = "";
         this.pictureURL = "";
@@ -57,11 +57,25 @@ public class ActorDet {
         this.homepage = "";
         this.movies = new ArrayList<String>();
         this.partner = "";
-        this.parent = "";
+        this.parent = new ArrayList<String>();
     }
 
     public void addMovie(String movieName){
-        movies.add(movieName);
+        if(!movies.contains(movieName)) {
+            movies.add(movieName);
+        }
+    }
+
+    public void addChild (String childName){
+        if(!parent.contains(childName)) {
+            parent.add(childName);
+        }
+    }
+
+    public void addBirthPlace (String birthPlaceName){
+        if(!birthPlace.contains(birthPlaceName)) {
+            birthPlace.add(birthPlaceName);
+        }
     }
 
     public EventActorListener geteListener() {
@@ -102,14 +116,6 @@ public class ActorDet {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBirthPlace() {
-        return birthPlace;
-    }
-
-    public void setBirthPlace(String birthPlace) {
-        this.birthPlace = birthPlace;
     }
 
     public String getNationality() {
@@ -176,12 +182,20 @@ public class ActorDet {
         this.partner = partner;
     }
 
-    public String getParent() {
+    public ArrayList<String> getParent() {
         return parent;
     }
 
-    public void setParent(String parent) {
-        this.parent += parent;
+    public void setParent(ArrayList<String> parent) {
+        this.parent = parent;
+    }
+
+    public ArrayList<String> getBirthPlace() {
+        return birthPlace;
+    }
+
+    public void setBirthPlace(ArrayList<String> birthPlace) {
+        this.birthPlace = birthPlace;
     }
 
     @Override

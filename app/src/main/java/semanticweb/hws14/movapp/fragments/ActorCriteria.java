@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
-import semanticweb.hws14.movapp.activities.MovieList;
+import semanticweb.hws14.movapp.activities.ActorList;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
@@ -35,9 +34,9 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     String selectedState;
 
     EditText tfMovieName;
+    EditText tfActorCity;
     Spinner spYearFrom;
     Spinner spYearTo;
-    Spinner spCity;
     Spinner spState;
 
     Button btnMovie;
@@ -57,6 +56,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        that = this;
     }
 
     @Override
@@ -69,7 +69,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
     private void initCriteriaView(View view) {
 
-        tfMovieName = (EditText) view.findViewById(R.id.tfActorName);
+        tfMovieName = (EditText) view.findViewById(R.id.tfMovieName);
+        tfActorCity = (EditText) view.findViewById(R.id.tfActorCity);
 
         btnMovie = (Button) view.findViewById(R.id.btnMovie);
         btnYear = (Button) view.findViewById(R.id.btnActorYear);
@@ -118,7 +119,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
-        setupSpinnerCity(view);
         setupSpinnerState(view);
 
         swMovie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
@@ -182,14 +182,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         spYearTo.setOnItemSelectedListener(this);
     }
 
-    private void setupSpinnerCity(View view){
-        spCity = (Spinner) view.findViewById(R.id.spActorCity);
-        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(getActivity(),R.array.city_array,android.R.layout.simple_spinner_item);
-        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCity.setAdapter(adapterCity);
-        spCity.setOnItemSelectedListener(this);
-    }
-
     private void setupSpinnerState(View view){
         spState = (Spinner) view.findViewById(R.id.spActorState);
         ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(getActivity(),R.array.state_array,android.R.layout.simple_spinner_item);
@@ -202,14 +194,14 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     public void submitSearch(View view) {
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
-        String actorName = tfMovieName.getText().toString();
+        String movieName = tfMovieName.getText().toString();
 
-        if(activeMovie && !actorName.equals("")){
-            actorName = InputCleaner.cleanName(actorName);
-            criteria.put("actorName", actorName);
-            criteria.put("isActor", true);
+        if(activeMovie && !movieName.equals("")){
+            movieName = InputCleaner.cleanName(movieName);
+            criteria.put("movieName", movieName);
+            criteria.put("isMovie", true);
         } else{
-            criteria.put("isActor", false);
+            criteria.put("isMovie", false);
         }
 
         if(activeYear){
@@ -218,24 +210,24 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         } else{
             criteria.put("isTime", false);
         }
-
-        if(activeCity) {
-            criteria.put("city", cleanCityStateInput(selectedCity));
+        String cityName = tfActorCity.getText().toString();
+        if(activeCity && !"".equals(cityName)) {
+            criteria.put("city", InputCleaner.cleanName(cityName));
             criteria.put("isCity", true);
         } else {
             criteria.put("isCity", false);
         }
         if(activeState) {
             cleanCityStateInput(selectedState);
-            criteria.put("state", cleanCityStateInput(selectedState));
+            criteria.put("state", selectedState);
             criteria.put("isState", true);
         } else {
             criteria.put("isState", false);
         }
-        if( (activeMovie && !actorName.equals("")) || activeYear || activeCity || activeState){
-           // Intent intent = new Intent(getActivity(), MovieList.class);
-          //  intent.putExtra("criteria", criteria);
-          //  startActivity(intent);
+        if( (activeMovie && !movieName.equals("")) || activeYear || activeCity || activeState){
+            Intent intent = new Intent(getActivity(), ActorList.class);
+            intent.putExtra("criteria", criteria);
+            startActivity(intent);
         }
         else{
             Toast.makeText(getActivity(), "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
@@ -251,9 +243,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
         else if (adapterView.getId() == spYearTo.getId()){
             selectedToDate =Integer.parseInt(item);
-        }
-        else if(adapterView.getId() == spCity.getId()){
-            selectedCity=item;
         }
         else if(adapterView.getId() == spState.getId()){
             selectedState=item;
