@@ -25,34 +25,35 @@ import java.util.List;
 import java.util.Locale;
 
 import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.fragments.ActorCriteria;
 import semanticweb.hws14.movapp.fragments.CriteriaPagerAdapter;
+import semanticweb.hws14.movapp.fragments.MovieCriteria;
 
 
 public class Criteria extends FragmentActivity {
 
-    Activity that = this;
+    private Criteria that;
 
-    LocationManager locMgr;
-    LocationListener locListner;
+    private LocationManager locMgr;
+    private LocationListener locListner;
 
-    CriteriaPagerAdapter criteriaPagerAdapter;
-    ViewPager mViewPager;
-    Fragment currentFragment;
-    android.support.v4.app.FragmentManager fragmentManager;
+    private CriteriaPagerAdapter criteriaPagerAdapter;
+    private ViewPager mViewPager;
+    private int tabPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_criteria);
+        that = this;
         initCriteriaView();
 
-
-
         criteriaPagerAdapter = new CriteriaPagerAdapter(getSupportFragmentManager());
-        fragmentManager = getSupportFragmentManager();
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(criteriaPagerAdapter);
+
 
         mViewPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
@@ -63,8 +64,7 @@ public class Criteria extends FragmentActivity {
                         getActionBar().setSelectedNavigationItem(position);
                     }
                 });
-
-        final ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getActionBar();
 
         // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -72,8 +72,9 @@ public class Criteria extends FragmentActivity {
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
                 mViewPager.setCurrentItem(tab.getPosition());
-                currentFragment = fragmentManager.findFragmentById(tab.getPosition());
+                tabPosition = tab.getPosition();
             }
 
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
@@ -144,17 +145,14 @@ public class Criteria extends FragmentActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
-                                String[] cityArray = getResources().getStringArray(R.array.city_array);
-                                int position = 0;
-                                for(int i = 0 ; i < cityArray.length; i++) {
-                                    if(strReturnedAdress.equals(cityArray[i])) {
-                                        position = i;
-                                        break;
-                                    }
+                                if(tabPosition == 0) {
+                                    MovieCriteria currentFragmet = (MovieCriteria) getFragmentByPosition(tabPosition);
+                                    currentFragmet.setGPSLocation(strReturnedAdress);
+                                } else if(tabPosition == 1){
+                                    ActorCriteria currentFragmet = (ActorCriteria) getFragmentByPosition(tabPosition);
+                                    currentFragmet.setGPSLocation(strReturnedAdress);
                                 }
-                                //TODO get Fragment
-                         //       swCity.setChecked(true);
-                         //       spCity.setSelection(position);
+
                                 dialog.dismiss();
                             }
                         });
@@ -205,5 +203,10 @@ public class Criteria extends FragmentActivity {
     public void getGpsLocation() {
         setProgressBarIndeterminateVisibility(true);
         locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListner);
+    }
+
+    public Fragment getFragmentByPosition(int pos) {
+        String tag = "android:switcher:" + mViewPager.getId() + ":" + pos;
+        return getSupportFragmentManager().findFragmentByTag(tag);
     }
 }

@@ -40,10 +40,11 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 
 public class MovieList extends Activity {
 
-    protected ArrayAdapter<Movie> mlAdapter;
+    private ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
-    HashMap<String, Object> criteria;
-    MenuItem imdbButton;
+    private HashMap<String, Object> criteria;
+    private MenuItem imdbButton;
+    private queryForMovies q;
 
     public static ArrayList<Movie> staticMovieList;
     static HashMap<String, Object> staticCriteria;
@@ -73,7 +74,7 @@ public class MovieList extends Activity {
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
             staticCriteria = criteria;
-            queryForMovies q = new queryForMovies();
+            q = new queryForMovies();
             q.execute(criteria);
         }
 
@@ -111,6 +112,17 @@ public class MovieList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void onPause() {
+        super.onPause();
+        q.cancel(true);
+        Log.d("onPause", "PAUUSEE!");
+    }
+
+    protected void onStop(){
+        super.onStop();
+        Log.d("onStop", "STOPP!");
+    }
+
     public void queryForImdbRating () {
         that.setProgressBarIndeterminateVisibility(true);
         HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
@@ -122,7 +134,8 @@ public class MovieList extends Activity {
         @Override
         protected ArrayList<Movie> doInBackground(HashMap<String, Object>... criterias) {
 
-           final SparqlQueries sparqler = new SparqlQueries(criterias[0]);
+           HashMap<String, Object> criteria = criterias[0];
+           final SparqlQueries sparqler = new SparqlQueries(criteria);
 
            final ArrayList<Movie> movieList = new ArrayList<Movie>();
 

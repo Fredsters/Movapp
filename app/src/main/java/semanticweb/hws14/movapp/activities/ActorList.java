@@ -39,10 +39,10 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 public class ActorList extends Activity {
 
     private static ArrayList<String> staticActorList;
-    protected static HashMap<String, Object> staticCriteria;
-    protected ArrayAdapter<String> alAdapter;
+    private static HashMap<String, Object> staticCriteria;
+    private ArrayAdapter<String> alAdapter;
     private Activity that = this;
-    HashMap<String, Object> actorCriteria;
+    private HashMap<String, Object> actorCriteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +115,8 @@ public class ActorList extends Activity {
 
         @Override
         protected ArrayList<String> doInBackground(HashMap<String, Object>... criterias) {
-
-            final SparqlQueries sparqler = new SparqlQueries(criterias[0]);
+            HashMap<String, Object> actorCriteria = criterias[0];
+            final SparqlQueries sparqler = new SparqlQueries(actorCriteria);
 
             final ArrayList<String> actorList = new ArrayList<String>();
 

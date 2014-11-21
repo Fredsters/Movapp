@@ -1,5 +1,6 @@
 package semanticweb.hws14.movapp.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,31 +28,30 @@ import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
 
 public class ActorCriteria extends Fragment implements AdapterView.OnItemSelectedListener {
 
-    ActorCriteria that;
-    int selectedFromDate;
-    int selectedToDate;
-    String selectedCity;
-    String selectedState;
+    private ActorCriteria that;
+    private int selectedFromDate;
+    private int selectedToDate;
+    private String selectedState;
 
-    EditText tfMovieName;
-    EditText tfActorCity;
-    Spinner spYearFrom;
-    Spinner spYearTo;
-    Spinner spState;
+    private EditText tfMovieName;
+    private EditText tfActorCity;
+    private Spinner spYearFrom;
+    private Spinner spYearTo;
+    private Spinner spState;
 
-    Button btnMovie;
-    Button btnYear ;
-    Button btnRegion;
+    private Button btnMovie;
+    private Button btnYear ;
+    private Button btnRegion;
 
-    Switch swMovie ;
-    Switch swYear ;
-    Switch swCity;
-    Switch swState;
+    private Switch swMovie ;
+    private Switch swYear ;
+    private Switch swCity;
+    private Switch swState;
 
-    boolean activeMovie = false;
-    boolean activeYear = false;
-    boolean activeState = false;
-    boolean activeCity = false;
+    private boolean activeMovie = false;
+    private boolean activeYear = false;
+    private boolean activeState = false;
+    private boolean activeCity = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -195,6 +195,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
         String movieName = tfMovieName.getText().toString();
+        String cityName = tfActorCity.getText().toString();
 
         if(activeMovie && !movieName.equals("")){
             movieName = InputCleaner.cleanName(movieName);
@@ -205,27 +206,30 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
 
         if(activeYear){
-            criteria.put("timePeriod", new TimePeriod(selectedFromDate, selectedToDate));
+            int dateFrom = selectedFromDate;
+            int dateTo = selectedToDate;
+            criteria.put("timePeriod", new TimePeriod(dateFrom, dateTo));
             criteria.put("isTime", true);
         } else{
             criteria.put("isTime", false);
         }
-        String cityName = tfActorCity.getText().toString();
         if(activeCity && !"".equals(cityName)) {
-            criteria.put("city", InputCleaner.cleanName(cityName));
+            cityName = InputCleaner.cleanName(cityName);
+            criteria.put("city", cityName);
             criteria.put("isCity", true);
         } else {
             criteria.put("isCity", false);
         }
         if(activeState) {
-            cleanCityStateInput(selectedState);
-            criteria.put("state", selectedState);
+           String state = cleanCityStateInput(selectedState);
+            criteria.put("state", state);
             criteria.put("isState", true);
         } else {
             criteria.put("isState", false);
         }
         if( (activeMovie && !movieName.equals("")) || activeYear || activeCity || activeState){
-            Intent intent = new Intent(getActivity(), ActorList.class);
+            Activity criteriaActivity = getActivity();
+            Intent intent = new Intent(criteriaActivity, ActorList.class);
             intent.putExtra("criteria", criteria);
             startActivity(intent);
         }
@@ -253,6 +257,9 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-
+    public void setGPSLocation(String city) {
+        swCity.setChecked(true);
+        tfActorCity.setText(city);
+    }
 
 }

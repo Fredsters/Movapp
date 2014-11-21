@@ -27,49 +27,33 @@ import semanticweb.hws14.movapp.model.MovieDet;
  */
 
 public class HttpRequester {
-    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState) {
-        for(final Movie movie : movieList) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState /*, boolean isPause*/) {
+       // while(!isPause) {
+            for (final Movie movie : movieList) {
 
-            String url = prepareURL(movie, false);
+                String url = prepareURL(movie, false);
 
-            final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject r) {
-                    boolean response = false;
-                    boolean lastMovie = false;
-                    try {
-                        response = r.getBoolean("Response");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    if(response) {
-
-                        //TIME  //Not neccessary when we kick out all the 0 dates out before
-                       try {
-                            if (isTime && (isActor || isDirector ||isGenre)) {
-                                if (0 == movie.getReleaseYear()) {
-                                    int releaseYear = r.getInt("Year");
-                                    movie.setReleaseYear(releaseYear);
-                                }
-                                if (SparqlQueries.filterReleaseDate(movie)) {
-                                    if (movieList.size() <= movieList.indexOf(movie) + 1) {
-                                        lastMovie = true;
-                                    }
-                                    movieList.remove(movie);
-                                }
-                            }
+                final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject r) {
+                        boolean response = false;
+                        boolean lastMovie = false;
+                        try {
+                            response = r.getBoolean("Response");
                         } catch (JSONException e) {
-                           movie.setImdbRating("0 Not sufficient data");
+                            e.printStackTrace();
                         }
 
-                        if (!(movieList.indexOf(movie) == -1)) {
-                            //Genre
+                        if (response) {
+
+                            //TIME  //Not neccessary when we kick out all the 0 dates out before
                             try {
-                                if (isGenre && (isActor || isDirector)) {
-                                    String genreName = r.getString("Genre");
-                                    movie.setGenre(genreName);
-                                    if (SparqlQueries.filterGenre(movie)) {
+                                if (isTime && (isActor || isDirector || isGenre)) {
+                                    if (0 == movie.getReleaseYear()) {
+                                        int releaseYear = r.getInt("Year");
+                                        movie.setReleaseYear(releaseYear);
+                                    }
+                                    if (SparqlQueries.filterReleaseDate(movie)) {
                                         if (movieList.size() <= movieList.indexOf(movie) + 1) {
                                             lastMovie = true;
                                         }
@@ -81,53 +65,71 @@ public class HttpRequester {
                             }
 
                             if (!(movieList.indexOf(movie) == -1)) {
-                                //IMDB ID
+                                //Genre
                                 try {
-                                    if ("".equals(movie.getImdbId())) {
-                                        String imdbID = r.getString("imdbID");
-                                        movie.setImdbId(imdbID);
+                                    if (isGenre && (isActor || isDirector)) {
+                                        String genreName = r.getString("Genre");
+                                        movie.setGenre(genreName);
+                                        if (SparqlQueries.filterGenre(movie)) {
+                                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
+                                                lastMovie = true;
+                                            }
+                                            movieList.remove(movie);
+                                        }
                                     }
                                 } catch (JSONException e) {
-                                    movie.setImdbId("");
+                                    movie.setImdbRating("0 Not sufficient data");
                                 }
 
-                                //IMDB RATING
-                                try {
-                                    double imdbRating = r.getDouble("imdbRating");
-                                    movie.setImdbRating(String.valueOf(imdbRating));
-                                } catch (JSONException e) {
-                                    movie.setImdbRating("0 No Rating");
+                                if (!(movieList.indexOf(movie) == -1)) {
+                                    //IMDB ID
+                                    try {
+                                        if ("".equals(movie.getImdbId())) {
+                                            String imdbID = r.getString("imdbID");
+                                            movie.setImdbId(imdbID);
+                                        }
+                                    } catch (JSONException e) {
+                                        movie.setImdbId("");
+                                    }
+
+                                    //IMDB RATING
+                                    try {
+                                        double imdbRating = r.getDouble("imdbRating");
+                                        movie.setImdbRating(String.valueOf(imdbRating));
+                                    } catch (JSONException e) {
+                                        movie.setImdbRating("0 No Rating");
+                                    }
                                 }
                             }
-                       }
-                    } else {
-                        movie.setImdbRating("0 Not sufficient data");
+                        } else {
+                            movie.setImdbRating("0 Not sufficient data");
+                        }
+
+                        if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
+
+                            mlAdapter.clear();
+                            Collections.sort(movieList, new MovieComparator());
+                            mlAdapter.addAll(movieList);
+                            listActivity.setProgressBarIndeterminateVisibility(false);
+                            MovieList.staticMovieList = movieList;
+                        }
                     }
-
-                    if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
-
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("JSONException", "RESPONSE FAILED");
                         mlAdapter.clear();
                         Collections.sort(movieList, new MovieComparator());
                         mlAdapter.addAll(movieList);
                         listActivity.setProgressBarIndeterminateVisibility(false);
                         MovieList.staticMovieList = movieList;
                     }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("JSONException", "RESPONSE FAILED");
-                    mlAdapter.clear();
-                    Collections.sort(movieList, new MovieComparator());
-                    mlAdapter.addAll(movieList);
-                    listActivity.setProgressBarIndeterminateVisibility(false);
-                    MovieList.staticMovieList = movieList;
-                }
-            });
+                });
 
-            HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
+                HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
+            }
         }
-    }
+   // }
 
     public static void loadWebServiceData (final Activity detailActivity, final MovieDet movie) {
         String url = prepareURL(movie, true);

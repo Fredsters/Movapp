@@ -34,8 +34,11 @@ import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.model.EventListener;
@@ -48,10 +51,10 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 public class MovieDetail extends Activity {
 
     private Activity that = this;
-    MovieDet movieDet;
-    Button btnSpoiler;
-    Button btnActorList;
-    int rowCount=0;
+    private MovieDet movieDet;
+    private Button btnSpoiler;
+    private Button btnActorList;
+    private int rowCount=0;
 
     public void colorIt(TextView tv){
         LinearLayout p = (LinearLayout) tv.getParent();
@@ -91,25 +94,25 @@ public class MovieDetail extends Activity {
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
 
+                //DEINE
                 //TODO Buttons colored  different when criteria is active (olli)
                 //TODO nicer layout in Detail( Texts should always have same offset, so that the length of the label does not matter) (oLLI)
                 //TODO nicer Layout in listview (olli)
                 //TODO implement a back button (olli)
                 //TODO Close keyboard with return button(olli)
-                //TODO Link to imdb and actor page ( only display button when link is available) (olli)
+                //TODO Link to imdb and actor page (only display button when link is available) (olli)
                 //TODO Style for criteria actor (olli)
 
-
+                //Hier kannste dir was nehmen :)
                 //TODO Use Foaf (other) database for better actor info
                 //TODO Animate the panel open close in criteria view
                 //TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
-                //TODO additional actor criteria : nationality ? or something else ?
                 //TODO Change titles of activities (that what is displayed in the action bar)
+                //TODO Additional Actor Criteria einen namen eingeben und alle actor kriegen die diesen als vor oder nachname haben oder sonst im namen haben
+                //TODO Memory leaks --> That can be the reason for the slow loading. But I can't say how to remove them correctly. Or just a phone with more ram :D
 
-                //TODO include shooting and setting in movie detail view (not possible)
-
-                //TODO GPS Tracking for actor and movie (fred)
-                //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
+                //MEINE
+                //TODO Kill proces when activity is changed during loading so that app does not crash (fred) (already started) HttpRequest mit While schleife beenden? bisher nur bei movieList etwas gemacht
                 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
                 //TODO make year array bigger. Every number (fred)
                 //TODO add more cities and states in array (fred)
@@ -209,19 +212,13 @@ public class MovieDetail extends Activity {
                 TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
                 String budgetText = movie.getBudget();
 
-
                 if(budgetText.contains("E")){
-
+/*
                     int ePos = budgetText.indexOf("E");
                     int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
-
-                    //TODO Hier gabs nen error: bei dem Film "Black Hawk Down" Zweile 222 // budgetText = budgetText.replace(""+budgetText.charAt(ePos),""); ich weiß niocht obs immer passiert, bin ein paar mal rum navigiert
-                    //FATAL EXCEPTION: main java.lang.StringIndexOutOfBoundsException: length=3; index=3
-                    // das Budget bei dbpedia sieht so aus:  9.2E7    weiß nicht ob das auch ankam
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
-
                     for(int i=0;i<zeroCount-1;i++){
                         if(zeroCount%3==1 && i%3==0){
                             budgetText += ".";
@@ -234,7 +231,12 @@ public class MovieDetail extends Activity {
                         }
 
                         budgetText += "0";
-                    }
+                    } */
+
+                    BigDecimal myNumber = new BigDecimal(budgetText);
+                    long budgetLong = myNumber.longValue();
+                    NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
+                    budgetText = formatter.format(budgetLong);
                 }
 
                 if(budgetText.equals("")){
@@ -244,7 +246,7 @@ public class MovieDetail extends Activity {
                 else{
                     budget.setVisibility(View.VISIBLE);
                     budgetHc.setVisibility(View.VISIBLE);
-                    budget.setText(String.valueOf(budgetText + " $") );
+                    budget.setText(String.valueOf(budgetText));
                     colorIt(budgetHc);
                 }
 

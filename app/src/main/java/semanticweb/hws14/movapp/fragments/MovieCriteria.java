@@ -1,5 +1,6 @@
 package semanticweb.hws14.movapp.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -31,93 +32,42 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
 
 
-    MovieCriteria that;
-    int selectedFromDate;
-    int selectedToDate;
-    String selectedGenre;
-    String selectedCity;
-    String selectedState;
+    private MovieCriteria that;
+    private int selectedFromDate;
+    private int selectedToDate;
+    private String selectedGenre;
+    private String selectedCity;
+    private String selectedState;
 
-    String regionKind;
+    private String regionKind;
 
-    EditText tfActorName;
-    EditText tfDirectorName;
-    Spinner spYearFrom;
-    Spinner spYearTo;
-    Spinner spGenre;
-    Spinner spCity;
-    Spinner spState;
+    private EditText tfActorName;
+    private EditText tfDirectorName;
+    private Spinner spYearFrom;
+    private Spinner spYearTo;
+    private Spinner spGenre;
+    private Spinner spCity;
+    private Spinner spState;
 
-    Button btnActor;
-    Button btnYear ;
-    Button btnGenre ;
-    Button btnDirector;
-    Button btnRegion;
+    private Button btnActor;
+    private Button btnYear ;
+    private Button btnGenre ;
+    private Button btnDirector;
+    private Button btnRegion;
 
-    Switch swActor ;
-    Switch swYear ;
-    Switch swGenre ;
-    Switch swDirector ;
-    Switch swCity;
-    Switch swState;
+    private Switch swActor ;
+    private Switch swYear ;
+    private Switch swGenre ;
+    private Switch swDirector ;
+    private Switch swCity;
+    private Switch swState;
 
-    boolean activeActor = false;
-    boolean activeYear = false;
-    boolean activeGenre = false;
-    boolean activeDirector = false;
-    boolean activeState = false;
-    boolean activeCity = false;
-
-/*
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-
-
-    public static MovieCriteria newInstance(String param1, String param2) {
-        MovieCriteria fragment = new MovieCriteria();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    public MovieCriteria() {
-        // Required empty public constructor
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-*/
-
+    private boolean activeActor = false;
+    private boolean activeYear = false;
+    private boolean activeGenre = false;
+    private boolean activeDirector = false;
+    private boolean activeState = false;
+    private boolean activeCity = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -149,14 +99,17 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
 
         if(activeYear){
-            criteria.put("timePeriod", new TimePeriod(selectedFromDate, selectedToDate));
+            int dateFrom = selectedFromDate;
+            int dateTo = selectedToDate;
+            criteria.put("timePeriod", new TimePeriod(dateFrom, dateTo));
             criteria.put("isTime", true);
         } else{
             criteria.put("isTime", false);
         }
 
         if(activeGenre){
-            criteria.put("genreName", selectedGenre);
+            String genre = selectedGenre;
+            criteria.put("genreName", genre);
             criteria.put("isGenre", true);
         } else{
             criteria.put("isGenre", false);
@@ -164,29 +117,33 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         if(activeDirector && !directorName.equals("")){
             directorName = InputCleaner.cleanName(directorName);
-            criteria.put("directorName", tfDirectorName.getText().toString());
+            criteria.put("directorName", directorName);
             criteria.put("isDirector", true);
         } else {
             criteria.put("isDirector", false);
         }
 
         if(activeCity) {
-            criteria.put("city", cleanCityStateInput(selectedCity));
+            String city = cleanCityStateInput(selectedCity);
+            String setShot = regionKind;
+            criteria.put("city", city);
             criteria.put("isCity", true);
-            criteria.put("regionKind", regionKind);
+            criteria.put("regionKind", setShot);
         } else {
             criteria.put("isCity", false);
         }
         if(activeState) {
-            cleanCityStateInput(selectedState);
-            criteria.put("state", cleanCityStateInput(selectedState));
+            String state = cleanCityStateInput(selectedState);
+            String setShot = regionKind;
+            criteria.put("state", state);
             criteria.put("isState", true);
-            criteria.put("regionKind", regionKind);
+            criteria.put("regionKind", setShot);
         } else {
             criteria.put("isState", false);
         }
         if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState){
-            Intent intent = new Intent(getActivity(), MovieList.class);
+            Activity criteriaActivity = getActivity();
+            Intent intent = new Intent(criteriaActivity, MovieList.class);
             intent.putExtra("criteria", criteria);
             startActivity(intent);
         }
@@ -444,6 +401,19 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                     regionKind = "shot";
                 break;
         }
+    }
+
+    public void setGPSLocation(String city) {
+        swCity.setChecked(true);
+        String[] cityArray = getResources().getStringArray(R.array.city_array);
+        int position = 0;
+        for(int i = 0 ; i < cityArray.length; i++) {
+            if(city.equals(cityArray[i])) {
+                position = i;
+                break;
+            }
+        }
+        spCity.setSelection(position);
     }
 
 }

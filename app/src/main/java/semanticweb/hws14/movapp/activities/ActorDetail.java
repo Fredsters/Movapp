@@ -46,7 +46,7 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 public class ActorDetail extends Activity {
     private Activity that = this;
     private ActorDet actorDet;
-    int rowCount=0; //needed to color
+    private int rowCount=0; //needed to color
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
