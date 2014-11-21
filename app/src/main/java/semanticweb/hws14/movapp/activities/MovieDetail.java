@@ -109,12 +109,12 @@ public class MovieDetail extends Activity {
                 //TODO include shooting and setting in movie detail view (not possible)
 
                 //TODO GPS Tracking for actor and movie (fred)
-                //TODO ERROR bei kate winslet (fred)
-                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
                 //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
-                //TODO check bug with martin freeman and worlds end (fred)
+                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
                 //TODO make year array bigger. Every number (fred)
                 //TODO add more cities and states in array (fred)
+                //TODO check bug with martin freeman and worlds end (fred)
+                //TODO ERROR bei kate winslet (fred)
                 //TODO Kate Upton not born in USA?
 
                 Thread picThread = new Thread(new Runnable() {
@@ -215,6 +215,8 @@ public class MovieDetail extends Activity {
                     int ePos = budgetText.indexOf("E");
                     int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
 
+                    //TODO Hier gabs nen error: bei dem Film "Black Hawk Down" Zweile 221 // budgetText = budgetText.replace(""+budgetText.charAt(ePos),""); ich weiß niocht obs immer passiert, bin ein paar mal rum navigiert
+                    //FATAL EXCEPTION: main java.lang.StringIndexOutOfBoundsException: length=3; index=3
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
@@ -482,20 +484,35 @@ public class MovieDetail extends Activity {
                         results = qexec.execSelect();
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
+                            try {
                             if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
                                 movieDet.setRuntime(soln.getLiteral("r").getString());
+                            }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
                             }
+                            try {
                             if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
                                 movieDet.addActor(soln.getLiteral("aN").getString());
+                            }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
                             }
+                            try {
                             if (soln.getLiteral("dN") != null && !movieDet.getDirectors().contains(soln.getLiteral("dN").getString())) {
                                 movieDet.addDirector(soln.getLiteral("dN").getString());
+                            }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
                             }
+                            try {
                             if (soln.getLiteral("wN") != null && !movieDet.getWriters().contains(soln.getLiteral("wN").getString())) {
                                 movieDet.addWriter(soln.getLiteral("wN").getString());
+                            }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
                             }
+                            try {
                             if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
                                 movieDet.addGenre(soln.getLiteral("gN").getString());
+                            }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
                             }
                         }
                     } catch (Exception e) {
@@ -518,26 +535,47 @@ public class MovieDetail extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
+                    try {
                     if(soln.getLiteral("abs") != null && "".equals(movieDet.getWikiAbstract())) {
                         movieDet.setWikiAbstract(soln.getLiteral("abs").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if(soln.getLiteral("bu") != null && "".equals(movieDet.getBudget())) {
                         movieDet.setBudget(soln.getLiteral("bu").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("r") != null && "".equals(movieDet.getRuntime())) {
                         movieDet.setRuntime(soln.getLiteral("r").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("aN") != null && !movieDet.getActors().contains(soln.getLiteral("aN").getString())) {
                         movieDet.addActor(soln.getLiteral("aN").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("dN") != null && !movieDet.getDirectors().contains(soln.getLiteral("dN").getString())) {
                         movieDet.addDirector(soln.getLiteral("dN").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("wN") != null && !movieDet.getWriters().contains(soln.getLiteral("wN").getString())) {
                         movieDet.addWriter(soln.getLiteral("wN").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("gN") != null && !movieDet.getGenres().contains(soln.getLiteral("gN").getString())) {
                         movieDet.addGenre(soln.getLiteral("gN").getString());
+                    }}catch (Exception e) {
+                        Log.d("movieDetail Problem ", e.toString());
                     }
                 }
             }catch (Exception e){

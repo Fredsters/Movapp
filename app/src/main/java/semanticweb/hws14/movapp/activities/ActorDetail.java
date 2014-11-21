@@ -267,51 +267,89 @@ public class ActorDetail extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
+                    try {
                     if (soln.getLiteral("wA") != null && "".equals(actorDet.getWikiAbstract())) {
                         actorDet.setWikiAbstract(soln.getLiteral("wA").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("birthN") != null && "".equals(actorDet.getBirthName())) {
                         actorDet.setBirthName(soln.getLiteral("birthN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("birthD") != null && "".equals(actorDet.getBirthDate())) {
                         actorDet.setBirthDate(soln.getLiteral("birthD").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("bPN") != null) {
                         actorDet.addBirthPlace(soln.getLiteral("bPN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("natN") != null && "".equals(actorDet.getNationality())) {
                         actorDet.setNationality(soln.getLiteral("natN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("citS") != null && "".equals(actorDet.getNationality())) {
                         actorDet.setNationality(soln.getLiteral("citS").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
                     try {
                     if (soln.getLiteral("childC") != null && 0 == actorDet.getChildren()) {
                         actorDet.setChildren(soln.getLiteral("childC").getInt());
                     }} catch (Exception e){
-                        Log.d("childC Problem", e.toString());
+                        Log.d("actorDetail Problem", e.toString());
                     }
-
+                    try {
                     if (soln.getLiteral("yearA") != null && 0 == actorDet.getActiveYear()) {
                         actorDet.setActiveYear(soln.getLiteral("yearA").getInt());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("oC") != null && "".equals(actorDet.getOccupation())) {
                         actorDet.setOccupation(soln.getLiteral("oC").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.get("picLink") != null && "".equals(actorDet.getPictureURL())) {
                         actorDet.setPictureURL(soln.get("picLink").toString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.get("hp") != null && "".equals(actorDet.getHomepage())) {
                         actorDet.setHomepage(soln.get("hp").toString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("partnerN") != null && "".equals(actorDet.getPartner())) {
                         actorDet.setPartner(soln.getLiteral("partnerN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("parentN") != null) {
                         actorDet.addChild(soln.getLiteral("parentN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
+                    try {
                     if (soln.getLiteral("mN") != null) {
                         actorDet.addMovie(soln.getLiteral("mN").getString());
+                    }} catch (Exception e){
+                        Log.d("actorDetail Problem", e.toString());
                     }
                 }
             }catch (Exception e){

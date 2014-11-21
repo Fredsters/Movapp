@@ -141,14 +141,37 @@ public class MovieList extends Activity {
 
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
-
-                            String movieResource = soln.getResource("m").toString();
-
-                            String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
-                            Literal releaseYearLiteral = soln.getLiteral("y");
-                            int releaseYear = InputCleaner.cleanReleaseYear(releaseYearLiteral);
-                            String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
-                            String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
+                            String movieResource = "";
+                            try {
+                                movieResource = soln.getResource("m").toString();
+                            } catch (Exception e) {
+                                Log.d("movieList Problem ", e.toString());
+                            }
+                            String title = "";
+                            try {
+                                title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
+                            } catch (Exception e) {
+                                Log.d("movieList Problem ", e.toString());
+                            }
+                            int releaseYear = 0;
+                            try {
+                                Literal releaseYearLiteral = soln.getLiteral("y");
+                                releaseYear = InputCleaner.cleanReleaseYear(releaseYearLiteral);
+                            } catch (Exception e) {
+                                Log.d("movieList Problem ", e.toString());
+                            }
+                            String imdbId = "";
+                            try {
+                                imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
+                            } catch (Exception e) {
+                                Log.d("movieList Problem ", e.toString());
+                            }
+                            String genreName = "";
+                            try {
+                                genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
+                            }catch (Exception e) {
+                                Log.d("movieList Problem ", e.toString());
+                            }
 
                             Movie movie = new Movie(title, releaseYear, genreName);
                             movie.setImdbId(imdbId);
@@ -181,16 +204,34 @@ public class MovieList extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    String movieResource = soln.getResource("m").toString();
-                    String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
-                    int releaseYear;
+
+                    String movieResource = "";
+                    try {
+                        movieResource = soln.getResource("m").toString();
+                    } catch (Exception e) {
+                        Log.d("movieList Problem ", e.toString());
+                    }
+                    String title = "";
+                    try {
+                        title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
+                    } catch (Exception e) {
+                        Log.d("movieList Problem ", e.toString());
+                    }
+
+                    int releaseYear = 0;
                     try {
                         Literal releaseYearLiteral = soln.getLiteral("y");
                         releaseYear = InputCleaner.cleanReleaseYear(releaseYearLiteral);
                     } catch (Exception e) {
-                        releaseYear = 0;
+                        Log.d("movieList Problem ", e.toString());
                     }
-                    String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
+                    String genreName = "";
+                    try {
+                        genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
+                    } catch (Exception e) {
+                        Log.d("movieList Problem ", e.toString());
+                    }
+
                     Movie movie = new Movie(title, releaseYear, genreName);
                     movie.setDBPmovieResource("<"+movieResource+">");
                     movieList.add(movie);

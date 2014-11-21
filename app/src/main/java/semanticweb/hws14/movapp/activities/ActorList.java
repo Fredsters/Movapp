@@ -134,7 +134,12 @@ public class ActorList extends Activity {
                         results = qexec.execSelect();
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
-                            String actorName = soln.getLiteral("aN").getString();
+                            String actorName = "";
+                            try {
+                            actorName = soln.getLiteral("aN").getString();
+                            }catch (Exception e) {
+                                Log.d("actorList Problem ", e.toString());
+                            }
                             actorList.add(actorName);
                         }
                     }catch (Exception e){
@@ -160,7 +165,12 @@ public class ActorList extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-                    String actorName = soln.getLiteral("aN").getString();
+                    String actorName = "";
+                    try {
+                    actorName = soln.getLiteral("aN").getString();
+                    }catch (Exception e) {
+                        Log.d("actorList Problem ", e.toString());
+                    }
                     actorList.add(actorName);
                 }
             } catch (Exception e) {
