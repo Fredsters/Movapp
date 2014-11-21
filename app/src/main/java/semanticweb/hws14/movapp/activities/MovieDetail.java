@@ -215,8 +215,9 @@ public class MovieDetail extends Activity {
                     int ePos = budgetText.indexOf("E");
                     int zeroCount = Integer.parseInt(""+budgetText.charAt(ePos+1));
 
-                    //TODO Hier gabs nen error: bei dem Film "Black Hawk Down" Zweile 221 // budgetText = budgetText.replace(""+budgetText.charAt(ePos),""); ich weiß niocht obs immer passiert, bin ein paar mal rum navigiert
+                    //TODO Hier gabs nen error: bei dem Film "Black Hawk Down" Zweile 222 // budgetText = budgetText.replace(""+budgetText.charAt(ePos),""); ich weiß niocht obs immer passiert, bin ein paar mal rum navigiert
                     //FATAL EXCEPTION: main java.lang.StringIndexOutOfBoundsException: length=3; index=3
+                    // das Budget bei dbpedia sieht so aus:  9.2E7    weiß nicht ob das auch ankam
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos+1),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos),"");
                     budgetText = budgetText.replace(""+budgetText.charAt(ePos-2),"");
