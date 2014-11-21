@@ -29,7 +29,7 @@ public class SparqlQueries {
             "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
             "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
             "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
-            "SELECT distinct ?t ?i ?y ?p";
+            "SELECT distinct ?m ?t ?y ?p ";
             if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
                 queryString += "?gn ";
             }
@@ -42,27 +42,21 @@ public class SparqlQueries {
                 queryString += "?d movie:director_name '"+criteria.get("directorName")+"'. "+
                 "?m movie:director ?d. ";
             }
-            queryString +=
-            "?m movie:filmid ?i; " +
-            "rdfs:label ?t. ";
-
-            if((Boolean)criteria.get("isGenre") && !(Boolean)criteria.get("isActor") && !(Boolean)criteria.get("isDirector")) {
+            if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
                 queryString +=
-                "?g movie:film_genre_name '"+ criteria.get("genreName")+"'. "+
-                        //Removed the filter, because it was too slowly
-               // "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
-                "?m movie:genre ?g. ";
+                "OPTIONAL {?g movie:film_genre_name ?gn. " +
+                "?m movie:genre ?g.}" ;
             } else if((Boolean)criteria.get("isGenre")){
                 queryString +=
-                "OPTIONAL {?g movie:film_genre_name ?gn." +
-                "FILTER(regex(?gn, '"+ criteria.get("genreName")+"','i')) " +
-                "?m movie:genre ?g.}" ;
+                "?g movie:film_genre_name '"+ criteria.get("genreName")+"'. "+
+                "?m movie:genre ?g. ";
             }
 
         queryString +=
+            "?m movie:filmid ?i; " +
+            "rdfs:label ?t. " +
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
-            "OPTIONAL { ?m foaf:page ?p." +
-            "FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
+            "OPTIONAL {?m foaf:page ?p. FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
             "} LIMIT 200";
 
         return queryString;
@@ -79,7 +73,7 @@ public class SparqlQueries {
                     "PREFIX category: <http://dbpedia.org/resource/Category:> "+
                     "PREFIX dcterms: <http://purl.org/dc/terms/> "+
                     "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
-                    "SELECT distinct ?t ?y ";
+                    "SELECT distinct ?m ?t ?y ";
             if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
                 queryString += "?gn ";
             }
@@ -92,19 +86,13 @@ public class SparqlQueries {
                 queryString += "?d rdfs:label '" + criteria.get("directorName") + "'@en. " +
                         "?m dbpedia-owl:director ?d. ";
             }
-            if ((Boolean) criteria.get("isGenre") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector")) {
+            if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
                 queryString +=
-                        "?g rdfs:label '" + criteria.get("genreName") + "' " +
-                                "FILTER(langMatches(lang(?gn), 'EN')) " +
-                                //Removed the filter, because it was too slowly
-                                //           "FILTER(regex(?gn, '"+criteria.get("genreName")+"', 'i')) "+
-                                "?m dbpprop:genre ?g.";
+                "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gn. }";
             } else if ((Boolean) criteria.get("isGenre")) {
                 queryString +=
-                        "OPTIONAL { ?g rdfs:label ?gn. " +
-                                "FILTER(langMatches(lang(?gn), 'EN')) " +
-                                "FILTER(regex(?gn, '" + criteria.get("genreName") + "', 'i')) " +
-                                "?m dbpprop:genre ?g. }";
+                "?g rdfs:label '" + criteria.get("genreName") + "'. " +
+                "?m dbpprop:genre ?g.";
             }
             if((Boolean) criteria.get("isCity")) {
                 queryString +=
@@ -114,8 +102,6 @@ public class SparqlQueries {
                         "UNION {category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_state skos:broader ?states. ?m dcterms:subject ?states } " +
                         "UNION {?cities skos:broader  category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_city . ?m dcterms:subject ?cities} ";
              }
-            queryString += "?m foaf:name ?t.";
-
             if ((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector")) {
                 queryString +=
                         "?m dbpprop:released ?y. " +
@@ -124,8 +110,9 @@ public class SparqlQueries {
                 queryString +=
                         "OPTIONAL{?m dbpprop:released ?y.}";
             }
+            queryString += "?m foaf:name ?t.";
             queryString +=
-                    "} LIMIT 500";
+                    "} LIMIT 400";
         return queryString;
     }
 
@@ -151,17 +138,14 @@ public class SparqlQueries {
     }
 
     public String LMDBDetailQuery(Movie movie) {
-        String queryString=
+        String movieResource = movie.getLMDBmovieResource();
+        String queryString ="";
+        if("".equals(movieResource)) {
+            queryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
-                "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
                 "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
-                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { ";
-                if(movie.getLMDBmovieId() != 0) {
-                    queryString+= "?m movie:filmid '"+movie.getLMDBmovieId()+"'^^xsd:int. ";
-                } else {
-                    queryString+= "?m rdfs:label '"+movie.getTitle()+"'. ";
-                }
-                queryString+=
+                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
+                "?m rdfs:label '"+movie.getTitle()+"'. "+
                 "OPTIONAL {?m movie:actor ?a. "+
                 "?a movie:actor_name ?aN.} "+
                 "OPTIONAL {?m movie:director ?d. "+
@@ -171,16 +155,35 @@ public class SparqlQueries {
                 "OPTIONAL {?m movie:genre ?g. "+
                 "?g movie:film_genre_name ?gN.} "+
                 "OPTIONAL {?m movie:runtime ?r.}} ";
+        } else {
+            queryString=
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
+                "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
+                "OPTIONAL {"+movieResource+" movie:actor ?a. "+
+                "?a movie:actor_name ?aN.} "+
+                "OPTIONAL {"+movieResource+" movie:director ?d. "+
+                "?d movie:director_name ?dN.} "+
+                "OPTIONAL {"+movieResource+" movie:writer ?w. "+
+                "?w movie:writer_name ?wN.} "+
+                "OPTIONAL {"+movieResource+" movie:genre ?g. "+
+                "?g movie:film_genre_name ?gN.} "+
+                "OPTIONAL {"+movieResource+" movie:runtime ?r.}} ";
+        }
+
         return queryString;
     }
 
     public String DBPEDIADetailQuery(Movie movie) {
-        String queryString=
+        String movieResource = movie.getDBPmovieResource();
+        String queryString ="";
+        if("".equals(movieResource)) {
+            queryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
                 "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
                 "PREFIX dbpprop: <http://dbpedia.org/property/> "+
                 "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "+
+                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
                 "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
                 "?m rdf:type <http://schema.org/Movie>; "+
                 "foaf:name '"+movie.getTitle()+"'@en. "+
@@ -192,6 +195,22 @@ public class SparqlQueries {
                 "OPTIONAL {?m dbpedia-owl:writer ?w. ?w rdfs:label ?wN. FILTER(langMatches(lang(?wN), 'EN'))} "+
                 "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+
                 "} ";
+        } else {
+            queryString=
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                "PREFIX dbpedia-owl: <http://dbpedia.org/ontology/> "+
+                "PREFIX dbpprop: <http://dbpedia.org/property/> "+
+                "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
+                "OPTIONAL {"+movieResource+" dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
+                "OPTIONAL {"+movieResource+" dbpedia-owl:budget ?bu .} " +
+                "OPTIONAL {"+movieResource+" dbpprop:runtime ?r.} "+
+                "OPTIONAL {"+movieResource+" dbpedia-owl:starring ?a. ?a rdfs:label ?aN. FILTER(langMatches(lang(?aN ), 'EN'))} "+
+                "OPTIONAL {"+movieResource+" dbpedia-owl:director ?d. ?d rdfs:label ?dN. FILTER(langMatches(lang(?dN), 'EN'))} "+
+                "OPTIONAL {"+movieResource+" dbpedia-owl:writer ?w. ?w rdfs:label ?wN. FILTER(langMatches(lang(?wN), 'EN'))} "+
+                "OPTIONAL {"+movieResource+" dbpprop:genre ?g. ?g rdfs:label ?gN. FILTER(langMatches(lang(?gN), 'EN'))} "+
+                "} ";
+        }
+
         return queryString;
     }
 

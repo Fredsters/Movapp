@@ -30,20 +30,12 @@ public class MovieDet extends Movie{
     //distributor 20th centruy fox //DBP or LMDB
     //Based near  //LMDB or DBP
 
-    public MovieDet(String title, int mdbId, int releaseYear, String imdbId, String genre) {
-        super(title, mdbId, releaseYear, imdbId, genre);
-    }
-
-    public MovieDet(String title, int mdbId, int releaseYear, String genre) {
-        super(title, mdbId, releaseYear, genre);
-    }
-
     public MovieDet(String title, int releaseYear, String genre) {
         super(title, releaseYear, genre);
     }
 
     public MovieDet(Movie movie) {
-        super(movie.getTitle(), movie.getLMDBmovieId(), movie.getReleaseYear(), movie.getImdbId(), movie.getGenre(), movie.getImdbRating());
+        super(movie.getTitle(), movie.getReleaseYear(), movie.getGenre());
         this.runtime = "";
         this.awards = "";
         this.poster = "";

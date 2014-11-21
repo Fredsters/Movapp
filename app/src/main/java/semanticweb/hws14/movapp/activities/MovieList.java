@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MovieList extends Activity {
     protected ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
     HashMap<String, Object> criteria;
+    MenuItem imdbButton;
 
     public static ArrayList<Movie> staticMovieList;
     static HashMap<String, Object> staticCriteria;
@@ -91,6 +93,9 @@ public class MovieList extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_list, menu);
+
+        imdbButton =  menu.findItem(R.id.imdb_rating_button).setVisible(false);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -138,14 +143,17 @@ public class MovieList extends Activity {
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
 
+                            String movieResource = soln.getResource("m").toString();
+
                             String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
-                            Literal movieId = soln.getLiteral("i");
                             Literal releaseYearLiteral = soln.getLiteral("y");
                             int releaseYear = InputCleaner.cleanReleaseYear(releaseYearLiteral);
                             String imdbId = InputCleaner.cleanImdbId(soln.getResource("p"));
                             String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
 
-                            Movie movie = new Movie(title, movieId.getInt(), releaseYear,imdbId, genreName);
+                            Movie movie = new Movie(title, releaseYear, genreName);
+                            movie.setImdbId(imdbId);
+                            movie.setLMDBmovieResource("<+"+movieResource+">");
                             movieList.add(movie);
                         }
                     }catch (Exception e){
@@ -154,8 +162,9 @@ public class MovieList extends Activity {
                     }
                     qexec.close();
 
-                }
-            });
+                  }
+              });
+
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
                 if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
                     tLMDB.start();
@@ -173,10 +182,18 @@ public class MovieList extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
+                    String movieResource = soln.getResource("m").toString();
                     String title = InputCleaner.cleanMovieTitle(soln.getLiteral("t"));
-                    Literal releaseYearLiteral = soln.getLiteral("y");
+                    int releaseYear;
+                    try {
+                        Literal releaseYearLiteral = soln.getLiteral("y");
+                        releaseYear = InputCleaner.cleanReleaseYear(releaseYearLiteral);
+                    } catch (Exception e) {
+                        releaseYear = 0;
+                    }
                     String genreName = InputCleaner.cleanGenreName(soln.getLiteral("gn"));
-                    Movie movie = new Movie(title, 0, InputCleaner.cleanReleaseYear(releaseYearLiteral), genreName);
+                    Movie movie = new Movie(title, releaseYear, genreName);
+                    movie.setDBPmovieResource("<"+movieResource+">");
                     movieList.add(movie);
                 }
             } catch (Exception e) {
@@ -189,14 +206,14 @@ public class MovieList extends Activity {
                 if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
                     try {
                         tLMDB.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                   } catch (InterruptedException e) {
+                       e.printStackTrace();
                     }
                 }
             }
 
         /* Eliminate doublicates */
-            if(movieList.size() >= 100 ) {
+            if(movieList.size() >= 500 ) {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
@@ -205,16 +222,13 @@ public class MovieList extends Activity {
             for (int i = 0; i < movieList.size(); i++) {
                 for (int j = i + 1; j < movieList.size(); j++) {
                     if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                        if(!"".equals(movieList.get(j).getGenre())) {
+                        if(!"".equals(movieList.get(j).getImdbId())){
                             indexArray.add(movieList.get(i));
-                            break;
                         } else if(!"".equals(movieList.get(j).getReleaseYear())){
                             indexArray.add(movieList.get(i));
-                            break;
-                        } else if(!"".equals(movieList.get(j).getImdbId())){
+                        } else if(!"".equals(movieList.get(j).getGenre())) {
                             indexArray.add(movieList.get(i));
-                            break;
-                        } else {
+                        }  else {
                             indexArray.add(movieList.get(j));
                         }
                     }
@@ -236,35 +250,34 @@ public class MovieList extends Activity {
 
         public void onPostExecute(ArrayList<Movie> movieList) {
             if (movieList.size() > 0) {
-                if ((Boolean) criteria.get("isTime")) {
+                if ((Boolean) criteria.get("isTime") && ((Boolean) criteria.get("isGenre") || (Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
-                        if (movie.getReleaseYear() != 0 && SparqlQueries.filterReleaseDate(movie)) {
+                        if (!(0 == movie.getReleaseYear()) &&  SparqlQueries.filterReleaseDate(movie)) {
                             i.remove();
                         }
                     }
                 }
 
-                if ((Boolean) criteria.get("isGenre")) {
+                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
-                        if (!"".equals(movie.getGenre()) && SparqlQueries.filterGenre(movie)) {
+                        if (!"".equals(movie.getGenre()) &&  SparqlQueries.filterGenre(movie)) {
                             i.remove();
                         }
                     }
                 }
 
-
-             //   if((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector")) {
-            //        HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
-            //    } else {
-                    mlAdapter.clear();
+                if(movieList.size() < 200) {
+                    HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+                } else {
+                    imdbButton.setVisible(true);
                     mlAdapter.addAll(movieList);
                     that.setProgressBarIndeterminateVisibility(false);
                     MovieList.staticMovieList = movieList;
-          //      }
+                }
             } else {
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No movies found!");

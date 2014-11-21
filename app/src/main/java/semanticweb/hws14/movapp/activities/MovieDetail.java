@@ -91,35 +91,30 @@ public class MovieDetail extends Activity {
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
 
-                //TODO Buttons colored  different when criteria is active
-                //TODO nicer layout in Detail( Texts should always have same offset, so that the lengt hof the label does not matter)
-                //TODO nicer Layout in listview
-                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity? (fred)
-                //TODO ERROR bei kate winslet (fred)
+                //TODO Buttons colored  different when criteria is active (olli)
+                //TODO nicer layout in Detail( Texts should always have same offset, so that the length of the label does not matter) (oLLI)
+                //TODO nicer Layout in listview (olli)
+                //TODO implement a back button (olli)
+                //TODO Close keyboard with return button(olli)
+                //TODO Link to imdb and actor page ( only display button when link is available) (olli)
+
                 //TODO add more cities and states in array
-                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
-                //TODO make gps result again useable (fred)
-                //TODO Name Tabs correct (fred)
-                //TODO Make second tab for actors (fred)
-                //TODO use dbpedia for more moviedetails when lmdb does not have any (fred)
                 //TODO Use Foaf (other) database for better actor info
                 //TODO Animate the panel open close in criteria view
-                //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
                 //TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
-                //TODO implement a back button (olli)
-                //TODO Close keyboard with return button
-                //TODO Actor criteria: movie, birthplace and schoolplace, birthdate (fred)
-                //TODO have a close look again at genre and time criteria when used together (adventure, 1970 Yu GI OH) (fred)
-                //TODO on actor detail "To Movie List" does not work ??! (fred)
-                //TODO include shooting and setting in movie detail view (fred)
-                //TODO check bug with martin freeman and worlds end (fred)
-                //TODO Display "load imdb Rating" button only when its not already loaded .... still considering
-                //TODO custom ListItem, style listitem.
-                //TODO style detail views
                 //TODO additional actor criteria : nationality ? or something else ?
-                //TODO save ressource also for movie and actor
                 //TODO Change titles of activities (that what is displayed in the action bar)
 
+
+                //TODO include shooting and setting in movie detail view (not possible)
+
+                //TODO Add functionality for actor criteria (fred)
+                //TODO Actor nach land und stadt und stadt nach GPS Tracking tab activity? (fred)
+                //TODO ERROR bei kate winslet (fred)
+                //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
+                //TODO make gps result again useable (fred)
+                //TODO Kill proces when activity is changed during loading so that app does not crash (fred)
+                //TODO check bug with martin freeman and worlds end (fred)
 
                 Thread picThread = new Thread(new Runnable() {
                     public void run() {
@@ -522,7 +517,6 @@ public class MovieDetail extends Activity {
                 results = qexec.execSelect();
                 for (; results.hasNext(); ) {
                     QuerySolution soln = results.nextSolution();
-//TODO Test this stuff
                     if(soln.getLiteral("abs") != null && "".equals(movieDet.getWikiAbstract())) {
                         movieDet.setWikiAbstract(soln.getLiteral("abs").getString());
                     }

@@ -53,9 +53,7 @@ public class InputCleaner {
 
     public static String cleanImdbId(Resource url) {
         String imdbId = "";
-        if(url == null) {
-            imdbId = "0";
-        } else {
+        if(!(url == null)) {
             imdbId = url.getURI().toString();
         }
         Pattern p = Pattern.compile("tt[\\d]+");

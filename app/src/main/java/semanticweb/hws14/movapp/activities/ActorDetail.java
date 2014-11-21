@@ -217,6 +217,8 @@ public class ActorDetail extends Activity {
         criteria.put("isGenre", false);
         criteria.put("isTime", false);
         criteria.put("isDirector", false);
+        criteria.put("isCity", false);
+        criteria.put("isState", false);
         intent.putExtra("criteria", criteria);
         startActivity(intent);
     }

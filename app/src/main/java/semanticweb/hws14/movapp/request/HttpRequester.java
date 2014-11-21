@@ -45,9 +45,9 @@ public class HttpRequester {
 
                     if(response) {
 
-                        //TIME
-                        try {
-                            if (isTime && (isActor || isDirector)) {
+                        //TIME  //Not neccessary when we kick out all the 0 dates out before
+                       try {
+                            if (isTime && (isActor || isDirector ||isGenre)) {
                                 if (0 == movie.getReleaseYear()) {
                                     int releaseYear = r.getInt("Year");
                                     movie.setReleaseYear(releaseYear);
@@ -83,12 +83,12 @@ public class HttpRequester {
                             if (!(movieList.indexOf(movie) == -1)) {
                                 //IMDB ID
                                 try {
-                                    if ("0".equals(movie.getImdbId())) {
+                                    if ("".equals(movie.getImdbId())) {
                                         String imdbID = r.getString("imdbID");
                                         movie.setImdbId(imdbID);
                                     }
                                 } catch (JSONException e) {
-                                    movie.setImdbId("0");
+                                    movie.setImdbId("");
                                 }
 
                                 //IMDB RATING
@@ -99,7 +99,7 @@ public class HttpRequester {
                                     movie.setImdbRating("0 No Rating");
                                 }
                             }
-                        }
+                       }
                     } else {
                         movie.setImdbRating("0 Not sufficient data");
                     }
@@ -250,7 +250,7 @@ public class HttpRequester {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        if(!"0".equals(movie.getImdbId())) {
+        if(!"".equals(movie.getImdbId())) {
             url = "http://www.omdbapi.com/?i=" + movie.getImdbId();
         } else if(movie.getReleaseYear() != 0) {
             url = "http://www.omdbapi.com/?t=" + urlTitle + "%20&y=" + movie.getReleaseYear();
