@@ -27,13 +27,13 @@ import semanticweb.hws14.movapp.model.MovieDet;
  */
 
 public class HttpRequester {
-    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState /*, boolean isPause*/) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState) {
        // while(!isPause) {
             for (final Movie movie : movieList) {
 
                 String url = prepareURL(movie, false);
 
-                final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject r) {
                         boolean response = false;
@@ -112,6 +112,7 @@ public class HttpRequester {
                             mlAdapter.addAll(movieList);
                             listActivity.setProgressBarIndeterminateVisibility(false);
                             MovieList.staticMovieList = movieList;
+                            MovieList.staticRequestCanceled = false;
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -123,18 +124,18 @@ public class HttpRequester {
                         mlAdapter.addAll(movieList);
                         listActivity.setProgressBarIndeterminateVisibility(false);
                         MovieList.staticMovieList = movieList;
+                        MovieList.staticRequestCanceled = false;
                     }
                 });
-
-                HttpRequestQueueSingleton.getInstance(listActivity).addToRequestQueue(jsObjRequest);
+                jsObjRequest.setTag("movieList");
+                HttpRequestQueueSingleton.getInstance(listActivity.getApplicationContext()).addToRequestQueue(jsObjRequest);
             }
         }
-   // }
 
     public static void loadWebServiceData (final Activity detailActivity, final MovieDet movie) {
         String url = prepareURL(movie, true);
 
-        final JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             public void onResponse(JSONObject r) {
                 boolean response = false;
                 try {
@@ -240,8 +241,8 @@ public class HttpRequester {
                 movie.geteListener().onFinished(movie);
             }
         });
-
-        HttpRequestQueueSingleton.getInstance(detailActivity).addToRequestQueue(jsObjRequest);
+        jsObjRequest.setTag("movieDetail");
+        HttpRequestQueueSingleton.getInstance(detailActivity.getApplicationContext()).addToRequestQueue(jsObjRequest);
     }
 
     private static String prepareURL(Movie movie, boolean detail) {

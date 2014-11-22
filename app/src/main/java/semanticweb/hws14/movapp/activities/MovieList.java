@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -34,6 +36,7 @@ import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.MovieComparator;
+import semanticweb.hws14.movapp.request.HttpRequestQueueSingleton;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
@@ -45,9 +48,10 @@ public class MovieList extends Activity {
     private HashMap<String, Object> criteria;
     private MenuItem imdbButton;
     private queryForMovies q;
+    public static boolean staticRequestCanceled;
 
     public static ArrayList<Movie> staticMovieList;
-    static HashMap<String, Object> staticCriteria;
+    private static HashMap<String, Object> staticCriteria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +67,14 @@ public class MovieList extends Activity {
         ListView listView = (ListView) findViewById(R.id.movieList);
 
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
-        if(criteria.equals(staticCriteria)) {
+        if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
 
         } else {
             this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
-
+            staticRequestCanceled = true;
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
             staticCriteria = criteria;
@@ -111,16 +115,26 @@ public class MovieList extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     protected void onPause() {
         super.onPause();
-        q.cancel(true);
-        Log.d("onPause", "PAUUSEE!");
-    }
+        if(null != q) {
+            q.cancel(true);
+        }
+        if(staticRequestCanceled) {
+            httpRequester.cancelPendingRequests();
+        }
+    } */
 
-    protected void onStop(){
+    @Override
+    protected void onStop () {
         super.onStop();
-        Log.d("onStop", "STOPP!");
+        if(null != q) {
+            q.cancel(true);
+        }
+        if(staticRequestCanceled) {
+            HttpRequestQueueSingleton.getInstance(this.getApplicationContext()).cancelPendingRequests("movieList");
+        }
     }
 
     public void queryForImdbRating () {
@@ -188,7 +202,7 @@ public class MovieList extends Activity {
 
                             Movie movie = new Movie(title, releaseYear, genreName);
                             movie.setImdbId(imdbId);
-                            movie.setLMDBmovieResource("<+"+movieResource+">");
+                            movie.setLMDBmovieResource("<"+movieResource+">");
                             movieList.add(movie);
                         }
                     }catch (Exception e){
@@ -284,6 +298,12 @@ public class MovieList extends Activity {
                         }  else {
                             indexArray.add(movieList.get(j));
                         }
+                    } else if ( movieList.get(i).getTitle().contains(movieList.get(j).getTitle()) ) {
+                        movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
+                        indexArray.add(movieList.get(j));
+                    } else if (movieList.get(j).getTitle().contains(movieList.get(i).getTitle()) ) {
+                        movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
+                        indexArray.add(movieList.get(i));
                     }
                 }
             }

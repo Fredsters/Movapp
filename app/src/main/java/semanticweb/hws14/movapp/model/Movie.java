@@ -3,6 +3,9 @@ package semanticweb.hws14.movapp.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Frederik on 29.10.2014.
  */
@@ -29,6 +32,17 @@ public class Movie implements Parcelable {
         this.LMDBmovieResource = "";
         this.DBPmovieResource = "";
         this.imdbRating = "";
+    }
+
+    public Movie(String title, int releaseYear, String genre, String dbPmovieResource, String lmdBmovieResource, String imdbId, String imdbRating) {
+        this.title = title;
+        this.releaseYear = releaseYear;
+        this.genre = genre;
+        this.imdbId = imdbId;
+        this.LMDBmovieResource = lmdBmovieResource;
+        this.DBPmovieResource = dbPmovieResource;
+        this.imdbRating = imdbRating;
+
     }
 
 
@@ -133,6 +147,35 @@ public class Movie implements Parcelable {
 
     public void setDBPmovieResource(String DBPmovieResource) {
         this.DBPmovieResource = DBPmovieResource;
+    }
+
+    public void setMovieResource (String movieResource) {
+        if(!"".equals(movieResource)) {
+            Pattern p = Pattern.compile("linkedmdb");
+            Matcher m = p.matcher(movieResource);
+            if(m.find()) {
+                if(!"".equals(this.LMDBmovieResource)) {
+                    this.LMDBmovieResource = movieResource;
+                }
+            } else {
+                if("".equals(this.DBPmovieResource)) {
+                    this.DBPmovieResource = movieResource;
+                } else {
+                    String cleanMovieResource = movieResource.replace('_', ' ');
+                    if(cleanMovieResource.equals("<http://dbpedia.org/resource/"+title+">") && !movieResource.equals(DBPmovieResource)) {
+                        this.DBPmovieResource = movieResource;
+                    }
+                }
+            }
+        }
+    }
+
+    public String getMovieResource () {
+        if(!"".equals(this.DBPmovieResource)) {
+            return DBPmovieResource;
+        } else if (!"".equals(this.LMDBmovieResource)) {
+            return  LMDBmovieResource;
+        } else return "";
     }
 
     @Override

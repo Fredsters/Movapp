@@ -43,6 +43,7 @@ public class ActorList extends Activity {
     private ArrayAdapter<String> alAdapter;
     private Activity that = this;
     private HashMap<String, Object> actorCriteria;
+    private queryForActors q;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class ActorList extends Activity {
             alAdapter.addAll(staticActorList);
         } else {
             staticCriteria = actorCriteria;
-            queryForActors q = new queryForActors();
+            q = new queryForActors();
             q.execute(actorCriteria);
             this.alAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, actorList);
             listView.setAdapter(alAdapter);
@@ -108,6 +109,14 @@ public class ActorList extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStop () {
+        super.onStop();
+        if(null != q) {
+            q.cancel(true);
+        }
     }
 
 

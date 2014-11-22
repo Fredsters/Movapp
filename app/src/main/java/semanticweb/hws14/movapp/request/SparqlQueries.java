@@ -8,10 +8,6 @@ import semanticweb.hws14.movapp.model.ActorDet;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
-/**
- * Created by Frederik on 23.10.2014.
- */
-
 public class SparqlQueries {
 
     static HashMap<String, Object> criteria;
@@ -35,11 +31,11 @@ public class SparqlQueries {
             }
             queryString +="WHERE { ";
             if((Boolean)criteria.get("isActor")) {
-                queryString += "?a movie:actor_name '"+criteria.get("actorName")+"'. "+
+                queryString += "?a movie:actor_name \""+criteria.get("actorName")+"\". "+
                 "?m movie:actor ?a. ";
             }
             if((Boolean)criteria.get("isDirector")) {
-                queryString += "?d movie:director_name '"+criteria.get("directorName")+"'. "+
+                queryString += "?d movie:director_name \""+criteria.get("directorName")+"\". "+
                 "?m movie:director ?d. ";
             }
             if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector"))) {
@@ -48,7 +44,7 @@ public class SparqlQueries {
                 "?m movie:genre ?g.}" ;
             } else if((Boolean)criteria.get("isGenre")){
                 queryString +=
-                "?g movie:film_genre_name '"+ criteria.get("genreName")+"'. "+
+                "?g movie:film_genre_name \""+ criteria.get("genreName")+"\". "+
                 "?m movie:genre ?g. ";
             }
 
@@ -79,11 +75,11 @@ public class SparqlQueries {
             }
             queryString += "WHERE { ?m rdf:type <http://schema.org/Movie>. ";
             if ((Boolean) criteria.get("isActor")) {
-                queryString += "?actor rdfs:label '" + criteria.get("actorName") + "'@en. " +
+                queryString += "?actor rdfs:label \"" + criteria.get("actorName") + "\"@en. " +
                         "?m dbpedia-owl:starring ?actor. ";
             }
             if ((Boolean) criteria.get("isDirector")) {
-                queryString += "?d rdfs:label '" + criteria.get("directorName") + "'@en. " +
+                queryString += "?d rdfs:label \"" + criteria.get("directorName") + "\"@en. " +
                         "?m dbpedia-owl:director ?d. ";
             }
             if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
@@ -91,7 +87,7 @@ public class SparqlQueries {
                 "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gn. }";
             } else if ((Boolean) criteria.get("isGenre")) {
                 queryString +=
-                "?g rdfs:label '" + criteria.get("genreName") + "'. " +
+                "?g rdfs:label \"" + criteria.get("genreName") + "\". " +
                 "?m dbpprop:genre ?g.";
             }
             if((Boolean) criteria.get("isCity")) {
@@ -145,7 +141,7 @@ public class SparqlQueries {
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
                 "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
                 "SELECT ?r ?aN ?dN ?wN ?gN WHERE { "+
-                "?m rdfs:label '"+movie.getTitle()+"'. "+
+                "?m rdfs:label \""+movie.getTitle()+"\" " +
                 "OPTIONAL {?m movie:actor ?a. "+
                 "?a movie:actor_name ?aN.} "+
                 "OPTIONAL {?m movie:director ?d. "+
@@ -186,7 +182,7 @@ public class SparqlQueries {
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
                 "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
                 "?m rdf:type <http://schema.org/Movie>; "+
-                "foaf:name '"+movie.getTitle()+"'@en. "+
+                "foaf:name \""+movie.getTitle()+"\"@en. "+
                 "OPTIONAL {?m dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
                 "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
                 "OPTIONAL {?m dbpprop:runtime ?r.} "+
@@ -225,7 +221,7 @@ public class SparqlQueries {
                 "PREFIX yago: <http://dbpedia.org/class/yago/> " +
                 "select distinct ?wA ?birthN ?birthD ?bPN ?citS ?natN ?childC ?oC ?picLink ?yearA ?hp ?partnerN ?parentN ?mN " +
                 "where {" +
-                "{?ac rdfs:label '"+actorDet.getName()+"'@en; " +
+                "{?ac rdfs:label \""+actorDet.getName()+"\"@en; " +
                 "rdf:type yago:Actor109765278. " +
                 "OPTIONAL{?ac dbpedia-owl:abstract ?wA. FILTER(langMatches(lang(?wA), 'EN'))} " +
                 "OPTIONAL{?ac dbpedia-owl:birthName ?birthN.} " +
@@ -241,7 +237,7 @@ public class SparqlQueries {
                 "OPTIONAL{{?partner dbpedia-owl:partner ?ac; rdfs:label ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))} UNION {?ac dbpprop:spouse ?partnerN. FILTER(langMatches(lang(?partnerN), 'EN'))}} "+
                 "OPTIONAL{?parent dbpedia-owl:parent ?ac; rdfs:label ?parentN. FILTER(langMatches(lang(?parentN), 'EN'))} " +
                 "} UNION " +
-                "{?ac rdfs:label '"+actorDet.getName()+"'@en; rdf:type yago:Actor109765278. " +
+                "{?ac rdfs:label \""+actorDet.getName()+"\"@en; rdf:type yago:Actor109765278. " +
                 "OPTIONAL{?m dbpedia-owl:starring ?ac; rdfs:label ?mN. " +
                 "FILTER(langMatches(lang(?mN), 'EN'))} " +
                 "} " +
@@ -254,7 +250,7 @@ public class SparqlQueries {
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
         "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> "+
         "SELECT ?aN WHERE {" +
-        "?m rdfs:label '"+criteria.get("movieName")+"'; movie:actor ?a. " +
+        "?m rdfs:label \""+criteria.get("movieName")+"\"; movie:actor ?a. " +
         "?a movie:actor_name ?aN.} ";
         return queryString;
     }

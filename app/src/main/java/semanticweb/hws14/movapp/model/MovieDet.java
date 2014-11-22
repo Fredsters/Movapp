@@ -35,7 +35,7 @@ public class MovieDet extends Movie{
     }
 
     public MovieDet(Movie movie) {
-        super(movie.getTitle(), movie.getReleaseYear(), movie.getGenre());
+        super(movie.getTitle(), movie.getReleaseYear(), movie.getGenre(), movie.getDBPmovieResource(), movie.getLMDBmovieResource(), movie.getImdbId(), movie.getImdbRating());
         this.runtime = "";
         this.awards = "";
         this.poster = "";
