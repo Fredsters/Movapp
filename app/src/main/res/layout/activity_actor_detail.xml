@@ -221,11 +221,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 />
+        </LinearLayout>
 
-            <ListView
+        <LinearLayout
+            android:id="@+id/roleLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tvRolesHC"
+                android:text="Characters:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tvRoles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/actorListViewDet" />
+                android:layout_marginLeft="@dimen/activity_vertical_margin"/>
         </LinearLayout>
 
         <LinearLayout
@@ -257,7 +269,7 @@
             android:textColor="#ffffffff"
             android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
-        <Button android:id="@+id/btnLink"
+        <Button android:id="@+id/btnToHompage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/linkToActor"

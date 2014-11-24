@@ -56,6 +56,7 @@ public class MovieDetail extends Activity {
     private MovieDet movieDet;
     private Button btnSpoiler;
     private Button btnActorList;
+    private Button btnImdbPage;
     private int rowCount=0;
     private queryForMovieData q;
     private boolean staticRequestCanceled;
@@ -143,6 +144,18 @@ public class MovieDetail extends Activity {
 
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
 
+
+
+        btnActorList =  (Button) findViewById(R.id.btnToActorList);
+        btnActorList.setVisibility(View.GONE);
+
+        btnImdbPage =  (Button) findViewById(R.id.btnLinkImdB);
+        btnImdbPage.setVisibility(View.GONE);
+
+        btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
+        btnSpoiler.setVisibility(View.GONE);
+
+
         btnSpoiler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,9 +168,6 @@ public class MovieDetail extends Activity {
 
             }
         });
-
-        btnActorList =  (Button) findViewById(R.id.btnToActorList);
-        btnActorList.setVisibility(View.GONE);
     }
 
     public void linkToImdb(View view){
@@ -214,48 +224,23 @@ public class MovieDetail extends Activity {
 
         TextView tvGenreHc = (TextView) findViewById(R.id.tvGenreHC);
         TextView genre = (TextView) findViewById(R.id.tvGenre);
-        ArrayList<String> genreList = movie.getGenres();
+        String genreText = String.valueOf(movie.createTvOutOfList(movie.getGenres()));
+        genre.setText(genreText);
 
-        if(genreList.size() == 0){
-            genre.setVisibility(View.GONE);
-            tvGenreHc.setVisibility(View.GONE);
-        }
-        else{
-            genre.setVisibility(View.VISIBLE);
-            tvGenreHc.setVisibility(View.VISIBLE);
-            genre.setText(String.valueOf(movie.createTvOutOfList(genreList)));
-            colorIt(tvGenreHc);
-        }
+        manageEmptyTextfields(tvGenreHc, genre, genreText);
 
         TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
         TextView releaseYearHc = (TextView) findViewById(R.id.tvReleaseYearHC);
-        int releaseYearText = movie.getReleaseYear();
+        String releaseYearText = String.valueOf(movie.getReleaseYear());
+        releaseYear.setText(releaseYearText);
 
-        if(releaseYearText == 0){
-            releaseYear.setVisibility(View.GONE);
-            releaseYearHc.setVisibility(View.GONE);
-        }
-        else{
-            releaseYear.setVisibility(View.VISIBLE);
-            releaseYearHc.setVisibility(View.VISIBLE);
-            releaseYear.setText(String.valueOf(releaseYearText) );
-            colorIt(releaseYear);
-        }
+        manageEmptyTextfields(releaseYearHc, releaseYear, releaseYearText);
 
         TextView runtime = (TextView) findViewById(R.id.tvRuntime);
         TextView runTimeHc = (TextView) findViewById(R.id.tvRuntimeHC);
-        String runtimeText = movie.getRuntime();
-
-        if(runtimeText.equals("")){
-            runtime.setVisibility(View.GONE);
-            runTimeHc.setVisibility(View.GONE);
-        }
-        else{
-            runtime.setVisibility(View.VISIBLE);
-            runTimeHc.setVisibility(View.VISIBLE);
-            runtime.setText(String.valueOf(movie.getRuntime() + " minutes") );
-            colorIt(runTimeHc);
-        }
+        String runtimeText = String.valueOf(movie.getRuntime() + " minutes");
+        runtime.setText(runtimeText);
+        manageEmptyTextfields(runTimeHc, runtime, runtimeText);
 
         TextView budget = (TextView) findViewById(R.id.tvBudget);
         TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
@@ -266,85 +251,62 @@ public class MovieDetail extends Activity {
             long budgetLong = myNumber.longValue();
             NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
             budgetText = formatter.format(budgetLong);
+            budgetText = String.valueOf(budgetText);
+            budget.setText(budgetText);
+            manageEmptyTextfields(budgetHc, budget, budgetText);
         }
 
-        if(budgetText.equals("")){
-            budget.setVisibility(View.GONE);
-            budgetHc.setVisibility(View.GONE);
-        }
-        else{
-            budget.setVisibility(View.VISIBLE);
-            budgetHc.setVisibility(View.VISIBLE);
-            budget.setText(String.valueOf(budgetText));
-            colorIt(budgetHc);
-        }
+
 
         TextView awards = (TextView) findViewById(R.id.tvAwards);
         TextView awardsHc = (TextView) findViewById(R.id.tvAwardsHC);
         String awardsText = movie.getAwards();
+        awards.setText(awardsText);
 
-        if(awardsText.equals("")){
-            awards.setVisibility(View.GONE);
-            awardsHc.setVisibility(View.GONE);
-        }
-        else{
-            awards.setVisibility(View.VISIBLE);
-            awardsHc.setVisibility(View.VISIBLE);
-            awards.setText(awardsText);
-            colorIt(awardsHc);
-        }
+        manageEmptyTextfields(awardsHc, awards, awardsText);
 
         TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
         TextView directors = (TextView) findViewById(R.id.tvDirectors);
-        ArrayList<String> directorslist = movie.getDirectors();
+        String directorText = String.valueOf(movie.createTvOutOfList(movie.getDirectors()));
+        directors.setText(directorText);
 
-        if(directorslist.size() == 0){
-            directors.setVisibility(View.GONE);
-            tvDirHc.setVisibility(View.GONE);
-        }
-        else{
-            directors.setVisibility(View.VISIBLE);
-            tvDirHc.setVisibility(View.VISIBLE);
-            directors.setText(String.valueOf(movie.createTvOutOfList(directorslist)));
-            colorIt(tvDirHc);
-        }
+        manageEmptyTextfields(tvDirHc, directors, directorText);
 
         TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
         TextView writers = (TextView) findViewById(R.id.tvWriters);
-        ArrayList<String> writerslist = movie.getWriters();
-
-        if(writerslist.size() == 0){
-            writers.setVisibility(View.GONE);
-            tvWriterHc.setVisibility(View.GONE);
-        }
-        else{
-            writers.setVisibility(View.VISIBLE);
-            tvWriterHc.setVisibility(View.VISIBLE);
-            writers.setText(String.valueOf(movie.createTvOutOfList(writerslist)));
-            colorIt(tvWriterHc);
-        }
+        String writerText = String.valueOf(movie.createTvOutOfList(movie.getWriters()));
+        writers.setText(writerText);
+        manageEmptyTextfields(tvWriterHc, writers, writerText);
 
         TextView tvActorsHc = (TextView) findViewById(R.id.tvActorsHC);
         TextView actors = (TextView) findViewById(R.id.tvActors);
-        ArrayList<String> actorsList = movie.getActors();
+        String actorText = String.valueOf(movie.createTvOutOfList(movie.getActors()));
+        actors.setText(actorText);
+        manageEmptyTextfields(tvActorsHc, actors, actorText);
+        colorIt(actors);
 
-        if(actorsList.size() == 0){
-            actors.setVisibility(View.GONE);
-            tvActorsHc.setVisibility(View.GONE);
-            btnActorList.setVisibility(View.GONE);
+        if(movie.getActors().size() > 0) {
+            btnActorList.setVisibility(View.VISIBLE);
+        }
+
+
+        TextView tvRolesHc = (TextView) findViewById(R.id.tvRolesHC);
+        TextView roles = (TextView) findViewById(R.id.tvRoles);
+        ArrayList<String> roleList = movie.getRoles();
+
+        if(roleList.size() == 0){
+            roles.setVisibility(View.GONE);
+            tvRolesHc.setVisibility(View.GONE);
         }
         else{
-            actors.setVisibility(View.VISIBLE);
-            tvActorsHc.setVisibility(View.VISIBLE);
-            btnActorList.setVisibility(View.VISIBLE);
-            actors.setText(String.valueOf(movie.createTvOutOfList(actorsList)));
-            colorIt(tvActorsHc);
+            roles.setVisibility(View.VISIBLE);
+            tvRolesHc.setVisibility(View.VISIBLE);
+            roles.setText(String.valueOf(movie.createTvOutOfList(roleList)));
         }
 
         TextView ageRestriction = (TextView) findViewById(R.id.tvAgeRestriction);
         TextView arHc = (TextView) findViewById(R.id.tvAgeRestrictionHC);
         String aR = String.valueOf(movie.getRated());
-
 
         if(aR.equals("")){
             ageRestriction.setVisibility(View.GONE);
@@ -372,24 +334,16 @@ public class MovieDetail extends Activity {
             arHc.setVisibility(View.GONE);
         }
 
+
         TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
         TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
-        int metaSoreText = movie.getMetaScore();
-
-        if(metaSoreText == 0){
-            metaScore.setVisibility(View.GONE);
-            metaScoreHc.setVisibility(View.GONE);
-        }
-        else{
-            metaScore.setVisibility(View.VISIBLE);
-            metaScoreHc.setVisibility(View.VISIBLE);
-            metaScore.setText(String.valueOf(metaSoreText+"/100"));
-        }
+        String metaSoreText = String.valueOf(movie.getMetaScore());
+        metaScore.setText(metaSoreText);
+        manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText);
 
 
         TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
         String wikiAbstractText = movie.getWikiAbstract();
-
         if(wikiAbstract.equals("")){
             wikiAbstract.setVisibility(View.GONE);
         }
@@ -398,22 +352,30 @@ public class MovieDetail extends Activity {
             wikiAbstract.setText((String.valueOf(wikiAbstractText)));
         }
 
+
         TextView ratingCount = (TextView) findViewById(R.id.tvMovieRatingCount);
         TextView ratingCountHc = (TextView) findViewById(R.id.tvMovieRatingCountHC);
         String ratingCountText = movie.getVoteCount();
+        ratingCount.setText(ratingCountText);
 
-        if(ratingCountText.equals("")){
-            ratingCount.setVisibility(View.GONE);
-            ratingCountHc.setVisibility(View.GONE);
-        }
-        else{
-            ratingCount.setVisibility(View.VISIBLE);
-            ratingCountHc.setVisibility(View.VISIBLE);
-            ratingCount.setText((String.valueOf(ratingCountText)));
-        }
+        manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText);
 
         TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
-        movieRating.setText(movie.getImdbRating()+"/10");
+        if(movie.getImdbRating().equals("0 No Rating")) {
+            movieRating.setText("No Rating");
+        } else if(movie.getImdbRating().equals("0 Not sufficient data")) {
+            movieRating.setText("");
+        } else {
+            movieRating.setText(movie.getImdbRating()+"/10");
+        }
+
+        if(!"".equals(movie.getImdbId())) {
+            btnImdbPage.setVisibility(View.VISIBLE);
+        }
+
+        if(!"".equals(movie.getWikiAbstract())) {
+            btnSpoiler.setVisibility(View.VISIBLE);
+        }
 
         try {
             picThread.join();
@@ -424,6 +386,20 @@ public class MovieDetail extends Activity {
         setProgressBarIndeterminateVisibility(false);
     }
 
+
+    public void manageEmptyTextfields(TextView tvHc, TextView tv, String text){
+        if(text.equals("")|| ( text.equals("N/A") || text.equals("0"))){
+            tv.setVisibility(View.GONE);
+            if(tvHc != null) {
+                tvHc.setVisibility(View.GONE);
+            }
+        }
+        else{
+            tv.setVisibility(View.VISIBLE);
+            tvHc.setVisibility(View.VISIBLE);
+            colorIt(tvHc);
+        }
+    }
 
     private class queryForMovieData extends AsyncTask<MovieDet, String, MovieDet> {
 
@@ -444,31 +420,38 @@ public class MovieDetail extends Activity {
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
                             try {
-                            if (soln.getLiteral("r") != null && "".equals(movie.getRuntime())) {
+                            if (soln.getLiteral("run") != null && "".equals(movie.getRuntime())) {
                                 movie.setRuntime(soln.getLiteral("r").getString());
                             }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
                             try {
-                            if (soln.getLiteral("aN") != null && !movie.getActors().contains(soln.getLiteral("aN").getString())) {
-                                movie.addActor(soln.getLiteral("aN").getString());
-                            }}catch (Exception e) {
+                                if (soln.getLiteral("aN") != null) {
+                                    movie.addActor(soln.getLiteral("aN").getString());
+                                }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
                             try {
-                            if (soln.getLiteral("dN") != null && !movie.getDirectors().contains(soln.getLiteral("dN").getString())) {
+                                if (soln.getLiteral("rN") != null) {
+                                    movie.addRole(soln.getLiteral("rN").getString());
+                                }}catch (Exception e) {
+                                Log.d("movieDetail Problem ", e.toString());
+                            }
+
+                            try {
+                            if (soln.getLiteral("dN") != null) {
                                 movie.addDirector(soln.getLiteral("dN").getString());
                             }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
                             try {
-                            if (soln.getLiteral("wN") != null && !movie.getWriters().contains(soln.getLiteral("wN").getString())) {
+                            if (soln.getLiteral("wN") != null) {
                                 movie.addWriter(soln.getLiteral("wN").getString());
                             }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
                             try {
-                            if (soln.getLiteral("gN") != null && !movie.getGenres().contains(soln.getLiteral("gN").getString())) {
+                            if (soln.getLiteral("gN") != null) {
                                 movie.addGenre(soln.getLiteral("gN").getString());
                             }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
@@ -510,26 +493,26 @@ public class MovieDetail extends Activity {
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
                     }
-                    try {
-                    if (soln.getLiteral("aN") != null && !movie.getActors().contains(soln.getLiteral("aN").getString())) {
+/*                    try {
+                    if (soln.getLiteral("aN") != null) {
                         movie.addActor(soln.getLiteral("aN").getString());
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
-                    }
+                    }*/
                     try {
-                    if (soln.getLiteral("dN") != null && !movie.getDirectors().contains(soln.getLiteral("dN").getString())) {
+                    if (soln.getLiteral("dN") != null) {
                         movie.addDirector(soln.getLiteral("dN").getString());
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
                     }
                     try {
-                    if (soln.getLiteral("wN") != null && !movie.getWriters().contains(soln.getLiteral("wN").getString())) {
+                    if (soln.getLiteral("wN") != null ) {
                         movie.addWriter(soln.getLiteral("wN").getString());
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
                     }
                     try {
-                    if (soln.getLiteral("gN") != null && !movie.getGenres().contains(soln.getLiteral("gN").getString())) {
+                    if (soln.getLiteral("gN") != null ) {
                         movie.addGenre(soln.getLiteral("gN").getString());
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
@@ -566,13 +549,12 @@ public class MovieDetail extends Activity {
 
 
 //DEINE
-//TODO Buttons colored  different when criteria is active (olli)
+//TODO Buttons colored different when criteria is active (olli)
 //TODO nicer layout in Detail( Texts should always have same offset, so that the length of the label does not matter) (oLLI)
 //TODO nicer Layout in listview (olli)
+//TODO Background color überall nachziehen
 //TODO implement a back button (olli)
 //TODO Close keyboard with return button(olli)
-//TODO Link to imdb and actor page (only display button when link is available) (olli)
-//TODO Style for criteria actor (olli)
 
 //Hier kannste dir was nehmen :)
 //TODO Use Foaf (other) database for better actor info
@@ -588,7 +570,12 @@ public class MovieDetail extends Activity {
 
 //MEINE
 //TODO ERROR bei kate winslet (fred)
-//TODO Kate Upton not born in USA?
+//TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO make year array bigger. Every number (fred)
 //TODO add more cities and states in array (fred)
+//TODO Dont use getters and setters when not neccessary
+//TODO Icon von Nir einabuen
+//TODO Title bei actor und movie als zusätzliches criterium
+//TODO Rolle bei actor und movie detail neben dem actor
+

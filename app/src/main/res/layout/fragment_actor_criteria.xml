@@ -6,16 +6,17 @@ android:layout_height="match_parent"
 tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_layout" android:layout_width="fill_parent"
-    android:layout_height="fill_parent" android:background="#BBF2F1"
+    android:layout_height="fill_parent" android:background="#FFFFFF"
     android:layout_weight="1" android:orientation="vertical">
 
     <Button android:id="@+id/btnMovie" android:layout_width="fill_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/movie"
+        android:textColor="#FFFFFF"
         android:background="@drawable/button_background_accordion" />
     <LinearLayout android:id="@+id/panelMovie"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#BBF2F1">
+        android:background="#FFFFFF">
         <LinearLayout
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -34,25 +35,26 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
     <Button android:id="@+id/btnActorYear" android:layout_width="fill_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="Birthyear"
+        android:textColor="#FFFFFF"
         android:background="@drawable/button_background_accordion"
         />
 
     <LinearLayout android:id="@+id/panelActorYear"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#BBF2F1">
+        android:background="#FFFFFF">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:background="#BBF2F1">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#BBF2F1">
+                android:background="#FFFFFF">
                 <TextView android:layout_width="45dp"
                     android:layout_height="wrap_content" android:text="From" />
                 <Spinner
@@ -65,7 +67,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
             <LinearLayout
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content" android:layout_weight="1"
-                android:background="#BBF2F1">
+                android:background="#FFFFFF">
                 <TextView android:layout_width="45dp"
                     android:layout_height="wrap_content" android:text="To" />
                 <Spinner
@@ -87,12 +89,13 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
 
         <Button android:id="@+id/btnActorRegion" android:layout_width="fill_parent"
         android:layout_height="@dimen/movie_criteria_button_height" android:text="Birthplace"
+        android:textColor="#FFFFFF"
         android:background="@drawable/button_background_accordion" />
 
     <LinearLayout android:id="@+id/panelActorRegion"
         android:orientation="vertical" android:layout_width="fill_parent"
         android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#BBF2F1">
+        android:background="#FFFFFF">
         <LinearLayout
             android:orientation="horizontal" android:layout_width="fill_parent"
             android:layout_height="wrap_content">

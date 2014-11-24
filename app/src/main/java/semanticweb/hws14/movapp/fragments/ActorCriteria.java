@@ -221,7 +221,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             criteria.put("isCity", false);
         }
         if(activeState) {
-           String state = cleanCityStateInput(selectedState);
+            //String state = cleanCityStateInput(selectedState);
+            String state = selectedState;
             criteria.put("state", state);
             criteria.put("isState", true);
         } else {

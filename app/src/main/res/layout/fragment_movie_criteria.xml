@@ -6,7 +6,7 @@ android:layout_height="match_parent"
 tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/root_layout" android:layout_width="fill_parent"
-        android:layout_height="fill_parent" android:background="#BBF2F1"
+        android:layout_height="fill_parent" android:background="#FFFFFF"
         android:layout_weight="1" android:orientation="vertical">
 
         <Button android:id="@+id/btnActor" android:layout_width="match_parent"
@@ -18,7 +18,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <LinearLayout android:id="@+id/panelActor"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#ffffffff">
+            android:background="#FFFFFF">
             <LinearLayout android:id="@+id/panelActorText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -43,14 +43,14 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <LinearLayout android:id="@+id/panelYear"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#ffffffff">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
-                android:background="#BBF2F1">
+                android:background="#FFFFFF">
 
                 <LinearLayout android:id="@+id/panelYearFrom"
                     android:orientation="horizontal" android:layout_width="fill_parent"
@@ -97,7 +97,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <LinearLayout android:id="@+id/panelGenre"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#ffffffff">
+            android:background="#FFFFFF">
             <LinearLayout android:id="@+id/panelGenreText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -124,7 +124,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <LinearLayout android:id="@+id/panelDirector"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#ffffffff">
+            android:background="#FFFFFF">
             <LinearLayout android:id="@+id/panelDirectorText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
@@ -149,7 +149,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
         <LinearLayout android:id="@+id/panelRegion"
             android:orientation="vertical" android:layout_width="fill_parent"
             android:layout_height="wrap_content" android:layout_weight="1"
-            android:background="#ffffffff">
+            android:background="#FFFFFF">
             <LinearLayout android:id="@+id/panelCountryText"
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">

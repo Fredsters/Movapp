@@ -1,5 +1,6 @@
 package semanticweb.hws14.movapp.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -21,12 +22,13 @@ public class ActorDet {
     private ArrayList<String> movies;  //dbpedia-owl:starring range
     private String partner; //dbpedia-owl:partner
     private ArrayList<String> parent; //dbpedia-owl:parent range
+    private ArrayList<String> roles;
    // String spouse; //dbpprop:spouse
 
     private EventActorListener eventActorListener = null;
 
 
-    public ActorDet(String wikiAbstract, String birthName, String birthDate, String name, ArrayList<String> birthPlace, String nationality, String occupation, String pictureURL, int children, int activeYear, String homepage, ArrayList<String> movies, String partner, ArrayList<String> parent) {
+    public ActorDet(String wikiAbstract, String birthName, String birthDate, String name, ArrayList<String> birthPlace, String nationality, String occupation, String pictureURL, int children, int activeYear, String homepage, ArrayList<String> movies, String partner, ArrayList<String> parent, ArrayList<String> roles) {
         this.wikiAbstract = wikiAbstract;
         this.birthName = birthName;
         this.birthDate = birthDate;
@@ -41,6 +43,7 @@ public class ActorDet {
         this.movies = movies;
         this.partner = partner;
         this.parent = parent;
+        this.roles = roles;
     }
 
     public ActorDet(){
@@ -58,11 +61,18 @@ public class ActorDet {
         this.movies = new ArrayList<String>();
         this.partner = "";
         this.parent = new ArrayList<String>();
+        this.roles = new ArrayList<String>();
     }
 
     public void addMovie(String movieName){
         if(!movies.contains(movieName)) {
             movies.add(movieName);
+        }
+    }
+
+    public void addRole (String role){
+        if(!roles.contains(role)) {
+            roles.add(role);
         }
     }
 
@@ -196,6 +206,14 @@ public class ActorDet {
 
     public void setBirthPlace(ArrayList<String> birthPlace) {
         this.birthPlace = birthPlace;
+    }
+
+    public ArrayList<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<String> roles) {
+        this.roles = roles;
     }
 
     @Override

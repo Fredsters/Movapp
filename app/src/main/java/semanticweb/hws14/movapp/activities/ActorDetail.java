@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class ActorDetail extends Activity {
     private ActorDet actorDet;
     private int rowCount=0; //needed to color
     private queryforActorDetail q;
+    Button btnToHomepage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class ActorDetail extends Activity {
 
         final ActorDet actor = new ActorDet();
         actor.setName(actorName);
+
+        btnToHomepage = (Button) findViewById(R.id.btnToHompage);
+        btnToHomepage.setVisibility(View.GONE);
 
         q = new queryforActorDetail();
         q.execute(actor);
@@ -102,7 +107,7 @@ public class ActorDetail extends Activity {
         }
     }
 
-    private void toMovieList(View view){
+    public void toMovieList(View view){
         Intent intent = new Intent(that, MovieList.class);
 
         HashMap<String, Object> criteria = new HashMap<String, Object>();
@@ -117,7 +122,7 @@ public class ActorDetail extends Activity {
         startActivity(intent);
     }
 
-    private void toActorHomepage(View view) {
+    public void toActorHomepage(View view) {
         String homepage = actorDet.getHomepage();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(homepage));
         startActivity(browserIntent);
@@ -239,12 +244,26 @@ public class ActorDetail extends Activity {
 
         manageEmptyTextfields(activeYearHc,activeYear,activeYearText);
 
+        TextView roles = (TextView) findViewById(R.id.tvRoles);
+        TextView rolesHc = (TextView) findViewById(R.id.tvRolesHC);
+        String rolesText = String.valueOf(actor.createTvOutOfList(actor.getRoles()));
+        roles.setText(rolesText);
+
+        manageEmptyTextfields(rolesHc,roles,rolesText);
+
         TextView movies = (TextView) findViewById(R.id.tvMovies);
         TextView moviesHc = (TextView) findViewById(R.id.tvMoviesHC);
         String moviesText = String.valueOf(actor.createTvOutOfList(actor.getMovies()));
         movies.setText(moviesText);
 
         manageEmptyTextfields(moviesHc,movies,moviesText);
+
+        if("".equals(actor.getHomepage())) {
+            btnToHomepage.setVisibility(View.GONE);
+        } else {
+            btnToHomepage.setVisibility(View.VISIBLE);
+        }
+
 
         try {
             picThread.join();
@@ -262,6 +281,41 @@ public class ActorDetail extends Activity {
 
             final SparqlQueries sparqler = new SparqlQueries();
             final ActorDet actor = actorDets[0];
+
+            /* LMDB */
+            Thread tLMDBActorDetail = new Thread(new Runnable() {
+                public void run() {
+                    String LMDBsparqlQueryString = sparqler.LMDBActorDetailQuery(actor);
+                    Query query = QueryFactory.create(LMDBsparqlQueryString);
+                    QueryExecution qexec = QueryExecutionFactory.sparqlService("http://linkedmdb.org/sparql", query);
+                    ResultSet results;
+                    try {
+                        results = qexec.execSelect();
+                        for (; results.hasNext(); ) {
+                            QuerySolution soln = results.nextSolution();
+                            try {
+                                if (soln.getLiteral("mN") != null) {
+                                    actor.addMovie(soln.getLiteral("mN").getString());
+                                }} catch (Exception e){
+                                Log.d("actorDetail Problem", e.toString());
+                            }
+                            try {
+                                if (soln.getLiteral("rN") != null) {
+                                    actor.addRole(soln.getLiteral("rN").getString());
+                                }} catch (Exception e){
+                                Log.d("actorDetail Problem", e.toString());
+                            }
+                        }
+                    }
+                    catch (Exception e) {
+                        Log.e("LINKEDMDBDetail", "Failed " + e.toString());
+                    }
+                    qexec.close();
+                }
+            });
+
+            tLMDBActorDetail.start();
+
 
         /* DPBEDIA */
 
@@ -363,6 +417,13 @@ public class ActorDetail extends Activity {
                 publishProgress("A problem with DBPedia occured");
             }
             qexec.close();
+
+            try {
+                tLMDBActorDetail.join();
+            } catch (Exception e) {
+                Log.e("LINKEDMDBActorDetail", "Failed " + e.toString());
+            }
+
 
             return actor;
         }

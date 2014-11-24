@@ -24,6 +24,7 @@ public class MovieDet extends Movie{
     ArrayList<String> directors; //LMDB //DBP
     ArrayList<String> writers; //LDMB //DBP
     ArrayList<String> genres; //Alle
+    ArrayList<String> roles;
 
 
     //Noch nicht
@@ -46,10 +47,20 @@ public class MovieDet extends Movie{
         this.metaScore = 0;
         this.budget = "";
 
+        this.roles = new ArrayList<String>();
         this.actors = new ArrayList<String>();
         this.directors = new ArrayList<String>();
         this.writers = new ArrayList<String>();
         this.genres = new ArrayList<String>();
+    }
+
+    public boolean addRole (String role) {
+        if(this.roles.contains(role)) {
+            return false;
+        } else {
+            this.roles.add(role);
+            return true;
+        }
     }
 
     public boolean addActor (String actor) {
@@ -195,6 +206,14 @@ public class MovieDet extends Movie{
 
     public void setGenres(ArrayList<String> genres) {
         this.genres = genres;
+    }
+
+    public ArrayList<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<String> roles) {
+        this.roles = roles;
     }
 
     @Override
