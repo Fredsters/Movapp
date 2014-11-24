@@ -139,7 +139,7 @@ public class MovieList extends Activity {
 
     public void queryForImdbRating () {
         that.setProgressBarIndeterminateVisibility(true);
-        HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+        HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
     }
 
 
@@ -215,7 +215,7 @@ public class MovieList extends Activity {
               });
 
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
-                if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                     tLMDB.start();
                 }
             }
@@ -270,7 +270,7 @@ public class MovieList extends Activity {
             qexec.close();
 
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
-                if(!((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector") && !(Boolean) criteria.get("isGenre"))) {
+                if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                     try {
                         tLMDB.join();
                    } catch (InterruptedException e) {
@@ -280,7 +280,7 @@ public class MovieList extends Activity {
             }
 
         /* Eliminate doublicates */
-            if(movieList.size() >= 500 ) {
+            if(movieList.size() >= 1500 ) {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
@@ -323,7 +323,7 @@ public class MovieList extends Activity {
 
         public void onPostExecute(ArrayList<Movie> movieList) {
             if (movieList.size() > 0) {
-                if ((Boolean) criteria.get("isTime") && ((Boolean) criteria.get("isGenre") || (Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
+                if ((Boolean) criteria.get("isTime") && ((Boolean) criteria.get("isGenre") || (Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") ||(Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
@@ -333,7 +333,7 @@ public class MovieList extends Activity {
                     }
                 }
 
-                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
+                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") ||(Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
@@ -344,7 +344,7 @@ public class MovieList extends Activity {
                 }
 
                 if(movieList.size() < 200) {
-                    HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"));
+                    HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
                 } else {
                     imdbButton.setVisible(true);
                     mlAdapter.addAll(movieList);

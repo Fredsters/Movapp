@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="android">hier sollte das Bild sein!</string>
     <string name="app_name">Movapp</string>
-    <string name="hello_world">Hello Movapp!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_list">list</string>
-    <string name="title_activity_result">result</string>
+    <string name="action_settings"></string>
+    <string name="title_activity_list"></string>
+    <string name="title_activity_result"></string>
     <string name="dummy">Just proof that data is there</string>
-    <string name="year">Year</string>
-    <string name="actor">Actor</string>
+    <string name="year">Release year</string>
+    <string name="actor">Actor/Director</string>
     <string name="genre">Genre</string>
-    <string name="director">Director</string>
     <string name="movie">Movie</string>
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>
-    <string name="link">Link to Imdb page</string>
+    <string name="link">Link to Trailer</string>
     <string name="toActorList">Actor Detail List</string>
     <string name="toMovieList">Movie Detail List</string>
     <string name="linkToActor">Link to Actors Page</string>
     <string name="region">Region</string>
+    <string name="movie_title">Part of Title</string>
+    <string name="title_activity_actor_list"></string>
+    <string name="title_activity_actor_detail"></string>
 
     <string-array name="year_array">
         <item>2016</item>
@@ -88,13 +88,5 @@
         <item>Germany</item>
         <item>the United States</item>
     </string-array>
-
-    <string name="title_activity_actor_list">ActorList</string>
-    <string name="title_activity_actor_detail">ActorDetail</string>
-    <string name="title_activity_my">MyActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

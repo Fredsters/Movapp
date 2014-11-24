@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="semanticweb.hws14.movapp.activities.Criteria" >
     <item android:id="@+id/gps_location_button"
-        android:title="Use GPS"
+        android:title="GPS"
         android:showAsAction="ifRoom"/>
 </menu>

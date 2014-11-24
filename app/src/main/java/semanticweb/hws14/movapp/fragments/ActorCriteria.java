@@ -35,6 +35,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
     private EditText tfMovieName;
     private EditText tfActorCity;
+    private EditText tfPartName;
     private Spinner spYearFrom;
     private Spinner spYearTo;
     private Spinner spState;
@@ -42,16 +43,19 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     private Button btnMovie;
     private Button btnYear ;
     private Button btnRegion;
+    private Button btnPartName;
 
     private Switch swMovie ;
     private Switch swYear ;
     private Switch swCity;
     private Switch swState;
+    private Switch swPartName;
 
     private boolean activeMovie = false;
     private boolean activeYear = false;
     private boolean activeState = false;
     private boolean activeCity = false;
+    private boolean activePartName = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,15 +75,18 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         tfMovieName = (EditText) view.findViewById(R.id.tfMovieName);
         tfActorCity = (EditText) view.findViewById(R.id.tfActorCity);
+        tfPartName = (EditText) view.findViewById(R.id.tfTitleName);
 
         btnMovie = (Button) view.findViewById(R.id.btnMovie);
         btnYear = (Button) view.findViewById(R.id.btnActorYear);
         btnRegion = (Button) view.findViewById(R.id.btnActorRegion);
+        btnPartName = (Button) view.findViewById(R.id.btnTitle);
 
         swMovie = (Switch) view.findViewById(R.id.swMovie);
         swYear = (Switch) view.findViewById(R.id.swActorYear);
         swCity = (Switch) view.findViewById(R.id.swActorCity);
         swState = (Switch) view.findViewById(R.id.swActorState);
+        swPartName = (Switch) view.findViewById(R.id.swTitle);
 
         final View panelMovie = view.findViewById(R.id.panelMovie);
         panelMovie.setVisibility(View.VISIBLE);
@@ -90,12 +97,16 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         final View panelRegion = view.findViewById(R.id.panelActorRegion);
         panelRegion.setVisibility(View.GONE);
 
+        final View panelPartName = view.findViewById(R.id.panelTitle);
+        panelPartName.setVisibility(View.GONE);
+
         btnMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 panelMovie.setVisibility(View.VISIBLE);
                 panelYear.setVisibility(View.GONE);
                 panelRegion.setVisibility(View.GONE);
+                panelPartName.setVisibility(View.GONE);
             }
         });
 
@@ -105,6 +116,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 panelMovie.setVisibility(View.GONE);
                 panelYear.setVisibility(View.VISIBLE);
                 panelRegion.setVisibility(View.GONE);
+                panelPartName.setVisibility(View.GONE);
             }
         });
 
@@ -114,6 +126,17 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 panelMovie.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelRegion.setVisibility(View.VISIBLE);
+                panelPartName.setVisibility(View.GONE);
+            }
+        });
+
+        btnPartName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                panelMovie.setVisibility(View.GONE);
+                panelYear.setVisibility(View.GONE);
+                panelRegion.setVisibility(View.GONE);
+                panelPartName.setVisibility(View.VISIBLE);
             }
         });
 
@@ -152,6 +175,13 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swCity.setChecked(false);
                 }
+            }
+        });
+
+        swPartName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                activePartName=b;
             }
         });
 
@@ -196,6 +226,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         String movieName = tfMovieName.getText().toString();
         String cityName = tfActorCity.getText().toString();
+        String partName = tfPartName.getText().toString();
 
         if(activeMovie && !movieName.equals("")){
             movieName = InputCleaner.cleanName(movieName);
@@ -203,6 +234,14 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             criteria.put("isMovie", true);
         } else{
             criteria.put("isMovie", false);
+        }
+
+        if(activePartName && !partName.equals("")){
+            partName = InputCleaner.cleanName(partName);
+            criteria.put("partName", partName);
+            criteria.put("isPartName", true);
+        } else{
+            criteria.put("isPartName", false);
         }
 
         if(activeYear){
@@ -228,7 +267,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         } else {
             criteria.put("isState", false);
         }
-        if( (activeMovie && !movieName.equals("")) || activeYear || activeCity || activeState){
+        if( (activeMovie && !movieName.equals("")) || activeYear || activeCity || activeState || (activePartName && !partName.equals(""))){
             Activity criteriaActivity = getActivity();
             Intent intent = new Intent(criteriaActivity, ActorList.class);
             intent.putExtra("criteria", criteria);

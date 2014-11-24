@@ -199,15 +199,14 @@ public class ActorList extends Activity {
 
         /* Eliminate doublicates */
 
-            ArrayList indexArray = new ArrayList();
+ //           ArrayList indexArray = new ArrayList();
             for (int i = 0; i < actorList.size(); i++) {
                 for (int j = i + 1; j < actorList.size(); j++) {
                     if (actorList.get(i).equals(actorList.get(j))) {
-                        indexArray.add(actorList.get(j));
+                        actorList.remove(actorList.get(j));
                     }
                 }
             }
-            actorList.removeAll(indexArray);
 
             return actorList;
         }

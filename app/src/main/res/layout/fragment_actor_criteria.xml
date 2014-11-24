@@ -34,7 +34,7 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
     </LinearLayout>
 
     <Button android:id="@+id/btnActorYear" android:layout_width="fill_parent"
-        android:layout_height="@dimen/movie_criteria_button_height" android:text="Birthyear"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="Birth year"
         android:textColor="#FFFFFF"
         android:background="@drawable/button_background_accordion"
         />
@@ -127,6 +127,30 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/swActorCity"
+            android:layout_gravity="center_horizontal"
+            android:checked="false" />
+    </LinearLayout>
+
+    <Button android:id="@+id/btnTitle" android:layout_width="fill_parent"
+        android:layout_height="@dimen/movie_criteria_button_height" android:text="Actor name"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/button_background_accordion" />
+    <LinearLayout android:id="@+id/panelTitle"
+        android:orientation="vertical" android:layout_width="fill_parent"
+        android:layout_height="wrap_content" android:layout_weight="1"
+        android:background="#FFFFFF">
+        <LinearLayout
+            android:orientation="horizontal" android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView  android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Actor name" />
+            <EditText android:id="@+id/tfTitleName" android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/swTitle"
             android:layout_gravity="center_horizontal"
             android:checked="false" />
     </LinearLayout>

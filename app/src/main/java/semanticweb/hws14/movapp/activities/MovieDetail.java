@@ -557,16 +557,9 @@ public class MovieDetail extends Activity {
 //TODO Close keyboard with return button(olli)
 
 //Hier kannste dir was nehmen :)
-//TODO Use Foaf (other) database for better actor info
 //TODO Animate the panel open close in criteria view
-//TODO try to figure some bugs out, when app crashs after longer use and several foreward backward navigations
-//TODO Change titles of activities (that what is displayed in the action bar)
-//TODO Additional Actor Criteria einen namen eingeben und alle actor kriegen die diesen als vor oder nachname haben oder sonst im namen haben
 //TODO Endcoding: Manchmal gibts komische Namen, die keine gescheiten Buchstaben haben.
 
-//DONE einigermaßen
-//TODO Das Mit dem Absturz wenn geladen wird und dann die activit geändert wird  sollte behoben werden
-//TODO Memory leaks --> That can be the reason for the slow loading. But I can't say how to remove them correctly. Or just a phone with more ram :D
 
 //MEINE
 //TODO ERROR bei kate winslet (fred)
@@ -574,8 +567,4 @@ public class MovieDetail extends Activity {
 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO make year array bigger. Every number (fred)
 //TODO add more cities and states in array (fred)
-//TODO Dont use getters and setters when not neccessary
-//TODO Icon von Nir einabuen
-//TODO Title bei actor und movie als zusätzliches criterium
-//TODO Rolle bei actor und movie detail neben dem actor
 

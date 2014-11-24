@@ -27,7 +27,7 @@ import semanticweb.hws14.movapp.model.MovieDet;
  */
 
 public class HttpRequester {
-    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState) {
+    public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState, final boolean isPartName) {
        // while(!isPause) {
             for (final Movie movie : movieList) {
 
@@ -48,7 +48,7 @@ public class HttpRequester {
 
                             //TIME  //Not neccessary when we kick out all the 0 dates out before
                             try {
-                                if (isTime && (isActor || isDirector || isGenre)) {
+                                if (isTime && (isActor || isDirector || isGenre || isPartName)) {
                                     if (0 == movie.getReleaseYear()) {
                                         int releaseYear = r.getInt("Year");
                                         movie.setReleaseYear(releaseYear);
@@ -67,7 +67,7 @@ public class HttpRequester {
                             if (!(movieList.indexOf(movie) == -1)) {
                                 //Genre
                                 try {
-                                    if (isGenre && (isActor || isDirector)) {
+                                    if (isGenre && (isActor || isDirector || isPartName)) {
                                         String genreName = r.getString("Genre");
                                         movie.setGenre(genreName);
                                         if (SparqlQueries.filterGenre(movie)) {

@@ -424,7 +424,6 @@ public class ActorDetail extends Activity {
                 Log.e("LINKEDMDBActorDetail", "Failed " + e.toString());
             }
 
-
             return actor;
         }
 

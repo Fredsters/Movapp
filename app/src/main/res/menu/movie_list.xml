@@ -2,6 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="semanticweb.hws14.movapp.activities.MovieList" >
     <item android:id="@+id/imdb_rating_button"
-        android:title="Get IMDB Rating"
+        android:title="IMDB-Rating"
         android:showAsAction="ifRoom"/>
 </menu>
