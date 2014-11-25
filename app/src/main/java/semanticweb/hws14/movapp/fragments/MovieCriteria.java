@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -194,11 +196,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         final View panelActor = view.findViewById(R.id.panelActor);
         panelActor.setVisibility(View.VISIBLE);
 
-        final View panelDirector = view.findViewById(R.id.panelDirector);
-        panelActor.setVisibility(View.VISIBLE);
-
-
-
         final View panelYear = view.findViewById(R.id.panelYear);
         panelYear.setVisibility(View.GONE);
 
@@ -215,7 +212,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.VISIBLE);
-                panelDirector.setVisibility(View.VISIBLE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -227,7 +223,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
-                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.VISIBLE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -239,7 +234,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
-                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.VISIBLE);
                 panelPartName.setVisibility(View.GONE);
@@ -251,7 +245,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
-                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.VISIBLE);
@@ -263,7 +256,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
-                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -491,15 +483,13 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         spCity.setSelection(position);
     }
 
-    protected void setTfKeyListener(final EditText tf, final Switch sw ){
-        tf.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+    protected void setTfKeyListener(final EditText tf, final Switch sw ) {
+        tf.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if(tf.isDirty())
-                    sw.setChecked(true);
-                    return true;
+                        sw.setChecked(true);
                 }
                 return false;
             }

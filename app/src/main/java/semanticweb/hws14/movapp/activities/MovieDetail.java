@@ -561,16 +561,14 @@ public class MovieDetail extends Activity {
 
 //Hier kannste dir was nehmen :)
 //todo align textviews in details and show text on finished
-//TODO Animate the panel open close in criteria view
-//TODO Endcoding: Manchmal gibts komische Namen, die keine gescheiten Buchstaben haben.
 //TODO better colors for listviews
 
 //MEINE
-//TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
-//TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
+//TODO related Movies
 //TODO make year array bigger. Every number (fred)
 //TODO add more cities and states in array (fred)
+//TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
+//TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO GIve information during loading, such as dbpedia has loaded
 
-// todo related Movies
 

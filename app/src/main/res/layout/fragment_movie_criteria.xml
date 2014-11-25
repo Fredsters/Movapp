@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/root_layout" android:layout_width="fill_parent"
         android:layout_height="fill_parent" android:background="#FFFFFF"
@@ -30,7 +26,8 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:enabled="true"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionDone" />
             </LinearLayout>
             <Switch
                 android:layout_width="wrap_content"
@@ -38,44 +35,35 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                 android:id="@+id/swActor"
                 android:layout_gravity="center_horizontal"
                 android:checked="false"   />
-
-        </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/panelDirector"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#FFFFFF" >
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/panelDirectorText">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name of Director"
-                android:id="@+id/tvDirectorName" />
-
-            <EditText
-                android:id="@+id/tfDirectorName"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:enabled="true"
-                android:inputType="textPersonName" />
-        </LinearLayout>
+                android:id="@+id/panelDirectorText">
 
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/swDirector"
-            android:layout_gravity="center_horizontal"
-            android:checked="false" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name of Director"
+                    android:id="@+id/tvDirectorName" />
+
+                <EditText
+                    android:id="@+id/tfDirectorName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:inputType="textPersonName"
+                    android:imeOptions="actionDone"
+                    />
+            </LinearLayout>
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/swDirector"
+                android:layout_gravity="center_horizontal"
+                android:checked="false" />
+        </LinearLayout>
 
     <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
             android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/year"
@@ -214,7 +202,8 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                 android:layout_height="wrap_content" android:text="Part of Title" />
             <EditText android:id="@+id/tfTitleName" android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
         <Switch
             android:layout_width="wrap_content"

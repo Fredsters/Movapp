@@ -198,7 +198,7 @@ public class Criteria extends FragmentActivity {
 
     public void getGpsLocation() {
         setProgressBarIndeterminateVisibility(true);
-        locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0, locListner);
+        locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListner);
     }
 
     public Fragment getFragmentByPosition(int pos) {
