@@ -39,6 +39,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import semanticweb.hws14.activities.R;
@@ -179,6 +180,17 @@ public class MovieDetail extends Activity {
     public void toActorList(View view) {
         Intent intent = new Intent(that, ActorList.class);
         intent.putStringArrayListExtra("actorList", movieDet.getActors());
+        startActivity(intent);
+    }
+
+    public void findRelatedMovies(View view) {
+        Intent intent = new Intent(that, MovieList.class);
+        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        Movie movie = new Movie(movieDet.getTitle(), 0, "");
+        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
+        criteria.put("isRelated", true);
+        criteria.put("relatedMovie", movie);
+        intent.putExtra("criteria", criteria);
         startActivity(intent);
     }
 
@@ -553,14 +565,12 @@ public class MovieDetail extends Activity {
         }
     }
 }
-
-
 //DEINE
 //TODO Buttons colored different when criteria is active (olli)
 //TODO implement the back button (olli)
+//todo align textviews in details and show text on finished (olli)
 
 //Hier kannste dir was nehmen :)
-//todo align textviews in details and show text on finished
 //TODO better colors for listviews
 
 //MEINE
@@ -569,6 +579,6 @@ public class MovieDetail extends Activity {
 //TODO add more cities and states in array (fred)
 //TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
-//TODO GIve information during loading, such as dbpedia has loaded
+//TODO Give information during loading, such as dbpedia has loaded
 
 

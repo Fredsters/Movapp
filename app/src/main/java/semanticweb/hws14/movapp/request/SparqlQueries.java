@@ -62,6 +62,27 @@ public class SparqlQueries {
         return queryString;
     }
 
+    public String RelatedDBPEDIAQuery (Movie movie) {
+        String movieResource = movie.getDBPmovieResource();
+        String queryString =
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+            "PREFIX dcterms: <http://purl.org/dc/terms/> "+
+            "PREFIX dbpprop: <http://dbpedia.org/property/> " +
+            "select distinct ?m ?t ?y Where { ";
+        if("".equals(movieResource)) {
+            queryString +="?uM rdf:type <http://schema.org/Movie>; foaf:name \"" + movie.getTitle() + "\"@en; dcterms:subject ?res. ";
+        } else {
+            queryString += movieResource+ " dcterms:subject ?res. ";
+        }
+        queryString +=
+            "?m rdf:type <http://schema.org/Movie>; dcterms:subject  ?res; foaf:name ?mN. FILTER(langMatches(lang(?mN ), 'EN')) " +
+            "?m foaf:name ?t. OPTIONAL{?m dbpprop:released ?y.}" +
+            "} limit 800";
+
+        return queryString;
+    }
+
     public String DBPEDIAQuery() {
         String queryString =
                     "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +

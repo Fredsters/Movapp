@@ -418,6 +418,16 @@
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:textColor="#ffffffff" />
 
+    <Button android:id="@+id/btnRelatedMovies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find related Movies"
+        android:onClick="findRelatedMovies"
+        android:background="@drawable/button_background_accordion"
+        android:textSize="15dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:textColor="#ffffffff" />
+
 
     <Button android:id="@+id/btnSpoiler" android:layout_width="match_parent"
         android:layout_height="wrap_content" android:text="@string/spoiler"
