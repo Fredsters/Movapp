@@ -58,7 +58,7 @@ public class ActorDetail extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_actor_detail);
 
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         String actorName = intent.getStringExtra("actorName");
 

@@ -148,8 +148,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         setTfKeyListener(tfMovieName,swMovie);
         setTfKeyListener(tfPartName,swPartName);
 
-
-
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
         setupSpinnerState(view);

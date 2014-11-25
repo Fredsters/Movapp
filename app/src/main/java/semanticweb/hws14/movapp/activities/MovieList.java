@@ -60,7 +60,7 @@ public class MovieList extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_movie_list);
 
         Intent intent = getIntent();
@@ -69,7 +69,7 @@ public class MovieList extends Activity {
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         listView = (ListView) findViewById(R.id.movieList);
 
-        checkCriteria();
+
 
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
@@ -80,6 +80,7 @@ public class MovieList extends Activity {
         } else {
             this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
           //  this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+            checkCriteria();
             staticRequestCanceled = true;
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.

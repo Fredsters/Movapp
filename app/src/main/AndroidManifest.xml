@@ -15,29 +15,39 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="semanticweb.hws14.movapp.activities.MovieList"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_list" >
+            android:label="@string/title_activity_list"
+            android:parentActivityName="semanticweb.hws14.movapp.activities.Criteria" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="semanticweb.hws14.movapp.activities.Criteria" />
         </activity>
+
         <activity
             android:name="semanticweb.hws14.movapp.activities.MovieDetail"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_result" >
+            android:label="@string/title_activity_result"
+            android:parentActivityName="semanticweb.hws14.movapp.activities.MovieList" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="semanticweb.hws14.movapp.activities.MovieList" />
         </activity>
+
         <activity
             android:name="semanticweb.hws14.movapp.activities.ActorList"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_actor_list"
-            android:parentActivityName="semanticweb.hws14.movapp.activities.MovieDetail" >
+            android:parentActivityName="semanticweb.hws14.movapp.activities.Criteria" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="semanticweb.hws14.movapp.activities.Detail" />
+                android:value="semanticweb.hws14.movapp.activities.Criteria" />
         </activity>
+
         <activity
             android:name="semanticweb.hws14.movapp.activities.ActorDetail"
             android:screenOrientation="portrait"

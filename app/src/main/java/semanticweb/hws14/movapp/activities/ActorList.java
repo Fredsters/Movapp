@@ -52,7 +52,7 @@ public class ActorList extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_actor_list);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.actorList);

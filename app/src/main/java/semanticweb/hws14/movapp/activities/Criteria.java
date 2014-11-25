@@ -113,84 +113,17 @@ public class Criteria extends FragmentActivity {
         //Init geo location
 
         locMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locListner = new LocationListener() {
 
+        locListner = new LocationListener() {
             public void onProviderEnabled(String provider) {
                 Log.d("onProviderEnabled", provider.toString());
-
             }
-
             public void onProviderDisabled(String provider) {
                 Log.d("onProviderDisabled", provider.toString());
-
             }
 
             public void onLocationChanged(Location location) {
-
-                AlertDialog ad = new AlertDialog.Builder(that).create();
-                ad.setCancelable(false); // This blocks the 'BACK' button
-
-
-                Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-                    if(addresses != null) {
-                        Address returnedAddress = addresses.get(0);
-                        final String strReturnedAdress = returnedAddress.getLocality();
-                        ad.setMessage("You are in: "+strReturnedAdress+"\nUse this location for the search?");
-
-                        ad.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                if(tabPosition == 0) {
-                                    MovieCriteria currentFragmet = (MovieCriteria) getFragmentByPosition(tabPosition);
-                                    currentFragmet.setGPSLocation(strReturnedAdress);
-                                } else if(tabPosition == 1){
-                                    ActorCriteria currentFragmet = (ActorCriteria) getFragmentByPosition(tabPosition);
-                                    currentFragmet.setGPSLocation(strReturnedAdress);
-                                }
-
-                                dialog.dismiss();
-                            }
-                        });
-
-                        ad.setButton(DialogInterface.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                    else {
-                        ad.setMessage("No Address returned!");
-                        ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    ad.setMessage("Canont get Address!");
-                    ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
-
-                ad.show();
-                setProgressBarIndeterminateVisibility(false);
-                locMgr.removeUpdates(locListner);
-
-
-
-
+                useLocationData(location);
             }
 
             public void onStatusChanged(String provider, int status,
@@ -202,9 +135,70 @@ public class Criteria extends FragmentActivity {
             }
         };
     }
+
+    private void useLocationData (Location location) {
+        AlertDialog ad = new AlertDialog.Builder(that).create();
+        ad.setCancelable(false); // This blocks the 'BACK' button
+        Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+            if(addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                final String strReturnedAdress = returnedAddress.getLocality();
+                ad.setMessage("You are in: "+strReturnedAdress+"\nUse this location for the search?");
+
+                ad.setButton(DialogInterface.BUTTON_POSITIVE, "YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if(tabPosition == 0) {
+                            MovieCriteria currentFragmet = (MovieCriteria) getFragmentByPosition(tabPosition);
+                            currentFragmet.setGPSLocation(strReturnedAdress);
+                        } else if(tabPosition == 1){
+                            ActorCriteria currentFragmet = (ActorCriteria) getFragmentByPosition(tabPosition);
+                            currentFragmet.setGPSLocation(strReturnedAdress);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+
+                ad.setButton(DialogInterface.BUTTON_NEGATIVE, "NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+            else {
+                ad.setMessage("No Address returned!");
+                ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            ad.setMessage("Can not get Address!");
+            ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
+        ad.show();
+        setProgressBarIndeterminateVisibility(false);
+        locMgr.removeUpdates(locListner);
+    }
+
     public void getGpsLocation() {
         setProgressBarIndeterminateVisibility(true);
-        locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListner);
+        locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 0, locListner);
     }
 
     public Fragment getFragmentByPosition(int pos) {

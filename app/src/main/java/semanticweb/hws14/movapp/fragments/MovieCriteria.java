@@ -288,8 +288,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         setTfKeyListener(tfDirectorName,swDirector);
         setTfKeyListener(tfPartName,swPartName);
 
-
-
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
         setupSpinnerGenre(view);

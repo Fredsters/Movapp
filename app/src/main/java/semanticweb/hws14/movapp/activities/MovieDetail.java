@@ -67,7 +67,7 @@ public class MovieDetail extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_movie_detail);
-
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         initDetailView();
 
         Intent intent = getIntent();
