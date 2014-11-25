@@ -549,11 +549,10 @@ public class MovieDetail extends Activity {
 
 
 //DEINE
+//TODO nicer Layout in listview --> Custom List Item (olli) Am Wichtigsten (Werde ich mir aber auch dann anschauen, wenn ich morgen mit meinem Zeug durch bin)
 //TODO Buttons colored different when criteria is active (olli)
 //TODO nicer layout in Detail( Texts should always have same offset, so that the length of the label does not matter) (oLLI)
-//TODO nicer Layout in listview (olli)
-//TODO Background color überall nachziehen
-//TODO implement a back button (olli)
+//TODO implement the back button (olli)
 //TODO Close keyboard with return button(olli)
 
 //Hier kannste dir was nehmen :)
@@ -562,9 +561,9 @@ public class MovieDetail extends Activity {
 
 
 //MEINE
-//TODO ERROR bei kate winslet (fred)
 //TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO make year array bigger. Every number (fred)
 //TODO add more cities and states in array (fred)
+//TODO GIve information during loading, such as dbpedia has loaded
 

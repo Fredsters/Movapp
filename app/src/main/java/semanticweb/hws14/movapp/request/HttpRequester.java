@@ -28,7 +28,7 @@ import semanticweb.hws14.movapp.model.MovieDet;
 
 public class HttpRequester {
     public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState, final boolean isPartName) {
-       // while(!isPause) {
+
             for (final Movie movie : movieList) {
 
                 String url = prepareURL(movie, false);

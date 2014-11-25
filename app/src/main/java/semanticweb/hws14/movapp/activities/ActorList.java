@@ -44,6 +44,7 @@ public class ActorList extends Activity {
     private Activity that = this;
     private HashMap<String, Object> actorCriteria;
     private queryForActors q;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class ActorList extends Activity {
 
 
         Intent intent = getIntent();
-        ListView listView = (ListView) findViewById(R.id.actorList);
+        listView = (ListView) findViewById(R.id.actorList);
         ArrayList<String> actorList = new ArrayList<String>();
         String city = "";
         if(intent.hasExtra("actorList")) {
@@ -221,12 +222,15 @@ public class ActorList extends Activity {
         }
 
         public void onPostExecute(ArrayList<String> actorList) {
+
             if (actorList.size() > 0) {
                 Collections.sort(actorList);
                 alAdapter.addAll(actorList);
                 that.setProgressBarIndeterminateVisibility(false);
                 ActorList.staticActorList = actorList;
-
+                if(actorList.size() == 1) {
+                    listView.performItemClick(listView.getAdapter().getView(0, null, null), 0, 0);
+                }
             } else {
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No actors found!");

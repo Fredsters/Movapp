@@ -48,6 +48,7 @@ public class MovieList extends Activity {
     private HashMap<String, Object> criteria;
     private MenuItem imdbButton;
     private queryForMovies q;
+    private ListView listView;
     public static boolean staticRequestCanceled;
 
     public static ArrayList<Movie> staticMovieList;
@@ -64,7 +65,7 @@ public class MovieList extends Activity {
         final ArrayList<Movie> movieList = new ArrayList<Movie>();
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
-        ListView listView = (ListView) findViewById(R.id.movieList);
+        listView = (ListView) findViewById(R.id.movieList);
 
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
@@ -272,7 +273,7 @@ public class MovieList extends Activity {
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                     try {
-                        tLMDB.join();
+                        tLMDB.join(25000);
                    } catch (InterruptedException e) {
                        e.printStackTrace();
                     }
@@ -343,7 +344,13 @@ public class MovieList extends Activity {
                     }
                 }
 
-                if(movieList.size() < 200) {
+          /*      if(movieList.size() == 1) {
+                    imdbButton.setVisible(true);
+                    mlAdapter.addAll(movieList);
+                    that.setProgressBarIndeterminateVisibility(false);
+                    MovieList.staticMovieList = movieList;
+                    //listView.performItemClick(listView.getAdapter().getView(0, null, null), 0, 0);
+                } else */if(movieList.size() < 200) {
                     HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
                 } else {
                     imdbButton.setVisible(true);
