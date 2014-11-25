@@ -9,6 +9,7 @@
     <string name="year">Release year</string>
     <string name="actor">Actor/Director</string>
     <string name="genre">Genre</string>
+    <string name="director">Director</string>
     <string name="movie">Movie</string>
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>

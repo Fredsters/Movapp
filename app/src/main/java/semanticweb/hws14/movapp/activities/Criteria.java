@@ -128,7 +128,7 @@ public class Criteria extends FragmentActivity {
             public void onLocationChanged(Location location) {
 
                 AlertDialog ad = new AlertDialog.Builder(that).create();
-                ad.setCancelable(true); // This blocks the 'BACK' button
+                ad.setCancelable(false); // This blocks the 'BACK' button
 
 
                 Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);

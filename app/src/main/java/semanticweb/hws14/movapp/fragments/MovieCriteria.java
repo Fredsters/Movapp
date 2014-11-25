@@ -49,6 +49,12 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     private Spinner spCity;
     private Spinner spState;
 
+    private int spYearFromCount;
+    private int spYearToCount;
+    private int spGenreCount;
+    private int spCityCount;
+    private int spStateCount;
+
     private Button btnActor;
     private Button btnYear ;
     private Button btnGenre ;
@@ -268,6 +274,11 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         });
 
+        setTfKeyListener(tfActorName,swActor);
+        setTfKeyListener(tfDirectorName,swDirector);
+        setTfKeyListener(tfPartName,swPartName);
+
+
 
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
@@ -404,18 +415,39 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         if(adapterView.getId() == spGenre.getId()){
             selectedGenre=item;
+            if(spGenreCount>0){
+                swGenre.setChecked(true);
+            }
+           spGenreCount++;
         }
         else if(adapterView.getId() == spYearFrom.getId()){
             selectedFromDate=Integer.parseInt(item);
+            if(spYearFromCount>0) {
+                swYear.setChecked(true);
+            }
+            spYearFromCount++;
         }
         else if (adapterView.getId() == spYearTo.getId()){
             selectedToDate =Integer.parseInt(item);
+            if(spYearToCount>0) {
+                swYear.setChecked(true);
+            }
+            spYearToCount++;
         }
         else if(adapterView.getId() == spCity.getId()){
             selectedCity=item;
+
+            if(spCityCount>0) {
+                swCity.setChecked(true);
+            }
+            spCityCount++;
         }
         else if(adapterView.getId() == spState.getId()){
             selectedState=item;
+            if(spStateCount>0) {
+                swState.setChecked(true);
+            }
+            spStateCount++;
         }
     }
 
@@ -451,4 +483,18 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         spCity.setSelection(position);
     }
 
+    protected void setTfKeyListener(final EditText tf, final Switch sw ){
+        tf.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    if(!tf.getText().equals(""))
+                    sw.setChecked(true);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 }

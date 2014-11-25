@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,6 @@ import semanticweb.hws14.movapp.activities.ActorList;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
-import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
-
 
 public class ActorCriteria extends Fragment implements AdapterView.OnItemSelectedListener {
 
@@ -39,6 +38,10 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     private Spinner spYearFrom;
     private Spinner spYearTo;
     private Spinner spState;
+
+    private int spYearFromCount;
+    private int spYearToCount;
+    private int spStateCount;
 
     private Button btnMovie;
     private Button btnYear ;
@@ -139,6 +142,13 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 panelPartName.setVisibility(View.VISIBLE);
             }
         });
+
+
+        setTfKeyListener(tfActorCity,swCity);
+        setTfKeyListener(tfMovieName,swMovie);
+        setTfKeyListener(tfPartName,swPartName);
+
+
 
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
@@ -284,12 +294,28 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         if(adapterView.getId() == spYearFrom.getId()){
             selectedFromDate=Integer.parseInt(item);
+
+            if(spYearFromCount>0) {
+                swYear.setChecked(true);
+            }
+            spYearFromCount++;
         }
         else if (adapterView.getId() == spYearTo.getId()){
             selectedToDate =Integer.parseInt(item);
+
+            if(spYearToCount>0) {
+                swYear.setChecked(true);
+            }
+            spYearToCount++;
         }
         else if(adapterView.getId() == spState.getId()){
             selectedState=item;
+            swState.setChecked(true);
+            if(spStateCount>0) {
+                swYear.setChecked(true);
+            }
+            spStateCount++;
+
         }
     }
 
@@ -300,6 +326,20 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     public void setGPSLocation(String city) {
         swCity.setChecked(true);
         tfActorCity.setText(city);
+    }
+
+    protected void setTfKeyListener(EditText tf, final Switch sw ){
+        tf.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    sw.setChecked(true);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 }
