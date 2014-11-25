@@ -194,6 +194,11 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         final View panelActor = view.findViewById(R.id.panelActor);
         panelActor.setVisibility(View.VISIBLE);
 
+        final View panelDirector = view.findViewById(R.id.panelDirector);
+        panelActor.setVisibility(View.VISIBLE);
+
+
+
         final View panelYear = view.findViewById(R.id.panelYear);
         panelYear.setVisibility(View.GONE);
 
@@ -210,6 +215,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.VISIBLE);
+                panelDirector.setVisibility(View.VISIBLE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -221,6 +227,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
+                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.VISIBLE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -232,6 +239,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
+                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.VISIBLE);
                 panelPartName.setVisibility(View.GONE);
@@ -243,6 +251,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
+                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.VISIBLE);
@@ -254,6 +263,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onClick(View v) {
                 panelActor.setVisibility(View.GONE);
+                panelDirector.setVisibility(View.GONE);
                 panelYear.setVisibility(View.GONE);
                 panelGenre.setVisibility(View.GONE);
                 panelPartName.setVisibility(View.GONE);
@@ -489,7 +499,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    if(!tf.getText().equals(""))
+                    if(tf.isDirty())
                     sw.setChecked(true);
                     return true;
                 }
