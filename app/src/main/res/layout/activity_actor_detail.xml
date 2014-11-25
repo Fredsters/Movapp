@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28dp"
+            android:textStyle="bold"
             android:layout_marginTop="20dp" />
         <TextView
             android:id="@+id/tvWikiAbstract"
@@ -46,6 +47,7 @@
             <TextView
                 android:id="@+id/tvBirthNameHC"
                 android:text="Birthname:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -60,12 +62,14 @@
 
         <LinearLayout
             android:id="@+id/birthDateLayout"
+
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/tvBirthDateHC"
                 android:text="Birthdate:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -86,6 +90,7 @@
             <TextView
                 android:id="@+id/tvBirthPlaceHC"
                 android:text="Birthplace:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -107,6 +112,7 @@
             <TextView
                 android:id="@+id/tvPartnerHC"
                 android:text="Partner:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -128,6 +134,7 @@
             <TextView
                 android:id="@+id/tvParentHC"
                 android:text="Children:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -149,6 +156,7 @@
             <TextView
                 android:id="@+id/tvChildrenHC"
                 android:text="Number of Children:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -169,6 +177,7 @@
             <TextView
                 android:id="@+id/tvNationalityHC"
                 android:text="Nationality:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -190,6 +199,7 @@
             <TextView
                 android:id="@+id/tvOccupationHC"
                 android:text="Occupation:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -211,6 +221,7 @@
             <TextView
                 android:id="@+id/tvActiveYearHC"
                 android:text="Actor since:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />
@@ -231,6 +242,7 @@
             <TextView
                 android:id="@+id/tvRolesHC"
                 android:text="Characters:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
@@ -249,6 +261,7 @@
             <TextView
                 android:id="@+id/tvMoviesHC"
                 android:text="Movies:"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView

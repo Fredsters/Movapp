@@ -26,6 +26,7 @@ public class MovieDet extends Movie{
     ArrayList<String> genres; //Alle
     ArrayList<String> roles;
 
+    private int actorRoleCount;
 
     //Noch nicht
     //distributor 20th centruy fox //DBP or LMDB
@@ -52,50 +53,51 @@ public class MovieDet extends Movie{
         this.directors = new ArrayList<String>();
         this.writers = new ArrayList<String>();
         this.genres = new ArrayList<String>();
+
+        actorRoleCount = 0;
     }
 
-    public boolean addRole (String role) {
-        if(this.roles.contains(role)) {
-            return false;
-        } else {
+    public void addRole (String role) {
+        if(!this.roles.contains(role)) {
             this.roles.add(role);
-            return true;
         }
     }
 
-    public boolean addActor (String actor) {
-        if(this.actors.contains(actor)) {
-            return false;
-        } else {
-            this.actors.add(actor);
-            return true;
+    public void addActorRole (String actor, String role) {
+        if(!actor.contains("actor")) {
+            if(!this.actors.contains(actor)) {
+                this.actors.add(actorRoleCount, actor);
+                if(!"".equals(role)) {
+                    this.roles.add(actorRoleCount, role);
+                } else {
+                    this.roles.add(actorRoleCount, " ");
+                }
+                actorRoleCount++;
+            } else if(!this.roles.contains(role) && !"".equals(role)) {
+                int actorIndex = this.actors.indexOf(actor);
+                this.actors.remove(actor);
+                this.roles.remove(actorIndex);
+                this.actors.add(actorIndex, actor);
+                this.roles.add(actorIndex, role);
+            }
         }
     }
 
-    public boolean addDirector (String director) {
-        if(this.directors.contains(director)) {
-            return false;
-        } else {
+    public void addDirector (String director) {
+        if(!this.directors.contains(director)) {
             this.directors.add(director);
-            return true;
         }
     }
 
-    public boolean addWriter (String writer) {
-        if(this.writers.contains(writer)) {
-            return false;
-        } else {
+    public void addWriter (String writer) {
+        if(!this.writers.contains(writer)) {
             this.writers.add(writer);
-            return true;
         }
     }
 
-    public boolean addGenre (String genre) {
-        if(this.genres.contains(genre)) {
-            return false;
-        } else {
+    public void addGenre (String genre) {
+        if(!this.genres.contains(genre)) {
             this.genres.add(genre);
-            return true;
         }
     }
 

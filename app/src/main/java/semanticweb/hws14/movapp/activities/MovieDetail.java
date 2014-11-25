@@ -227,20 +227,20 @@ public class MovieDetail extends Activity {
         String genreText = String.valueOf(movie.createTvOutOfList(movie.getGenres()));
         genre.setText(genreText);
 
-        manageEmptyTextfields(tvGenreHc, genre, genreText);
+        manageEmptyTextfields(tvGenreHc, genre, genreText, true);
 
         TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
         TextView releaseYearHc = (TextView) findViewById(R.id.tvReleaseYearHC);
         String releaseYearText = String.valueOf(movie.getReleaseYear());
         releaseYear.setText(releaseYearText);
 
-        manageEmptyTextfields(releaseYearHc, releaseYear, releaseYearText);
+        manageEmptyTextfields(releaseYearHc, releaseYear, releaseYearText, true);
 
         TextView runtime = (TextView) findViewById(R.id.tvRuntime);
         TextView runTimeHc = (TextView) findViewById(R.id.tvRuntimeHC);
         String runtimeText = String.valueOf(movie.getRuntime() + " minutes");
         runtime.setText(runtimeText);
-        manageEmptyTextfields(runTimeHc, runtime, runtimeText);
+        manageEmptyTextfields(runTimeHc, runtime, runtimeText, true);
 
         TextView budget = (TextView) findViewById(R.id.tvBudget);
         TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
@@ -253,7 +253,7 @@ public class MovieDetail extends Activity {
             budgetText = formatter.format(budgetLong);
             budgetText = String.valueOf(budgetText);
             budget.setText(budgetText);
-            manageEmptyTextfields(budgetHc, budget, budgetText);
+            manageEmptyTextfields(budgetHc, budget, budgetText, true);
         }
 
 
@@ -263,26 +263,26 @@ public class MovieDetail extends Activity {
         String awardsText = movie.getAwards();
         awards.setText(awardsText);
 
-        manageEmptyTextfields(awardsHc, awards, awardsText);
+        manageEmptyTextfields(awardsHc, awards, awardsText, true);
 
         TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
         TextView directors = (TextView) findViewById(R.id.tvDirectors);
         String directorText = String.valueOf(movie.createTvOutOfList(movie.getDirectors()));
         directors.setText(directorText);
 
-        manageEmptyTextfields(tvDirHc, directors, directorText);
+        manageEmptyTextfields(tvDirHc, directors, directorText, true);
 
         TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
         TextView writers = (TextView) findViewById(R.id.tvWriters);
         String writerText = String.valueOf(movie.createTvOutOfList(movie.getWriters()));
         writers.setText(writerText);
-        manageEmptyTextfields(tvWriterHc, writers, writerText);
+        manageEmptyTextfields(tvWriterHc, writers, writerText, true);
 
         TextView tvActorsHc = (TextView) findViewById(R.id.tvActorsHC);
         TextView actors = (TextView) findViewById(R.id.tvActors);
         String actorText = String.valueOf(movie.createTvOutOfList(movie.getActors()));
         actors.setText(actorText);
-        manageEmptyTextfields(tvActorsHc, actors, actorText);
+        manageEmptyTextfields(tvActorsHc, actors, actorText, true);
         colorIt(actors);
 
         if(movie.getActors().size() > 0) {
@@ -339,7 +339,8 @@ public class MovieDetail extends Activity {
         TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
         String metaSoreText = String.valueOf(movie.getMetaScore());
         metaScore.setText(metaSoreText);
-        manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText);
+
+        manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText, false);
 
 
         TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
@@ -358,7 +359,7 @@ public class MovieDetail extends Activity {
         String ratingCountText = movie.getVoteCount();
         ratingCount.setText(ratingCountText);
 
-        manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText);
+        manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText, false);
 
         TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
         if(movie.getImdbRating().equals("0 No Rating")) {
@@ -387,7 +388,7 @@ public class MovieDetail extends Activity {
     }
 
 
-    public void manageEmptyTextfields(TextView tvHc, TextView tv, String text){
+    public void manageEmptyTextfields(TextView tvHc, TextView tv, String text, boolean doColorIt){
         if(text.equals("")|| ( text.equals("N/A") || text.equals("0"))){
             tv.setVisibility(View.GONE);
             if(tvHc != null) {
@@ -397,7 +398,9 @@ public class MovieDetail extends Activity {
         else{
             tv.setVisibility(View.VISIBLE);
             tvHc.setVisibility(View.VISIBLE);
-            colorIt(tvHc);
+            if(doColorIt) {
+                colorIt(tvHc);
+            }
         }
     }
 
@@ -427,16 +430,20 @@ public class MovieDetail extends Activity {
                             }
                             try {
                                 if (soln.getLiteral("aN") != null) {
-                                    movie.addActor(soln.getLiteral("aN").getString());
+                                    if(soln.getLiteral("rN") != null) {
+                                        movie.addActorRole(soln.getLiteral("aN").getString(), soln.getLiteral("rN").getString());
+                                    } else {
+                                        movie.addActorRole(soln.getLiteral("aN").getString(), "");
+                                    }
                                 }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
-                            try {
+                            /*try {
                                 if (soln.getLiteral("rN") != null) {
                                     movie.addRole(soln.getLiteral("rN").getString());
                                 }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
-                            }
+                            }*/
 
                             try {
                             if (soln.getLiteral("dN") != null) {
@@ -493,12 +500,12 @@ public class MovieDetail extends Activity {
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
                     }
-/*                    try {
+                    try {
                     if (soln.getLiteral("aN") != null) {
-                        movie.addActor(soln.getLiteral("aN").getString());
+                        movie.addActorRole(soln.getLiteral("aN").getString(), "");
                     }}catch (Exception e) {
                         Log.d("movieDetail Problem ", e.toString());
-                    }*/
+                    }
                     try {
                     if (soln.getLiteral("dN") != null) {
                         movie.addDirector(soln.getLiteral("dN").getString());
@@ -549,16 +556,14 @@ public class MovieDetail extends Activity {
 
 
 //DEINE
-//TODO nicer Layout in listview --> Custom List Item (olli) Am Wichtigsten (Werde ich mir aber auch dann anschauen, wenn ich morgen mit meinem Zeug durch bin)
 //TODO Buttons colored different when criteria is active (olli)
-//TODO nicer layout in Detail( Texts should always have same offset, so that the length of the label does not matter) (oLLI)
 //TODO implement the back button (olli)
-//TODO Close keyboard with return button(olli)
 
 //Hier kannste dir was nehmen :)
+//todo align textviews in details and show text on finished
 //TODO Animate the panel open close in criteria view
 //TODO Endcoding: Manchmal gibts komische Namen, die keine gescheiten Buchstaben haben.
-
+//TODO better colors for listviews
 
 //MEINE
 //TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
@@ -566,4 +571,6 @@ public class MovieDetail extends Activity {
 //TODO make year array bigger. Every number (fred)
 //TODO add more cities and states in array (fred)
 //TODO GIve information during loading, such as dbpedia has loaded
+
+// todo related Movies
 

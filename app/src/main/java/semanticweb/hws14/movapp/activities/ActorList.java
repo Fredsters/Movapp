@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 
 import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.fragments.ActorListAdapter;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.request.HttpRequester;
@@ -40,7 +41,7 @@ public class ActorList extends Activity {
 
     private static ArrayList<String> staticActorList;
     private static HashMap<String, Object> staticCriteria;
-    private ArrayAdapter<String> alAdapter;
+    private ActorListAdapter alAdapter;
     private Activity that = this;
     private HashMap<String, Object> actorCriteria;
     private queryForActors q;
@@ -64,17 +65,17 @@ public class ActorList extends Activity {
         }
 
         if(intent.hasExtra("actorList")) {
-            this.alAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, actorList);
+            this.alAdapter = new ActorListAdapter(this,R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
         } else if(city.equals(staticCriteria)){
-            this.alAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, actorList);
+            this.alAdapter = new ActorListAdapter (this, R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
             alAdapter.addAll(staticActorList);
         } else {
             staticCriteria = actorCriteria;
             q = new queryForActors();
             q.execute(actorCriteria);
-            this.alAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, actorList);
+            this.alAdapter = new ActorListAdapter (this, R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
         }
 

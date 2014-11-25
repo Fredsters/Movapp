@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
+import semanticweb.hws14.movapp.fragments.MovieListAdapter;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.MovieComparator;
@@ -43,7 +44,8 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 
 public class MovieList extends Activity {
 
-    private ArrayAdapter<Movie> mlAdapter;
+    private MovieListAdapter mlAdapter;
+   // private ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
     private HashMap<String, Object> criteria;
     private MenuItem imdbButton;
@@ -67,14 +69,17 @@ public class MovieList extends Activity {
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         listView = (ListView) findViewById(R.id.movieList);
 
+        checkCriteria();
+
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
-            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+           this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
+        //    this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
-
         } else {
-            this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
+            this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
+          //  this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
             staticRequestCanceled = true;
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
@@ -141,6 +146,31 @@ public class MovieList extends Activity {
     public void queryForImdbRating () {
         that.setProgressBarIndeterminateVisibility(true);
         HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
+    }
+
+    private void checkCriteria() {
+        if(!criteria.containsKey("isPartName")) {
+            criteria.put("isPartName", false);
+        }
+        if(!criteria.containsKey("isActor")) {
+            criteria.put("isActor", false);
+        }
+        if(!criteria.containsKey("isTime")) {
+            criteria.put("isTime", false);
+        }
+        if(!criteria.containsKey("isGenre")) {
+            criteria.put("isGenre", false);
+        }
+        if(!criteria.containsKey("isDirector")) {
+            criteria.put("isDirector", false);
+        }
+        if(!criteria.containsKey("isCity")) {
+            criteria.put("isCity", false);
+        }
+        if(!criteria.containsKey("isState")) {
+            criteria.put("isState", false);
+        }
+
     }
 
 
@@ -281,7 +311,7 @@ public class MovieList extends Activity {
             }
 
         /* Eliminate doublicates */
-            if(movieList.size() >= 1500 ) {
+            if(movieList.size() >= 750 ) {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
