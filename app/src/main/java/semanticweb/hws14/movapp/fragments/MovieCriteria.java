@@ -2,10 +2,9 @@ package semanticweb.hws14.movapp.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
-
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,8 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
-import java.util.HashMap;
 
+import java.util.HashMap;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.activities.MovieList;
@@ -256,11 +255,26 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         });
 
+
+        tfActorName.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                // If the event is a key-down event on the "enter" button
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    swActor.setChecked(true);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
         setupSpinnerGenre(view);
         setupSpinnerCity(view);
         setupSpinnerState(view);
+
 
         swActor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override

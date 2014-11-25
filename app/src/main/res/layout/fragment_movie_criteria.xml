@@ -20,34 +20,22 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
             android:layout_height="wrap_content" android:layout_weight="1"
             android:background="#FFFFFF">
             <LinearLayout android:id="@+id/panelActorText"
-            android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Name of Actor" />
-            <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:enabled="true"  />
-        </LinearLayout>
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/tvActorName" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Name of Actor" />
+                <EditText android:id="@+id/tfActorName" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" android:enabled="true"
+                    android:autoText="false"
+                    android:contentDescription="Enter full name"
+                    android:inputType="text" />
+            </LinearLayout>
             <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/swActor"
                 android:layout_gravity="center_horizontal"
                 android:checked="false"   />
-
-            <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="Name of Director" />
-                <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" android:enabled="true"  />
-            </LinearLayout>
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/swDirector"
-                android:layout_gravity="center_horizontal"
-                android:checked="false"   />
-
         </LinearLayout>
 
         <Button android:id="@+id/btnYear" android:layout_width="fill_parent"
@@ -100,6 +88,59 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
                 android:layout_height="wrap_content"
                 android:id="@+id/swYear"
                 android:layout_gravity="top|center_horizontal"
+                android:checked="false" />
+        </LinearLayout>
+
+
+        <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
+            android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/genre"
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF" />
+
+        <LinearLayout android:id="@+id/panelGenre"
+            android:orientation="vertical" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:background="#FFFFFF">
+            <LinearLayout android:id="@+id/panelGenreText"
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/tvGenre" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Genre" />
+                <Spinner
+                    android:id="@+id/spGenre"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    ></Spinner>
+            </LinearLayout>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/swGenre"
+                android:layout_gravity="center_horizontal"
+                android:checked="false" />
+        </LinearLayout>
+
+        <Button android:id="@+id/btnDirector" android:layout_width="fill_parent"
+            android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/director"
+            android:background="@drawable/button_background_accordion"
+            android:textColor="#FFFFFF" />
+        <LinearLayout android:id="@+id/panelDirector"
+            android:orientation="vertical" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:background="#FFFFFF">
+            <LinearLayout android:id="@+id/panelDirectorText"
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView android:id="@+id/tvDirectorName" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Name of Director" />
+                <EditText android:id="@+id/tfDirectorName" android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/swDirector"
+                android:layout_gravity="center_horizontal"
                 android:checked="false" />
         </LinearLayout>
 
@@ -172,57 +213,6 @@ tools:context="semanticweb.hws14.movapp.fragments.MovieCriteria"> -->
             </RadioGroup>
 
         </LinearLayout>
-
-    <Button android:id="@+id/btnTitle" android:layout_width="fill_parent"
-        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/movie_title"
-        android:background="@drawable/button_background_accordion"
-        android:textColor="#FFFFFF" />
-    <LinearLayout android:id="@+id/panelTitle"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFF">
-        <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Part of Title" />
-            <EditText android:id="@+id/tfTitleName" android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/swTitle"
-            android:layout_gravity="center_horizontal"
-            android:checked="false" />
-    </LinearLayout>
-
-    <Button android:id="@+id/btnGenre" android:layout_width="fill_parent"
-        android:layout_height="@dimen/movie_criteria_button_height" android:text="@string/genre"
-        android:background="@drawable/button_background_accordion"
-        android:textColor="#FFFFFF" />
-
-    <LinearLayout android:id="@+id/panelGenre"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content" android:layout_weight="1"
-        android:background="#FFFFFF">
-        <LinearLayout android:id="@+id/panelGenreText"
-            android:orientation="horizontal" android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <TextView android:id="@+id/tvGenre" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Genre" />
-            <Spinner
-                android:id="@+id/spGenre"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                ></Spinner>
-        </LinearLayout>
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/swGenre"
-            android:layout_gravity="center_horizontal"
-            android:checked="false" />
-    </LinearLayout>
 
         <Button
             android:layout_width="fill_parent"

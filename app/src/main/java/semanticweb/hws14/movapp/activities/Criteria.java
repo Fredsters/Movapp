@@ -1,7 +1,6 @@
 package semanticweb.hws14.movapp.activities;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -129,7 +128,7 @@ public class Criteria extends FragmentActivity {
             public void onLocationChanged(Location location) {
 
                 AlertDialog ad = new AlertDialog.Builder(that).create();
-                ad.setCancelable(false); // This blocks the 'BACK' button
+                ad.setCancelable(true); // This blocks the 'BACK' button
 
 
                 Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);
@@ -188,6 +187,9 @@ public class Criteria extends FragmentActivity {
                 ad.show();
                 setProgressBarIndeterminateVisibility(false);
                 locMgr.removeUpdates(locListner);
+
+
+
 
             }
 
