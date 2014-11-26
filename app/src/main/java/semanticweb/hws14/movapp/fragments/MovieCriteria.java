@@ -372,7 +372,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(getActivity(), R.array.year_array, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spYearFrom.setAdapter(adapterFrom);
-        spYearFrom.setSelection(6);
+        spYearFrom.setSelection(20);
         spYearFrom.setOnItemSelectedListener(this);
     }
 

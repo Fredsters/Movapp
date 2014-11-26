@@ -572,12 +572,10 @@ public class MovieDetail extends Activity {
 
 //Hier kannste dir was nehmen :)
 //TODO better colors for listviews
+//TODO related Movies (Make different sparql, so that you dont get so many results)
 
 //MEINE
-//TODO related Movies
-//TODO make year array bigger. Every number (fred)
-//TODO add more cities and states in array (fred)
-//TODO Kate Upton not born in USA? dbpedia-owl:isPartOf
+//TODO add more cities in array (fred)
 //TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO Give information during loading, such as dbpedia has loaded
 

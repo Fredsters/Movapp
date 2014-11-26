@@ -116,15 +116,154 @@
         <item>Western</item>
     </string-array>
     <string-array name="city_array">
-        <item>New York City</item>
-        <item>Dallas, Texas</item>
         <item>Berlin</item>
+        <item>Düsseldorf</item>
+        <item>Frankfurt</item>
+        <item>Hamburg</item>
         <item>Heidelberg</item>
         <item>Mannheim</item>
+        <item>Munich</item>
+
+        <item>Long Beach, California</item>
+        <item>Palo Alto, California</item>
+        <item>San Diego, California</item>
+        <item>Los Angeles, California</item>
+        <item>San Francisco, California</item>
+        <item>Tampa, Florida</item>
+        <item>Miami, Florida</item>
+        <item>Dallas, Texas</item>
+        <item>Houston, Texas</item>
+        <item>Austin, Texas</item>
+        <item>Kansas City, Missouri</item>
+        <item>St. Louis, Missouri</item>
+        <item>Memphis, Tennessee</item>
+        <item>New Orleans, Louisiana</item>
+        <item>Pittsburgh, Pennsylvania</item>
+        <item>Philadelphia, Pennsylvania</item>
+        <item>Seattle, Washington</item>
+        <item>Baltimore, Maryland</item>
+        <item>Chicago, Illinois</item>
+        <item>Cleveland, Ohio</item>
+        <item>New York City</item>
+        <item>Washington, D.C.</item>
+        <item>Atlanta, Georgia</item>
+        <item>Detroit, Michigan</item>
+        <item>Boston, Massachusetts</item>
+        <item>Indianapolis, Indiana</item>
+        <item>Portland, Oregon</item>
+        <item>Phoenix, Arizona</item>
+        <item>Tulsa, Oklahoma</item>
+
+        <item>Paris</item>
+        <item>Bordeaux</item>
+        <item>Calais</item>
+        <item>Lille</item>
+        <item>Nantes</item>
+        <item>Marseille</item>
+        <item>Saint-Tropez</item>
+        <item>Lyon</item>
+        <item>Cannes</item>
+
     </string-array>
     <string-array name="state_array">
+        <item>Afghanistan</item>
+        <item>a fictional country</item>
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Argentina</item>
+        <item>Australia</item>
+        <item>Austria</item>
+        <item>Belgium</item>
+        <item>Bangladesh</item>
+        <item>Bolivia</item>
+        <item>Brazil</item>
+        <item>Bulgaria</item>
+        <item>Cameroon</item>
+        <item>Canada</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Colombia</item>
+        <item>Croatia</item>
+        <item>Cuba</item>
+        <item>Cyprus</item>
+        <item>Denmark</item>
+        <item>Egypt</item>
+        <item>El Salvador</item>
+        <item>Estonia</item>
+        <item>Ethiopia</item>
+        <item>Finland</item>
+        <item>France</item>
         <item>Germany</item>
+        <item>Ghana</item>
+        <item>Greece</item>
+        <item>Haiti</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>India</item>
+        <item>Indonesia</item>
+        <item>Iran</item>
+        <item>Iraq</item>
+        <item>Ireland</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Ivory Coast</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Kazakhstan</item>
+        <item>Korea</item>
+        <item>Kosovo</item>
+        <item>Laos</item>
+        <item>Latvia</item>
+        <item>Liberia</item>
+        <item>Lithuania</item>
+        <item>Luxembourg</item>
+        <item>Madagascar</item>
+        <item>Malta</item>
+        <item>Mexico</item>
+        <item>Mongolia</item>
+        <item>Morocco</item>
+        <item>Namibia</item>
+        <item>Nepal</item>
+        <item>New Zealand</item>
+        <item>Nigeria</item>
+        <item>Pakistan</item>
+        <item>Paraguay</item>
+        <item>Peru</item>
+        <item>Poland</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Senegal</item>
+        <item>Serbia</item>
+        <item>Singapore</item>
+        <item>Slovakia</item>
+        <item>Slovenia</item>
+        <item>South Africa</item>
+        <item>Spain</item>
+        <item>Sri Lanka</item>
+        <item>Sweden</item>
+        <item>Switzerland</item>
+        <item>Syria</item>
+        <item>Taiwan</item>
+        <item>Tanzania</item>
+        <item>the Bahamas</item>
+        <item>the Netherlands</item>
+        <item>the Roman Empire</item>
+        <item>the United Kingdom</item>
         <item>the United States</item>
+        <item>the Czech Republic</item>
+        <item>the Democratic Republic of the Congo</item>
+        <item>the Dominican Republic</item>
+        <item>the Inca Empire</item>
+        <item>the Philippines</item>
+        <item>Togo</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Ukraine</item>
+        <item>Uruguay</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Yemen</item>
+        <item>Yugoslavia</item>
     </string-array>
 
 </resources>

@@ -312,7 +312,8 @@ public class SparqlQueries {
             queryString += "?a dbpedia-owl:birthPlace ?bP.{?bP foaf:name ?bPN. FILTER (REGEX(?bPN, \""+criteria.get("city")+"\", \"i\"))} UNION {?bP rdfs:label ?bPN. FILTER (REGEX(?bPN, \""+criteria.get("city")+"\", \"i\"))}";
         }
         if((Boolean) criteria.get("isState")) {
-            queryString += "?a dbpedia-owl:birthPlace ?bP. ?bP dbpedia-owl:country ?c. ?c foaf:name \""+criteria.get("state")+"\"@en. ";
+            queryString += "?a dbpedia-owl:birthPlace ?bP. {?bP dbpedia-owl:isPartOf ?state. ?state dbpedia-owl:country ?c . } UNION {?bP dbpedia-owl:country ?c.} " +
+               "?c foaf:name \""+criteria.get("state")+"\"@en.";
         }
         if((Boolean) criteria.get("isMovie")) {
             queryString += "?m dbpedia-owl:starring ?a. ?m foaf:name ?mN. FILTER (REGEX(?mN, \""+criteria.get("movieName")+"\", \"i\")) ";
@@ -324,6 +325,4 @@ public class SparqlQueries {
 
         return queryString;
     }
-
-
 }

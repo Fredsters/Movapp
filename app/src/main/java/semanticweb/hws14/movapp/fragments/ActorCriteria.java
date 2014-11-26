@@ -208,7 +208,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(getActivity(), R.array.year_array, android.R.layout.simple_spinner_item);
         adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spYearFrom.setAdapter(adapterFrom);
-        spYearFrom.setSelection(6);
+        spYearFrom.setSelection(40);
         spYearFrom.setOnItemSelectedListener(this);
     }
 
@@ -217,6 +217,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(getActivity(), R.array.year_array,android.R.layout.simple_spinner_item);
         adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spYearTo.setAdapter(adapterTo);
+        spYearFrom.setSelection(20);
         spYearTo.setOnItemSelectedListener(this);
     }
 
@@ -292,7 +293,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         if(adapterView.getId() == spYearFrom.getId()){
             selectedFromDate=Integer.parseInt(item);
-
             if(spYearFromCount>0) {
                 swYear.setChecked(true);
             }
@@ -300,7 +300,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
         else if (adapterView.getId() == spYearTo.getId()){
             selectedToDate =Integer.parseInt(item);
-
             if(spYearToCount>0) {
                 swYear.setChecked(true);
             }
@@ -308,9 +307,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
         else if(adapterView.getId() == spState.getId()){
             selectedState=item;
-            swState.setChecked(true);
             if(spStateCount>0) {
-                swYear.setChecked(true);
+                swState.setChecked(true);
             }
             spStateCount++;
 
