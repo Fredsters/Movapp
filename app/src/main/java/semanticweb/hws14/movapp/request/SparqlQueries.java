@@ -62,7 +62,7 @@ public class SparqlQueries {
         return queryString;
     }
 
-    public String RelatedDBPEDIAQuery (Movie movie) {
+    public String randomRelatedDBPEDIAQuery (Movie movie) {
         String movieResource = movie.getDBPmovieResource();
         String queryString =
             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
@@ -76,10 +76,26 @@ public class SparqlQueries {
             queryString += movieResource+ " dcterms:subject ?res. ";
         }
         queryString +=
-            "?m rdf:type <http://schema.org/Movie>; dcterms:subject  ?res; foaf:name ?mN. FILTER(langMatches(lang(?mN ), 'EN')) " +
+            "?m rdf:type <http://schema.org/Movie>; dcterms:subject  ?res. " +
             "?m foaf:name ?t. OPTIONAL{?m dbpprop:released ?y.}" +
             "} limit 800";
 
+        return queryString;
+    }
+
+    public String relatedDBPEDIAQuery (String relationName) {
+        String queryString =
+            "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
+            "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+            "PREFIX dcterms: <http://purl.org/dc/terms/> "+
+            "PREFIX dbpprop: <http://dbpedia.org/property/> " +
+            "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+            "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> "+
+            "select distinct ?m ?t ?y Where { " +
+                "?sub rdf:type skos:Concept; rdfs:label \""+relationName+"\"@en. " +
+                "?m rdf:type <http://schema.org/Movie>; dcterms:subject ?sub."+
+                "?m foaf:name ?t. OPTIONAL{?m dbpprop:released ?y.}"+
+            "} limit 800";
         return queryString;
     }
 
@@ -323,6 +339,19 @@ public class SparqlQueries {
         }
         queryString += "} limit 1000";
 
+        return queryString;
+    }
+
+    public String DBPEDIARelationQuery(Movie movie) {
+        String queryString=
+        "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
+        "PREFIX dcterms: <http://purl.org/dc/terms/> ";
+        if(!"".equals(movie.getDBPmovieResource())) {
+            queryString+= "select ?subN Where { "+movie.getDBPmovieResource()+" dcterms:subject ?sub. ?sub rdfs:label ?subN. }";
+        } else {
+            queryString+= "select ?subN Where { ?m rdf:type <http://schema.org/Movie>; foaf:name \""+movie.getTitle()+"\"@en; ?m dcterms:subject ?sub. ?sub rdfs:label ?subN. }";
+        }
         return queryString;
     }
 }

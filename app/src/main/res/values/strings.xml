@@ -14,8 +14,8 @@
     <string name="submit">Submit</string>
     <string name="spoiler">Spoiler</string>
     <string name="link">Link to Trailer</string>
-    <string name="toActorList">Actor Detail List</string>
-    <string name="toMovieList">Movie Detail List</string>
+    <string name="toActorList">Actor List</string>
+    <string name="toMovieList">Movie List</string>
     <string name="linkToActor">Link to Actors Page</string>
     <string name="region">Region</string>
     <string name="movie_title">Part of Title</string>
@@ -123,7 +123,6 @@
         <item>Heidelberg</item>
         <item>Mannheim</item>
         <item>Munich</item>
-
         <item>Long Beach, California</item>
         <item>Palo Alto, California</item>
         <item>San Diego, California</item>
@@ -153,7 +152,6 @@
         <item>Portland, Oregon</item>
         <item>Phoenix, Arizona</item>
         <item>Tulsa, Oklahoma</item>
-
         <item>Paris</item>
         <item>Bordeaux</item>
         <item>Calais</item>
@@ -163,7 +161,6 @@
         <item>Saint-Tropez</item>
         <item>Lyon</item>
         <item>Cannes</item>
-
     </string-array>
     <string-array name="state_array">
         <item>Afghanistan</item>
@@ -265,5 +262,8 @@
         <item>Yemen</item>
         <item>Yugoslavia</item>
     </string-array>
+
+    <string name="title_activity_relation_list">RelationList</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

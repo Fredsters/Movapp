@@ -183,14 +183,22 @@ public class MovieDetail extends Activity {
         startActivity(intent);
     }
 
-    public void findRelatedMovies(View view) {
+    public void findRandomRelatedMovies(View view) {
         Intent intent = new Intent(that, MovieList.class);
         HashMap<String, Object> criteria = new HashMap<String, Object>();
         Movie movie = new Movie(movieDet.getTitle(), 0, "");
         movie.setDBPmovieResource(movieDet.getDBPmovieResource());
-        criteria.put("isRelated", true);
+        criteria.put("isRandomRelated", true);
         criteria.put("relatedMovie", movie);
         intent.putExtra("criteria", criteria);
+        startActivity(intent);
+    }
+
+    public void findRelatedMovies(View view) {
+        Intent intent = new Intent(that, RelationList.class);
+        Movie movie = new Movie(movieDet.getTitle(), 0, "");
+        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
+        intent.putExtra("movie", movie);
         startActivity(intent);
     }
 
@@ -566,17 +574,20 @@ public class MovieDetail extends Activity {
     }
 }
 //DEINE
-//TODO Buttons colored different when criteria is active (olli)
-//TODO implement the back button (olli)
-//todo align textviews in details and show text on finished (olli)
-
-//Hier kannste dir was nehmen :)
+//TODO Buttons colored different when criteria is active (olli) drawable
+//TODO align textviews in details properly and show text on finished (olli)
 //TODO better colors for listviews
-//TODO related Movies (Make different sparql, so that you dont get so many results)
+
+//To Consider
+//TODO Test a lot
+//TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden
 
 //MEINE
 //TODO add more cities in array (fred)
-//TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden (fred)
 //TODO Give information during loading, such as dbpedia has loaded
-
+//TODO Animate all layouts ??
+//TODO related Movies, make an additional listview , so that the user can chose the relation
+//TODO implement the back button (olli)
+//TODO Check doublicate remove algorithemn with tom hanks
+//TODO Check when onResume is called
 

@@ -171,6 +171,9 @@ public class MovieList extends Activity {
         if(!criteria.containsKey("isState")) {
             criteria.put("isState", false);
         }
+        if(!criteria.containsKey("isRandomRelated")) {
+            criteria.put("isRandomRelated", false);
+        }
         if(!criteria.containsKey("isRelated")) {
             criteria.put("isRelated", false);
         }
@@ -248,7 +251,7 @@ public class MovieList extends Activity {
                   }
               });
 
-            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRelated"))) {
+            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                 tLMDB.start();
                 }
@@ -256,8 +259,10 @@ public class MovieList extends Activity {
 
             String dbPediaSparqlQueryString = "";
         /* DPBEDIA */
-            if((Boolean)criteria.get("isRelated")) {
-                dbPediaSparqlQueryString = sparqler.RelatedDBPEDIAQuery((Movie)criteria.get("relatedMovie"));
+            if((Boolean) criteria.get("isRelated")) {
+                dbPediaSparqlQueryString = sparqler.relatedDBPEDIAQuery((String)criteria.get("relation"));
+            } else if((Boolean)criteria.get("isRandomRelated")) {
+                dbPediaSparqlQueryString = sparqler.randomRelatedDBPEDIAQuery((Movie)criteria.get("relatedMovie"));
             } else {
                 dbPediaSparqlQueryString = sparqler.DBPEDIAQuery();
             }
@@ -307,7 +312,7 @@ public class MovieList extends Activity {
             }
             qexec.close();
 
-            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRelated"))) {
+            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                     try {
                         tLMDB.join(25000);
@@ -322,7 +327,7 @@ public class MovieList extends Activity {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
-            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRelated"))) {
+            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
 
                     ArrayList indexArray = new ArrayList();

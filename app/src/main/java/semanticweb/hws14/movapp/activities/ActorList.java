@@ -67,7 +67,7 @@ public class ActorList extends Activity {
         if(intent.hasExtra("actorList")) {
             this.alAdapter = new ActorListAdapter(this,R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
-        } else if(city.equals(staticCriteria)){
+        } else if(actorCriteria.equals(staticCriteria)){
             this.alAdapter = new ActorListAdapter (this, R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
             alAdapter.addAll(staticActorList);
