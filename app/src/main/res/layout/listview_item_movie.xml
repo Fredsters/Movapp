@@ -7,19 +7,34 @@
     android:background="@drawable/list_item_1"
     android:padding="10dp">
 
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Demo Text"
-
         android:id="@+id/listItemTitle"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:isIndicator="true"
+        android:numStars="5"
+        android:stepSize="20"
+        android:id="@+id/ratingBar" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Demo Text"
         android:textColor="#0B64D9"
         android:id="@+id/listItemImdB"/>
+    </LinearLayout>
 </LinearLayout>

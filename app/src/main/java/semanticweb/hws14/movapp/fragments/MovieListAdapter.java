@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
             holder = new MovieHolder();
             holder.movieTitle = (TextView)row.findViewById(R.id.listItemTitle);
             holder.movieRating = (TextView)row.findViewById(R.id.listItemImdB);
-
+            holder.starRating = (RatingBar)row.findViewById(R.id.ratingBar);
             row.setTag(holder);
         }
         else
@@ -59,10 +60,15 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
         String imdbRating = movie.getImdbRating();
         if(imdbRating.startsWith("0")) {
             imdbRating = imdbRating.substring(2);
+            holder.starRating.setRating(0.0f);
+        } else {
+            float StarRating = Float.parseFloat(imdbRating)/2;
+            holder.starRating.setRating(StarRating);
         }
 
         holder.movieTitle.setText(movie.getTitle());
         holder.movieRating.setText(imdbRating);
+
         LinearLayout p = (LinearLayout) holder.movieTitle.getParent();
 
         if(position % 2 == 1) {
@@ -80,5 +86,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
     {
         TextView movieTitle;
         TextView movieRating;
+        RatingBar starRating;
     }
 }

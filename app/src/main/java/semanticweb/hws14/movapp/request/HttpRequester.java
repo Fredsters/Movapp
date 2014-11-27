@@ -61,7 +61,7 @@ public class HttpRequester {
                                     }
                                 }
                             } catch (JSONException e) {
-                                movie.setImdbRating("0 Not sufficient data");
+                                movie.setImdbRating("0 No Data");
                             }
 
                             if (!(movieList.indexOf(movie) == -1)) {
@@ -78,7 +78,7 @@ public class HttpRequester {
                                         }
                                     }
                                 } catch (JSONException e) {
-                                    movie.setImdbRating("0 Not sufficient data");
+                                    movie.setImdbRating("0 No Data");
                                 }
 
                                 if (!(movieList.indexOf(movie) == -1)) {
@@ -102,7 +102,7 @@ public class HttpRequester {
                                 }
                             }
                         } else {
-                            movie.setImdbRating("0 Not sufficient data");
+                            movie.setImdbRating("0 No Data");
                         }
 
                         if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {

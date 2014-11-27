@@ -332,38 +332,34 @@ public class MovieList extends Activity {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
-            if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
-                if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
-
-                    ArrayList indexArray = new ArrayList();
-                    for (int i = 0; i < movieList.size(); i++) {
-                        for (int j = i + 1; j < movieList.size(); j++) {
-                            if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
-                                if (!"".equals(movieList.get(j).getImdbId())) {
-                                    movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
-                                    indexArray.add(movieList.get(i));
-                                } else if (0 != movieList.get(j).getReleaseYear()) {
-                                    movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
-                                    indexArray.add(movieList.get(i));
-                                } else if (!"".equals(movieList.get(j).getGenre())) {
-                                    movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
-                                    indexArray.add(movieList.get(i));
-                                } else {
-                                    movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
-                                    indexArray.add(movieList.get(j));
-                                }
-                            }/* else if (movieList.get(i).getTitle().contains(movieList.get(j).getTitle())) {
-                                movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
-                                indexArray.add(movieList.get(j));
-                            } else if (movieList.get(j).getTitle().contains(movieList.get(i).getTitle())) {
-                                movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
-                                indexArray.add(movieList.get(i));
-                            }*/
+            ArrayList indexArray = new ArrayList();
+            for (int i = 0; i < movieList.size(); i++) {
+                for (int j = i + 1; j < movieList.size(); j++) {
+                    if (movieList.get(i).getTitle().equals(movieList.get(j).getTitle())) {
+                        if (!"".equals(movieList.get(j).getImdbId())) {
+                            movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
+                            indexArray.add(movieList.get(i));
+                        } else if (0 != movieList.get(j).getReleaseYear()) {
+                            movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
+                            indexArray.add(movieList.get(i));
+                        } else if (!"".equals(movieList.get(j).getGenre())) {
+                            movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
+                            indexArray.add(movieList.get(i));
+                        } else {
+                            movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
+                            indexArray.add(movieList.get(j));
                         }
-                    }
-                    movieList.removeAll(indexArray);
+                    }/* else if (movieList.get(i).getTitle().contains(movieList.get(j).getTitle())) {
+                        movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
+                        indexArray.add(movieList.get(j));
+                    } else if (movieList.get(j).getTitle().contains(movieList.get(i).getTitle())) {
+                        movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
+                        indexArray.add(movieList.get(i));
+                    }*/
                 }
             }
+            movieList.removeAll(indexArray);
+
             publishProgress("Results are merged. Now loading Rating");
             return movieList;
         }

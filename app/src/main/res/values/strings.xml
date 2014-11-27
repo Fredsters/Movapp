@@ -116,51 +116,101 @@
         <item>Western</item>
     </string-array>
     <string-array name="city_array">
-        <item>Berlin</item>
-        <item>Düsseldorf</item>
-        <item>Frankfurt</item>
-        <item>Hamburg</item>
-        <item>Heidelberg</item>
-        <item>Mannheim</item>
-        <item>Munich</item>
-        <item>Long Beach, California</item>
-        <item>Palo Alto, California</item>
-        <item>San Diego, California</item>
-        <item>Los Angeles, California</item>
-        <item>San Francisco, California</item>
-        <item>Tampa, Florida</item>
-        <item>Miami, Florida</item>
-        <item>Dallas, Texas</item>
-        <item>Houston, Texas</item>
+        <item>Alexandria</item>
+        <item>Amsterdam</item>
+        <item>Athens</item>
+        <item>Atlanta, Georgia</item>
         <item>Austin, Texas</item>
-        <item>Kansas City, Missouri</item>
-        <item>St. Louis, Missouri</item>
-        <item>Memphis, Tennessee</item>
-        <item>New Orleans, Louisiana</item>
-        <item>Pittsburgh, Pennsylvania</item>
-        <item>Philadelphia, Pennsylvania</item>
-        <item>Seattle, Washington</item>
         <item>Baltimore, Maryland</item>
+        <item>Bangkok</item>
+        <item>Barcelona</item>
+        <item>Beijing</item>
+        <item>Berlin</item>
+        <item>Bordeaux</item>
+        <item>Boston, Massachusetts</item>
+        <item>Brussels</item>
+        <item>Budapest</item>
+        <item>Calais</item>
+        <item>Cannes</item>
+        <item>Cape Town</item>
+        <item>Chennai</item>
         <item>Chicago, Illinois</item>
         <item>Cleveland, Ohio</item>
-        <item>New York City</item>
-        <item>Washington, D.C.</item>
-        <item>Atlanta, Georgia</item>
+        <item>Copenhagen</item>
+        <item>Dallas, Texas</item>
+        <item>Delhi</item>
         <item>Detroit, Michigan</item>
-        <item>Boston, Massachusetts</item>
+        <item>Dubai</item>
+        <item>DÃ¼sseldorf</item>
+        <item>Edinburgh</item>
+        <item>Florence</item>
+        <item>Frankfurt</item>
+        <item>Guangzhou</item>
+        <item>Hamburg</item>
+        <item>Heidelberg</item>
+        <item>Hong Kong</item>
+        <item>Houston, Texas</item>
         <item>Indianapolis, Indiana</item>
-        <item>Portland, Oregon</item>
-        <item>Phoenix, Arizona</item>
-        <item>Tulsa, Oklahoma</item>
-        <item>Paris</item>
-        <item>Bordeaux</item>
-        <item>Calais</item>
+        <item>Istanbul</item>
+        <item>Jerusalem</item>
+        <item>Kansas City, Missouri</item>
         <item>Lille</item>
-        <item>Nantes</item>
-        <item>Marseille</item>
-        <item>Saint-Tropez</item>
+        <item>London</item>
+        <item>Long Beach, California</item>
+        <item>Los Angeles, California</item>
+        <item>Los Angeles, California</item>
         <item>Lyon</item>
-        <item>Cannes</item>
+        <item>Macau</item>
+        <item>Madrid</item>
+        <item>Manila</item>
+        <item>Mannheim</item>
+        <item>Marseille</item>
+        <item>Melbourne</item>
+        <item>Memphis, Tennessee</item>
+        <item>Mexico City</item>
+        <item>Miami, Florida</item>
+        <item>Miami, Florida</item>
+        <item>Milan</item>
+        <item>Montreal</item>
+        <item>Moscow</item>
+        <item>Mumbai</item>
+        <item>Munich</item>
+        <item>Nantes</item>
+        <item>New Orleans, Louisiana</item>
+        <item>New York City</item>
+        <item>New York City</item>
+        <item>Palo Alto, California</item>
+        <item>Paris</item>
+        <item>Paris</item>
+        <item>Philadelphia, Pennsylvania</item>
+        <item>Phoenix, Arizona</item>
+        <item>Pittsburgh, Pennsylvania</item>
+        <item>Portland, Oregon</item>
+        <item>Prague</item>
+        <item>Rio de Janeiro</item>
+        <item>Rome</item>
+        <item>Saint-Tropez</item>
+        <item>Saint Petersburg</item>
+        <item>San Diego, California</item>
+        <item>San Francisco, California</item>
+        <item>Seattle, Washington</item>
+        <item>Seoul</item>
+        <item>Shanghai</item>
+        <item>St. Louis, Missouri</item>
+        <item>Stockholm</item>
+        <item>Sydney</item>
+        <item>SÃ£o Paulo</item>
+        <item>Tampa, Florida</item>
+        <item>Tokyo</item>
+        <item>Toronto</item>
+        <item>Tulsa, Oklahoma</item>
+        <item>Vancouver</item>
+        <item>Venice</item>
+        <item>Vienna</item>
+        <item>Warsaw</item>
+        <item>Washington, D.C.</item>
+
+
     </string-array>
     <string-array name="state_array">
         <item>Afghanistan</item>

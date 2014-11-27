@@ -175,11 +175,11 @@
             android:id="@+id/tvGenre"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
+            android:gravity="right" />
     </LinearLayout>
 
 
@@ -204,11 +204,11 @@
             android:id="@+id/tvReleaseYear"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-          />
+            android:gravity="right" />
         </LinearLayout>
 
     <LinearLayout
@@ -230,13 +230,13 @@
             android:paddingBottom="@dimen/activity_vertical_margin" />
         <TextView
             android:id="@+id/tvRuntime"
-            android:text=""
+            android:text="asdasdasd"
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            />
+            android:layout_marginLeft="@dimen/activity_horizontal_margin" />
     </LinearLayout>
 
     <LinearLayout
@@ -259,9 +259,10 @@
             android:id="@+id/tvBudget"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin" />
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="right" />
     </LinearLayout>
 
 
@@ -286,9 +287,10 @@
             android:id="@+id/tvAwards"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="right" />
     </LinearLayout>
 
     <LinearLayout
@@ -311,11 +313,11 @@
             android:id="@+id/tvDirectors"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            />
+            android:gravity="right" />
     </LinearLayout>
 
     <LinearLayout
@@ -337,11 +339,11 @@
             android:id="@+id/tvWriters"
             android:text=""
             android:visibility="gone"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="@dimen/activity_vertical_margin"
-            />
+            android:gravity="right" />
     </LinearLayout>
 
     <LinearLayout

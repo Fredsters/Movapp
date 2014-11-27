@@ -147,9 +147,6 @@ public class MovieDetail extends Activity {
         panelSpoiler.setVisibility(View.GONE);
 
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
-
-
-
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
         btnImdbPage =  (Button) findViewById(R.id.btnLinkImdB);
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
@@ -238,22 +235,69 @@ public class MovieDetail extends Activity {
 
         if(!"".equals(movie.getPlot())){
             TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
-            moviePlot.setVisibility(View.VISIBLE);
             moviePlot.setText(movie.getPlot());
+            moviePlot.setVisibility(View.VISIBLE);
         }
+
+        TextView ageRestriction = (TextView) findViewById(R.id.tvAgeRestriction);
+        TextView arHc = (TextView) findViewById(R.id.tvAgeRestrictionHC);
+        String aR = String.valueOf(movie.getRated());
+
+        if(!aR.equals("")) {
+            ageRestriction.setVisibility(View.VISIBLE);
+            arHc.setVisibility(View.VISIBLE);
+
+            if (aR.equals("X")) {
+                ageRestriction.setText("18+");
+            } else if (aR.equals("R")) {
+                ageRestriction.setText("16+");
+            } else if (aR.equals("M")) {
+                ageRestriction.setText("12+");
+            } else if (aR.equals("G")) {
+                ageRestriction.setText("6+");
+            } else {
+                ageRestriction.setVisibility(View.GONE);
+                arHc.setVisibility(View.GONE);
+            }
+        }
+
+        TextView ratingCount = (TextView) findViewById(R.id.tvMovieRatingCount);
+        TextView ratingCountHc = (TextView) findViewById(R.id.tvMovieRatingCountHC);
+        String ratingCountText = movie.getVoteCount();
+        ratingCount.setText(ratingCountText);
+        manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText, false);
+
+        if(!"".equals(movie.getImdbRating())) {
+            TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
+            if(movie.getImdbRating().equals("0 No Rating")) {
+                movieRating.setText("No Rating");
+            } else if(movie.getImdbRating().equals("0 No Data")) {
+                movieRating.setText("");
+            } else {
+                movieRating.setText(movie.getImdbRating()+"/10");
+            }
+            movieRating.setVisibility(View.VISIBLE);
+            findViewById(R.id.tvMovieRatingHC).setVisibility(View.VISIBLE);
+        }
+
+
+        TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
+        TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
+        String metaSoreText = String.valueOf(movie.getMetaScore());
+        metaScore.setText(metaSoreText);
+        manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText, false);
+
 
         TextView tvGenreHc = (TextView) findViewById(R.id.tvGenreHC);
         TextView genre = (TextView) findViewById(R.id.tvGenre);
         String genreText = String.valueOf(movie.createTvOutOfList(movie.getGenres()));
         genre.setText(genreText);
-
         manageEmptyTextfields(tvGenreHc, genre, genreText, true);
 
         TextView releaseYear = (TextView) findViewById(R.id.tvReleaseYear);
         TextView releaseYearHc = (TextView) findViewById(R.id.tvReleaseYearHC);
         String releaseYearText = String.valueOf(movie.getReleaseYear());
         releaseYear.setText(releaseYearText);
-
         manageEmptyTextfields(releaseYearHc, releaseYear, releaseYearText, true);
 
         TextView runtime = (TextView) findViewById(R.id.tvRuntime);
@@ -262,10 +306,10 @@ public class MovieDetail extends Activity {
         runtime.setText(runtimeText);
         manageEmptyTextfields(runTimeHc, runtime, runtimeText, true);
 
+
         TextView budget = (TextView) findViewById(R.id.tvBudget);
         TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
         String budgetText = movie.getBudget();
-
         if(budgetText.contains("E")){
             BigDecimal myNumber = new BigDecimal(budgetText);
             long budgetLong = myNumber.longValue();
@@ -276,20 +320,16 @@ public class MovieDetail extends Activity {
             manageEmptyTextfields(budgetHc, budget, budgetText, true);
         }
 
-
-
         TextView awards = (TextView) findViewById(R.id.tvAwards);
         TextView awardsHc = (TextView) findViewById(R.id.tvAwardsHC);
         String awardsText = movie.getAwards();
         awards.setText(awardsText);
-
         manageEmptyTextfields(awardsHc, awards, awardsText, true);
 
         TextView tvDirHc = (TextView) findViewById(R.id.tvDirectorsHC);
         TextView directors = (TextView) findViewById(R.id.tvDirectors);
         String directorText = String.valueOf(movie.createTvOutOfList(movie.getDirectors()));
         directors.setText(directorText);
-
         manageEmptyTextfields(tvDirHc, directors, directorText, true);
 
         TextView tvWriterHc = (TextView) findViewById(R.id.tvWritersHC);
@@ -316,53 +356,13 @@ public class MovieDetail extends Activity {
         TextView roles = (TextView) findViewById(R.id.tvRoles);
         ArrayList<String> roleList = movie.getRoles();
 
-        if(roleList.size() == 0){
-            roles.setVisibility(View.GONE);
-            tvRolesHc.setVisibility(View.GONE);
-        }
-        else{
+        if(roleList.size() > 0){
             roles.setVisibility(View.VISIBLE);
             tvRolesHc.setVisibility(View.VISIBLE);
             roles.setText(String.valueOf(movie.createTvOutOfList(roleList)));
         }
 
-        TextView ageRestriction = (TextView) findViewById(R.id.tvAgeRestriction);
-        TextView arHc = (TextView) findViewById(R.id.tvAgeRestrictionHC);
-        String aR = String.valueOf(movie.getRated());
 
-        if(aR.equals("")){
-            ageRestriction.setVisibility(View.GONE);
-            arHc.setVisibility(View.GONE);
-        }
-        else{
-            ageRestriction.setVisibility(View.VISIBLE);
-            arHc.setVisibility(View.VISIBLE);
-        }
-
-        if(aR.equals("X")){
-            ageRestriction.setText("18+");
-        }
-        else if(aR.equals("R")){
-            ageRestriction.setText("16+");
-        }
-        else if(aR.equals("M")){
-            ageRestriction.setText("12+");
-        }
-        else if(aR.equals("G")){
-            ageRestriction.setText("6+");
-        }
-        else{
-            ageRestriction.setVisibility(View.GONE);
-            arHc.setVisibility(View.GONE);
-        }
-
-
-        TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
-        TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
-        String metaSoreText = String.valueOf(movie.getMetaScore());
-        metaScore.setText(metaSoreText);
-
-        manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText, false);
 
 
         TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
@@ -374,28 +374,6 @@ public class MovieDetail extends Activity {
             wikiAbstract.setVisibility(View.VISIBLE);
             wikiAbstract.setText((String.valueOf(wikiAbstractText)));
         }
-
-
-        TextView ratingCount = (TextView) findViewById(R.id.tvMovieRatingCount);
-        TextView ratingCountHc = (TextView) findViewById(R.id.tvMovieRatingCountHC);
-        String ratingCountText = movie.getVoteCount();
-        ratingCount.setText(ratingCountText);
-
-        manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText, false);
-
-        if(!"".equals(movie.getImdbRating())) {
-            TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
-            if(movie.getImdbRating().equals("0 No Rating")) {
-                movieRating.setText("No Rating");
-            } else if(movie.getImdbRating().equals("0 Not sufficient data")) {
-                movieRating.setText("");
-            } else {
-                movieRating.setText(movie.getImdbRating()+"/10");
-            }
-            movieRating.setVisibility(View.VISIBLE);
-            findViewById(R.id.tvMovieRatingHC).setVisibility(View.VISIBLE);
-        }
-
 
         if(!"".equals(movie.getImdbId())) {
             btnImdbPage.setVisibility(View.VISIBLE);
@@ -416,13 +394,7 @@ public class MovieDetail extends Activity {
 
 
     public void manageEmptyTextfields(TextView tvHc, TextView tv, String text, boolean doColorIt){
-        if(text.equals("")|| ( text.equals("N/A") || text.equals("0"))){
-            tv.setVisibility(View.GONE);
-            if(tvHc != null) {
-                tvHc.setVisibility(View.GONE);
-            }
-        }
-        else{
+        if(!text.equals("") && !text.equals("N/A") &&  !text.equals("0")){
             tv.setVisibility(View.VISIBLE);
             tvHc.setVisibility(View.VISIBLE);
             if(doColorIt) {
@@ -583,11 +555,11 @@ public class MovieDetail extends Activity {
 }
 
 //Can DO
-//TODO Testing
 //TODO Delete unnötigen und auskommentierten code
 //TODO Add erklärende Kommentare
 
 //Must DO
-//TODO add more cities in array, wenn dbpedia wieder da ist
-//TODO align textviews in details properly and show text on finished
+//TODO Testing
 //TODO better colors for listviews
+//TODO Das was du aufgeschrieben hast
+//TODO Namen auf button

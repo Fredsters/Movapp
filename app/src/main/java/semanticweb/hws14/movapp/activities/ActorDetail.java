@@ -66,7 +66,6 @@ public class ActorDetail extends Activity {
         actor.setName(actorName);
 
         btnToHomepage = (Button) findViewById(R.id.btnToHompage);
-        btnToHomepage.setVisibility(View.GONE);
 
         q = new queryforActorDetail();
         q.execute(actor);
@@ -157,8 +156,10 @@ public class ActorDetail extends Activity {
         });
 
         picThread.start();
+
         TextView actorDetailName = (TextView) findViewById(R.id.tvActorDetailName);
         actorDetailName.setText(actor.getName());
+        actorDetailName.setVisibility(View.VISIBLE);
 
         TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
         String wikiAbstractText = actor.getWikiAbstract();
@@ -166,104 +167,85 @@ public class ActorDetail extends Activity {
         if(wikiAbstractText.equals("") || wikiAbstractText.equals("N/A")){
             String sorry = "Sorry...There is no detailed description available for this actor.";
             wikiAbstract.setText(sorry);
-        }
-        else{
+        } else {
             wikiAbstract.setText(wikiAbstractText);
-            wikiAbstract.setVisibility(View.VISIBLE);
-
         }
+        wikiAbstract.setVisibility(View.VISIBLE);
         //HC = "Hard-Coded" textviews are the corresponding labes
 
         TextView birthName = (TextView) findViewById(R.id.tvBirthName);
         TextView birthNameHc = (TextView) findViewById(R.id.tvBirthNameHC);
         String birthNameText = actor.getBirthName();
         birthName.setText(birthNameText);
-
         manageEmptyTextfields(birthNameHc,birthName,birthNameText);
-
 
         TextView birthDate = (TextView) findViewById(R.id.tvBirthDate);
         TextView birthDateHc = (TextView) findViewById(R.id.tvBirthDateHC);
         String birthDateText =actor.getBirthDate();
-
         if(birthDateText.contains("+")){
             // birthDateText=birthDateText.replace(birthDateText.substring('+'),"");
             birthDateText= birthDateText.substring(0, birthDateText.indexOf("+"));
         }
         birthDate.setText(birthDateText);
-
         manageEmptyTextfields(birthDateHc,birthDate,birthDateText);
 
         TextView birthPlace = (TextView) findViewById(R.id.tvBirthPlace);
         TextView birthPlaceHc = (TextView) findViewById(R.id.tvBirthPlaceHC);
         String birthPlaceText = String.valueOf(actor.createTvOutOfList(actor.getBirthPlace()));
         birthPlace.setText(birthPlaceText);
-
-
         manageEmptyTextfields(birthPlaceHc,birthPlace,birthPlaceText);
 
         TextView partner = (TextView) findViewById(R.id.tvPartner);
         TextView partnerHc = (TextView) findViewById(R.id.tvPartnerHC);
         String partnerText= actor.getPartner();
         partner.setText(partnerText);
-
         manageEmptyTextfields(partnerHc,partner,partnerText);
 
         TextView parent = (TextView) findViewById(R.id.tvParent);
         TextView parentHc = (TextView) findViewById(R.id.tvParentHC);
         String parentText = String.valueOf(actor.createTvOutOfList(actor.getParent()));
         parent.setText(parentText);
-
         manageEmptyTextfields(parentHc,parent,parentText);
 
         TextView children = (TextView) findViewById(R.id.tvChildren);
         TextView childrenHc = (TextView) findViewById(R.id.tvChildrenHC);
         String childrenText = String.valueOf(actor.getChildren());
         children.setText(childrenText);
-
         manageEmptyTextfields(childrenHc,children,childrenText);
 
         TextView nationality = (TextView) findViewById(R.id.tvNationality);
         TextView nationalityHc = (TextView) findViewById(R.id.tvNationalityHC);
         String nationalityText = actor.getNationality();
         nationality.setText(nationalityText);
-
         manageEmptyTextfields(nationalityHc,nationality,nationalityText);
 
         TextView occupation = (TextView) findViewById(R.id.tvOccupation);
         TextView occupationHc = (TextView) findViewById(R.id.tvOccupationHC);
         String occupationText = actor.getOccupation();
         occupation.setText(occupationText);
-
         manageEmptyTextfields(occupationHc,occupation,occupationText);
 
         TextView activeYear = (TextView) findViewById(R.id.tvActiveYear);
         TextView activeYearHc = (TextView) findViewById(R.id.tvActiveYearHC);
         String activeYearText = String.valueOf(actor.getActiveYear());
         activeYear.setText(activeYearText);
-
         manageEmptyTextfields(activeYearHc,activeYear,activeYearText);
 
         TextView roles = (TextView) findViewById(R.id.tvRoles);
         TextView rolesHc = (TextView) findViewById(R.id.tvRolesHC);
         String rolesText = String.valueOf(actor.createTvOutOfList(actor.getRoles()));
         roles.setText(rolesText);
-
         manageEmptyTextfields(rolesHc,roles,rolesText);
 
         TextView movies = (TextView) findViewById(R.id.tvMovies);
         TextView moviesHc = (TextView) findViewById(R.id.tvMoviesHC);
         String moviesText = String.valueOf(actor.createTvOutOfList(actor.getMovies()));
         movies.setText(moviesText);
-
         manageEmptyTextfields(moviesHc,movies,moviesText);
 
-        if("".equals(actor.getHomepage())) {
-            btnToHomepage.setVisibility(View.GONE);
-        } else {
+        if(!"".equals(actor.getHomepage())) {
             btnToHomepage.setVisibility(View.VISIBLE);
         }
-
 
         try {
             picThread.join();
@@ -445,11 +427,7 @@ public class ActorDetail extends Activity {
 
     //Defines Visibility of Textviews in Actor Detail
     public void manageEmptyTextfields(TextView tvHc, TextView tv, String text){
-        if(text.equals("")|| ( text.equals("N/A") || text.equals("0"))){
-            tv.setVisibility(View.GONE);
-            tvHc.setVisibility(View.GONE);
-        }
-        else{
+        if(!text.equals("") && ( !text.equals("N/A") && !text.equals("0"))){
             tv.setVisibility(View.VISIBLE);
             tvHc.setVisibility(View.VISIBLE);
             colorIt(tvHc);
