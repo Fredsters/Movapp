@@ -131,7 +131,7 @@
                 android:orientation="horizontal" android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
                 <TextView android:id="@+id/tvCountryName" android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="State/Country" />
+                    android:layout_height="wrap_content" android:text="Country" />
                 <Spinner
                     android:id="@+id/spState"
                     android:layout_width="fill_parent"

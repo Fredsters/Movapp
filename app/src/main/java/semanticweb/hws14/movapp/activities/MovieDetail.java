@@ -563,3 +563,4 @@ public class MovieDetail extends Activity {
 //TODO better colors for listviews
 //TODO Das was du aufgeschrieben hast
 //TODO Namen auf button
+//TODO Check die aufnahme funktion und übertragung auf pc screen tools

@@ -291,22 +291,22 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeActor=b;
-                if(b || activeDirector) {
-                    btnActor.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnActor.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                setButtonColorText(swActor, btnActor, b || activeDirector);
+                if(activeDirector && !b) {
+                    btnActor.setText("Director: "+ tfDirectorName.getText().toString());
                 }
+
             }
         });
         swDirector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeDirector = b;
-                if(b || activeActor) {
-                    btnActor.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnActor.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                setButtonColorText(swDirector, btnActor, b || activeActor);
+                if(activeActor && !b) {
+                    btnActor.setText("Actor: "+ tfActorName.getText().toString());
                 }
+
             }
         });
 
@@ -314,11 +314,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeYear = b;
-                if(b) {
-                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swYear, btnYear, b);
             }
         });
 
@@ -326,11 +322,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeGenre = b;
-                if(b) {
-                    btnGenre.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnGenre.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swGenre, btnGenre, b);
             }
         });
 
@@ -338,11 +330,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activePartName = b;
-                if(b) {
-                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swPartName, btnPartName, b);
             }
         });
 
@@ -353,11 +341,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swState.setChecked(false);
                 }
-                if(b || activeState) {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swCity, btnRegion, b || activeState);
             }
         });
 
@@ -368,11 +352,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swCity.setChecked(false);
                 }
-                if(b || activeCity) {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swState, btnRegion, b || activeCity);
             }
         });
 
@@ -529,4 +509,41 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         });
     }
+
+    private void setButtonColorText(Switch sw, Button btn, boolean sub) {
+        if(sub) {
+            btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+            if(sw.equals(swActor) && activeDirector || sw.equals(swDirector) && activeActor) {
+                btn.setText("A: "+ tfActorName.getText().toString() + " / D: "+ tfDirectorName.getText().toString());
+            } else if(sw.equals(swActor)  && !activeDirector) {
+                btn.setText("Actor: "+ tfActorName.getText().toString());
+            } else if(sw.equals(swDirector)  && !activeActor) {
+                btn.setText("Director: "+ tfDirectorName.getText().toString());
+            } else if (sw.equals(swGenre)) {
+                btn.setText("Genre: "+ selectedGenre);
+            } else if(sw.equals(swYear)) {
+                btn.setText("Release year: "+ selectedFromDate +" - "+ selectedToDate);
+            } else if(sw.equals(swPartName)) {
+                btn.setText("Part of Title: "+ tfPartName.getText().toString());
+            } else if(sw.equals(swCity)) {
+                btn.setText("City: "+ selectedCity);
+            }else if(sw.equals(btnRegion)) {
+                btn.setText("Country: "+ selectedState);
+            }
+        } else {
+            btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+            if(btn.equals(btnActor)) {
+                btn.setText("Actor/Director");
+            } else if (btn.equals(btnGenre)) {
+                btn.setText("Genre");
+            } else if(btn.equals(btnPartName)) {
+                btn.setText("Part of Title");
+            } else if(btn.equals(btnYear)) {
+                btn.setText("Release year");
+            } else if(btn.equals(btnRegion)) {
+                btn.setText("Region");
+            }
+        }
+    }
+
 }
