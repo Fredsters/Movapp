@@ -58,6 +58,7 @@ public class MovieList extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("onCreate", "onCreate");
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -122,19 +123,26 @@ public class MovieList extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-/*
-    protected void onPause() {
-        super.onPause();
-        if(null != q) {
-            q.cancel(true);
-        }
-        if(staticRequestCanceled) {
-            httpRequester.cancelPendingRequests();
-        }
-    } */
+
+    protected void onResume() {
+        super.onResume();
+        Log.d("onResume", "onResume");
+    }
+
+    protected void onStart() {
+        super.onStart();
+        Log.d("onStart", "onStart");
+    }
+
+
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("onDestroy", "onDestroy");
+    }
 
     @Override
     protected void onStop () {
+        Log.d("onSTop", "onSTop");
         super.onStop();
         if(null != q) {
             q.cancel(true);

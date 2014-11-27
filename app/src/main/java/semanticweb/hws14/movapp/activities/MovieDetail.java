@@ -586,8 +586,7 @@ public class MovieDetail extends Activity {
 //TODO add more cities in array (fred)
 //TODO Give information during loading, such as dbpedia has loaded
 //TODO Animate all layouts ??
-//TODO related Movies, make an additional listview , so that the user can chose the relation
-//TODO implement the back button (olli)
+//TODO implement the back button
 //TODO Check doublicate remove algorithemn with tom hanks
 //TODO Check when onResume is called
 
