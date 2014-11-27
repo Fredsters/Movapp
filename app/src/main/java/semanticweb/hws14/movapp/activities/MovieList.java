@@ -45,7 +45,6 @@ import semanticweb.hws14.movapp.request.SparqlQueries;
 public class MovieList extends Activity {
 
     private MovieListAdapter mlAdapter;
-   // private ArrayAdapter<Movie> mlAdapter;
     private Activity that = this;
     private HashMap<String, Object> criteria;
     private MenuItem imdbButton;
@@ -61,7 +60,7 @@ public class MovieList extends Activity {
         Log.d("onCreate", "onCreate");
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
         setContentView(R.layout.activity_movie_list);
 
         Intent intent = getIntent();
@@ -75,12 +74,10 @@ public class MovieList extends Activity {
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
            this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
-        //    this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
         } else {
             this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
-          //  this.mlAdapter = new ArrayAdapter<Movie>(this,android.R.layout.simple_list_item_1, movieList);
             checkCriteria();
             staticRequestCanceled = true;
             listView.setAdapter(mlAdapter);
@@ -124,7 +121,7 @@ public class MovieList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void onResume() {
+  /*  protected void onResume() {
         super.onResume();
         Log.d("onResume", "onResume");
     }
@@ -138,11 +135,10 @@ public class MovieList extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d("onDestroy", "onDestroy");
-    }
+    }*/
 
     @Override
     protected void onStop () {
-        Log.d("onSTop", "onSTop");
         super.onStop();
         if(null != q) {
             q.cancel(true);
@@ -252,7 +248,7 @@ public class MovieList extends Activity {
                         }
                     }catch (Exception e){
                         Log.e("LINKEDMDB", "Failed"+ e.toString());
-                        publishProgress("A problem with LinkedMDB occured");
+                        publishProgress("A problem with Linked MDB occurred");
                     }
                     qexec.close();
 
@@ -316,9 +312,10 @@ public class MovieList extends Activity {
                 }
             } catch (Exception e) {
                 Log.e("DBPEDIA", "Failed DBPEDIA DOWN" + e.toString());
-                publishProgress("A problem with DBPedia occured");
+                publishProgress("A problem with DBpedia occurred");
             }
             qexec.close();
+
 
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
@@ -329,7 +326,7 @@ public class MovieList extends Activity {
                     }
                 }
             }
-
+            publishProgress("Sparql result is loaded");
         /* Eliminate doublicates */
             if(movieList.size() >= 750 ) {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
@@ -345,7 +342,7 @@ public class MovieList extends Activity {
                                 if (!"".equals(movieList.get(j).getImdbId())) {
                                     movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
                                     indexArray.add(movieList.get(i));
-                                } else if (!"".equals(movieList.get(j).getReleaseYear())) {
+                                } else if (0 != movieList.get(j).getReleaseYear()) {
                                     movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
                                     indexArray.add(movieList.get(i));
                                 } else if (!"".equals(movieList.get(j).getGenre())) {
@@ -355,18 +352,19 @@ public class MovieList extends Activity {
                                     movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
                                     indexArray.add(movieList.get(j));
                                 }
-                            } else if (movieList.get(i).getTitle().contains(movieList.get(j).getTitle())) {
+                            }/* else if (movieList.get(i).getTitle().contains(movieList.get(j).getTitle())) {
                                 movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
                                 indexArray.add(movieList.get(j));
                             } else if (movieList.get(j).getTitle().contains(movieList.get(i).getTitle())) {
                                 movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
                                 indexArray.add(movieList.get(i));
-                            }
+                            }*/
                         }
                     }
                     movieList.removeAll(indexArray);
                 }
             }
+            publishProgress("Results are merged. Now loading Rating");
             return movieList;
         }
 
@@ -376,7 +374,7 @@ public class MovieList extends Activity {
 
         @Override
         protected void onProgressUpdate (String... values) {
-            Toast.makeText(that, values[0], Toast.LENGTH_LONG).show();
+            Toast.makeText(that, values[0], Toast.LENGTH_SHORT).show();
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {

@@ -45,15 +45,12 @@ public class RelationList extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_relation_list);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
 
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.relationList);
         ArrayList<String> relationList = new ArrayList<String>();
         Movie movie = (Movie) intent.getParcelableExtra("movie");
-
-
-      //  relationList = intent.getStringArrayListExtra("relationList");
 
 
         if(intent.hasExtra("movie")) {

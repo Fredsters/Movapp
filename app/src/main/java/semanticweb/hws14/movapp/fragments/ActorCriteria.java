@@ -156,6 +156,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeMovie=b;
+                if(b) {
+                    btnMovie.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+                } else {
+                    btnMovie.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                }
             }
         });
 
@@ -163,6 +168,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeYear = b;
+                if(b) {
+                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+                } else {
+                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                }
             }
         });
 
@@ -172,6 +182,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 activeCity = b;
                 if(b) {
                     swState.setChecked(false);
+                }
+                if(b || activeState) {
+                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+                } else {
+                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
                 }
             }
         });
@@ -183,6 +198,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swCity.setChecked(false);
                 }
+                if(b || activeCity) {
+                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+                } else {
+                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                }
             }
         });
 
@@ -190,6 +210,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activePartName=b;
+                if(b) {
+                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+                } else {
+                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+                }
             }
         });
 

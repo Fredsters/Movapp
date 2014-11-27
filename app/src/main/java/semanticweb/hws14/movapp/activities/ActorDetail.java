@@ -58,7 +58,7 @@ public class ActorDetail extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_actor_detail);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
         Intent intent = getIntent();
         String actorName = intent.getStringExtra("actorName");
 
@@ -414,7 +414,7 @@ public class ActorDetail extends Activity {
                 }
             }catch (Exception e){
                 Log.e("DBPEDIADetail", "Failed DBPEDIA DOWN "+ e.toString());
-                publishProgress("A problem with DBPedia occured");
+                publishProgress("A problem with DBpedia occurred");
             }
             qexec.close();
 
@@ -423,13 +423,14 @@ public class ActorDetail extends Activity {
             } catch (Exception e) {
                 Log.e("LINKEDMDBActorDetail", "Failed " + e.toString());
             }
+            publishProgress("Sparql loaded. Now loading additional data");
 
             return actor;
         }
 
         @Override
         protected void onProgressUpdate (String... values) {
-            Toast.makeText(that, values[0], Toast.LENGTH_LONG).show();
+            Toast.makeText(that, values[0], Toast.LENGTH_SHORT).show();
         }
 
         protected void onPreExecute() {

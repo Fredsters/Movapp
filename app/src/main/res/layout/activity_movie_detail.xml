@@ -30,10 +30,9 @@
     <TextView
         android:id="@+id/tvMovieTitle"
         android:text="movieTitle"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:visibility="gone"
         android:textSize="25dp"
         android:layout_marginTop="29dp" />
 
@@ -48,7 +47,7 @@
     <TextView
         android:id="@+id/tvMovieRatingHC"
         android:text="IMDB-User Rating:"
-
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -57,7 +56,7 @@
     <TextView
         android:id="@+id/tvMovieRating"
         android:text=""
-
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -75,7 +74,7 @@
         <TextView
             android:id="@+id/tvMovieRatingCountHC"
             android:text="Amount of Votes:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -84,7 +83,7 @@
         <TextView
             android:id="@+id/tvMovieRatingCount"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -102,7 +101,7 @@
         <TextView
             android:id="@+id/tvMetaScoreHC"
             android:text="Score of metascore.com:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -111,7 +110,7 @@
         <TextView
             android:id="@+id/tvMetaScore"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -129,16 +128,15 @@
         <TextView
             android:id="@+id/tvAgeRestrictionHC"
             android:text="Age Restriction:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:textColor="#7a315e73" />
 
         <TextView
             android:id="@+id/tvAgeRestriction"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -149,7 +147,7 @@
     <TextView
         android:id="@+id/tvPlot"
         android:text=""
-
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 
@@ -167,7 +165,7 @@
         <TextView
             android:id="@+id/tvGenreHC"
             android:text="Genre:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -176,7 +174,7 @@
         <TextView
             android:id="@+id/tvGenre"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -195,7 +193,7 @@
         <TextView
             android:id="@+id/tvReleaseYearHC"
             android:text="Year:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -205,7 +203,7 @@
         <TextView
             android:id="@+id/tvReleaseYear"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -223,7 +221,7 @@
         <TextView
             android:id="@+id/tvRuntimeHC"
             android:text="Runtime:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -233,7 +231,7 @@
         <TextView
             android:id="@+id/tvRuntime"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -252,7 +250,7 @@
         <TextView
             android:id="@+id/tvBudgetHC"
             android:text="Budget:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold" />
@@ -260,7 +258,7 @@
         <TextView
             android:id="@+id/tvBudget"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin" />
@@ -278,7 +276,7 @@
         <TextView
             android:id="@+id/tvAwardsHC"
             android:text="Awards:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -287,7 +285,7 @@
         <TextView
             android:id="@+id/tvAwards"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -303,7 +301,7 @@
         <TextView
             android:id="@+id/tvDirectorsHC"
             android:text="Directors:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -312,7 +310,7 @@
         <TextView
             android:id="@+id/tvDirectors"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -330,7 +328,7 @@
         <TextView
             android:id="@+id/tvWritersHC"
             android:text="Writers:"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold" />
@@ -338,7 +336,7 @@
         <TextView
             android:id="@+id/tvWriters"
             android:text=""
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -355,6 +353,7 @@
         <TextView
             android:id="@+id/tvActorsHC"
             android:text="Actors"
+            android:visibility="gone"
             android:layout_marginLeft="40dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -367,6 +366,7 @@
         <TextView
             android:id="@+id/tvRolesHC"
             android:text="Characters"
+            android:visibility="gone"
             android:layout_marginRight="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -382,6 +382,7 @@
 
         <TextView
             android:id="@+id/tvActors"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
@@ -390,6 +391,7 @@
 
         <TextView
             android:id="@+id/tvRoles"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_vertical_margin"
@@ -401,6 +403,7 @@
     <Button android:id="@+id/btnToActorList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="@string/toActorList"
         android:onClick="toActorList"
         android:background="@drawable/button_background_accordion"
@@ -411,6 +414,7 @@
     <Button android:id="@+id/btnLinkImdB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="@string/link"
         android:onClick="linkToImdb"
         android:background="@drawable/button_background_accordion"
@@ -422,6 +426,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Find random related Movies"
+        android:visibility="gone"
         android:onClick="findRandomRelatedMovies"
         android:background="@drawable/button_background_accordion"
         android:textSize="15dp"
@@ -431,6 +436,7 @@
     <Button android:id="@+id/btnRelatedMovies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Find related Movies"
         android:onClick="findRelatedMovies"
         android:background="@drawable/button_background_accordion"
@@ -442,6 +448,7 @@
         android:layout_height="wrap_content" android:text="@string/spoiler"
         android:textColor="#ffffffff"
         android:layout_gravity="left"
+        android:visibility="gone"
         android:background="@drawable/button_background_accordion"
         android:textSize="15dp" />
     <LinearLayout android:id="@+id/panelSpoiler"

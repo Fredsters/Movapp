@@ -154,16 +154,16 @@ public class Movie implements Parcelable {
             Pattern p = Pattern.compile("linkedmdb");
             Matcher m = p.matcher(movieResource);
             if(m.find()) {
-                if(!"".equals(this.LMDBmovieResource)) {
-                    this.LMDBmovieResource = movieResource;
+                if("".equals(LMDBmovieResource)) {
+                    LMDBmovieResource = movieResource;
                 }
             } else {
-                if("".equals(this.DBPmovieResource)) {
-                    this.DBPmovieResource = movieResource;
+                if("".equals(DBPmovieResource)) {
+                    DBPmovieResource = movieResource;
                 } else {
                     String cleanMovieResource = movieResource.replace('_', ' ');
                     if(cleanMovieResource.equals("<http://dbpedia.org/resource/"+title+">") && !movieResource.equals(DBPmovieResource)) {
-                        this.DBPmovieResource = movieResource;
+                        DBPmovieResource = movieResource;
                     }
                 }
             }
@@ -171,9 +171,9 @@ public class Movie implements Parcelable {
     }
 
     public String getMovieResource () {
-        if(!"".equals(this.DBPmovieResource)) {
+        if(!"".equals(DBPmovieResource)) {
             return DBPmovieResource;
-        } else if (!"".equals(this.LMDBmovieResource)) {
+        } else if (!"".equals(LMDBmovieResource)) {
             return  LMDBmovieResource;
         } else return "";
     }

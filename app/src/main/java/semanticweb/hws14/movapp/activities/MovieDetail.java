@@ -32,6 +32,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.lang.reflect.MalformedParameterizedTypeException;
@@ -58,6 +59,8 @@ public class MovieDetail extends Activity {
     private Button btnSpoiler;
     private Button btnActorList;
     private Button btnImdbPage;
+    private Button btnRandomRelatedMovies;
+    private Button btnRelatedMovies;
     private int rowCount=0;
     private queryForMovieData q;
     private boolean staticRequestCanceled;
@@ -68,7 +71,7 @@ public class MovieDetail extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_movie_detail);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(false);
         initDetailView();
 
         Intent intent = getIntent();
@@ -148,13 +151,10 @@ public class MovieDetail extends Activity {
 
 
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
-        btnActorList.setVisibility(View.GONE);
-
         btnImdbPage =  (Button) findViewById(R.id.btnLinkImdB);
-        btnImdbPage.setVisibility(View.GONE);
-
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
-        btnSpoiler.setVisibility(View.GONE);
+        btnRandomRelatedMovies = (Button) findViewById(R.id.btnRandomRelatedMovies);
+        btnRelatedMovies = (Button) findViewById(R.id.btnRelatedMovies);
 
 
         btnSpoiler.setOnClickListener(new View.OnClickListener() {
@@ -231,15 +231,15 @@ public class MovieDetail extends Activity {
 
         picThread.start();
 
-        TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
-        String moviePlotText = movie.getPlot();
-
-        if(moviePlotText.equals("")){
-            moviePlot.setVisibility(View.GONE);
+        if(!"".equals(movie.getTitle())) {
+            TextView title = (TextView) findViewById(R.id.tvMovieTitle);
+            title.setVisibility(View.VISIBLE);
         }
-        else{
+
+        if(!"".equals(movie.getPlot())){
+            TextView moviePlot = (TextView) findViewById(R.id.tvPlot);
             moviePlot.setVisibility(View.VISIBLE);
-            moviePlot.setText(moviePlotText);
+            moviePlot.setText(movie.getPlot());
         }
 
         TextView tvGenreHc = (TextView) findViewById(R.id.tvGenreHC);
@@ -309,6 +309,8 @@ public class MovieDetail extends Activity {
             btnActorList.setVisibility(View.VISIBLE);
         }
 
+        btnRandomRelatedMovies.setVisibility(View.VISIBLE);
+        btnRelatedMovies.setVisibility(View.VISIBLE);
 
         TextView tvRolesHc = (TextView) findViewById(R.id.tvRolesHC);
         TextView roles = (TextView) findViewById(R.id.tvRoles);
@@ -381,14 +383,19 @@ public class MovieDetail extends Activity {
 
         manageEmptyTextfields(ratingCountHc, ratingCount, ratingCountText, false);
 
-        TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
-        if(movie.getImdbRating().equals("0 No Rating")) {
-            movieRating.setText("No Rating");
-        } else if(movie.getImdbRating().equals("0 Not sufficient data")) {
-            movieRating.setText("");
-        } else {
-            movieRating.setText(movie.getImdbRating()+"/10");
+        if(!"".equals(movie.getImdbRating())) {
+            TextView movieRating = (TextView) findViewById(R.id.tvMovieRating);
+            if(movie.getImdbRating().equals("0 No Rating")) {
+                movieRating.setText("No Rating");
+            } else if(movie.getImdbRating().equals("0 Not sufficient data")) {
+                movieRating.setText("");
+            } else {
+                movieRating.setText(movie.getImdbRating()+"/10");
+            }
+            movieRating.setVisibility(View.VISIBLE);
+            findViewById(R.id.tvMovieRatingHC).setVisibility(View.VISIBLE);
         }
+
 
         if(!"".equals(movie.getImdbId())) {
             btnImdbPage.setVisibility(View.VISIBLE);
@@ -556,12 +563,13 @@ public class MovieDetail extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            publishProgress("Sparql loaded. Now loading additional data");
             return movie;
         }
 
         @Override
         protected void onProgressUpdate (String... values) {
-            Toast.makeText(that, values[0], Toast.LENGTH_LONG).show();
+            Toast.makeText(that, values[0], Toast.LENGTH_SHORT).show();
         }
 
         protected void onPreExecute() {
@@ -573,20 +581,13 @@ public class MovieDetail extends Activity {
         }
     }
 }
-//DEINE
-//TODO Buttons colored different when criteria is active (olli) drawable
-//TODO align textviews in details properly and show text on finished (olli)
+
+//Can DO
+//TODO Testing
+//TODO Delete unnötigen und auskommentierten code
+//TODO Add erklärende Kommentare
+
+//Must DO
+//TODO add more cities in array, wenn dbpedia wieder da ist
+//TODO align textviews in details properly and show text on finished
 //TODO better colors for listviews
-
-//To Consider
-//TODO Test a lot
-//TODO Delete unnessecary code and auskommentierten code und erklärende kommentare adden
-
-//MEINE
-//TODO add more cities in array (fred)
-//TODO Give information during loading, such as dbpedia has loaded
-//TODO Animate all layouts ??
-//TODO implement the back button
-//TODO Check doublicate remove algorithemn with tom hanks
-//TODO Check when onResume is called
-
