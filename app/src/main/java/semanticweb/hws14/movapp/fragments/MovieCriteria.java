@@ -210,9 +210,13 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeActor=b;
-                setButtonColorText(swActor, btnActor, b || activeDirector);
-                if(activeDirector && !b) {
-                    btnActor.setText("Director: "+ tfDirectorName.getText().toString());
+                if(b && tfActorName.getText().toString().equals("")) {
+                    swActor.setChecked(false);
+                } else {
+                    setButtonColorText(swActor, btnActor, b || activeDirector);
+                    if (activeDirector && !b) {
+                        btnActor.setText("Director: " + tfDirectorName.getText().toString());
+                    }
                 }
 
             }
@@ -221,9 +225,13 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeDirector = b;
-                setButtonColorText(swDirector, btnActor, b || activeActor);
-                if(activeActor && !b) {
-                    btnActor.setText("Actor: "+ tfActorName.getText().toString());
+                if(b && tfDirectorName.getText().toString().equals("")) {
+                    swDirector.setChecked(false);
+                } else {
+                    setButtonColorText(swDirector, btnActor, b || activeActor);
+                    if (activeActor && !b) {
+                        btnActor.setText("Actor: " + tfActorName.getText().toString());
+                    }
                 }
 
             }
@@ -249,7 +257,11 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activePartName = b;
-                setButtonColorText(swPartName, btnPartName, b);
+                if(b && tfPartName.getText().toString().equals("")) {
+                    swPartName.setChecked(false);
+                } else {
+                    setButtonColorText(swPartName, btnPartName, b);
+                }
             }
         });
 
@@ -513,7 +525,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         if(sub) {
             btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
             if(sw.equals(swActor) && activeDirector || sw.equals(swDirector) && activeActor) {
-                btn.setText("A: "+ tfActorName.getText().toString() + " / D: "+ tfDirectorName.getText().toString());
+                btn.setText("A: "+ tfActorName.getText().toString() + "  D: "+ tfDirectorName.getText().toString());
             } else if(sw.equals(swActor)  && !activeDirector) {
                 btn.setText("Actor: "+ tfActorName.getText().toString());
             } else if(sw.equals(swDirector)  && !activeActor) {

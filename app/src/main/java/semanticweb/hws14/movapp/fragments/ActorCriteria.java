@@ -157,7 +157,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeMovie=b;
+                if(b && tfMovieName.getText().toString().equals("")) {
+                    swMovie.setChecked(false);
+                } else {
                 setButtonColorText(swMovie, btnMovie, b );
+                }
             }
         });
 
@@ -173,10 +177,13 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeCity = b;
-                if(b) {
+                if(b && tfActorCity.getText().toString().equals("")) {
+                    swCity.setChecked(false);
+                } else if (b) {
                     swState.setChecked(false);
+                    setButtonColorText(swCity, btnRegion, b || activeState );
                 }
-                setButtonColorText(swCity, btnRegion, b || activeState );
+
             }
         });
 
@@ -195,7 +202,11 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activePartName=b;
-                setButtonColorText(swPartName, btnPartName, b );
+                if(b && tfPartName.getText().toString().equals("")) {
+                    swPartName.setChecked(false);
+                } else {
+                    setButtonColorText(swPartName, btnPartName, b);
+                }
             }
         });
 
