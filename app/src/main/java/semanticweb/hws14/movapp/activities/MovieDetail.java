@@ -555,7 +555,6 @@ public class MovieDetail extends Activity {
 }
 
 //TODO Testing
-//TODO button text, übertragugnstools
 //TODO Detail Daten richtig darstellen Runtime/metascore/rating  prio 2: budget
 //TODO style listviews drawables, title text color
 
