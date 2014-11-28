@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -32,10 +30,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.BufferedHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.w3c.dom.Text;
 
 import java.io.InputStream;
-import java.lang.reflect.MalformedParameterizedTypeException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -89,33 +85,15 @@ public class MovieDetail extends Activity {
             @Override
             public void onFinished(final MovieDet movie) {
                 movieDet = movie;
+                //for the async HttpRequester
                 staticRequestCanceled = false;
                 setData(movie);
             }
 
         });
-
-        TextView movieTitle = (TextView) findViewById(R.id.tvMovieTitle);
-        movieTitle.setText(movie.getTitle());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.movie_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) return true;
-        return super.onOptionsItemSelected(item);
-    }
-
+    //Stops async Task and async HttpRequester
     @Override
     protected void onStop () {
         super.onStop();
@@ -127,25 +105,7 @@ public class MovieDetail extends Activity {
         }
     }
 
-    private void colorIt(TextView tv){
-        LinearLayout p = (LinearLayout) tv.getParent();
-        if(rowCount%2==0){
-
-            //darker color - intvalue: 1947832
-            p.setBackgroundColor(Color.rgb(206,238,237));
-
-        }
-        else{
-            //brighter color - intvalue: 16764144
-            p.setBackgroundColor(Color.rgb(236,248,248));
-        }
-        rowCount++;
-    }
-
     private void initDetailView(){
-       View panelSpoiler = findViewById(R.id.panelSpoiler);
-        panelSpoiler.setVisibility(View.GONE);
-
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
         btnImdbPage =  (Button) findViewById(R.id.btnLinkImdB);
@@ -153,50 +113,17 @@ public class MovieDetail extends Activity {
         btnRandomRelatedMovies = (Button) findViewById(R.id.btnRandomRelatedMovies);
         btnRelatedMovies = (Button) findViewById(R.id.btnRelatedMovies);
 
-
         btnSpoiler.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                View panelSpoiler = findViewById(R.id.panelSpoiler);
-                if(panelSpoiler.getVisibility() == View.VISIBLE) {
-                    panelSpoiler.setVisibility(View.GONE);
+                View wikiAbs = findViewById(R.id.tvWikiAbstract);
+                if(wikiAbs.getVisibility() == View.VISIBLE) {
+                    wikiAbs.setVisibility(View.GONE);
                 } else {
-                    panelSpoiler.setVisibility(View.VISIBLE);
+                    wikiAbs.setVisibility(View.VISIBLE);
                 }
-
             }
         });
-    }
-
-    public void linkToImdb(View view){
-        String imdbUrl = "http://www.imdb.com/title/"+ movieDet.getImdbId()+"/";
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(imdbUrl));
-        startActivity(browserIntent);
-    }
-
-    public void toActorList(View view) {
-        Intent intent = new Intent(that, ActorList.class);
-        intent.putStringArrayListExtra("actorList", movieDet.getActors());
-        startActivity(intent);
-    }
-
-    public void findRandomRelatedMovies(View view) {
-        Intent intent = new Intent(that, MovieList.class);
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
-        Movie movie = new Movie(movieDet.getTitle(), 0, "");
-        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
-        criteria.put("isRandomRelated", true);
-        criteria.put("relatedMovie", movie);
-        intent.putExtra("criteria", criteria);
-        startActivity(intent);
-    }
-
-    public void findRelatedMovies(View view) {
-        Intent intent = new Intent(that, RelationList.class);
-        Movie movie = new Movie(movieDet.getTitle(), 0, "");
-        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
-        intent.putExtra("movie", movie);
-        startActivity(intent);
     }
 
     private void setData(final MovieDet movie) {
@@ -225,12 +152,12 @@ public class MovieDetail extends Activity {
                 }
             }
         });
-
         picThread.start();
 
         if(!"".equals(movie.getTitle())) {
-            TextView title = (TextView) findViewById(R.id.tvMovieTitle);
-            title.setVisibility(View.VISIBLE);
+            TextView movieTitle = (TextView) findViewById(R.id.tvMovieTitle);
+            movieTitle.setText(movie.getTitle());
+            movieTitle.setVisibility(View.VISIBLE);
         }
 
         if(!"".equals(movie.getPlot())){
@@ -243,10 +170,10 @@ public class MovieDetail extends Activity {
         TextView arHc = (TextView) findViewById(R.id.tvAgeRestrictionHC);
         String aR = String.valueOf(movie.getRated());
 
+        //Decode the ageRestriction
         if(!aR.equals("")) {
             ageRestriction.setVisibility(View.VISIBLE);
             arHc.setVisibility(View.VISIBLE);
-
             if (aR.equals("X")) {
                 ageRestriction.setText("18+");
             } else if (aR.equals("R")) {
@@ -284,7 +211,7 @@ public class MovieDetail extends Activity {
         TextView metaScore = (TextView) findViewById(R.id.tvMetaScore);
         TextView metaScoreHc = (TextView) findViewById(R.id.tvMetaScoreHC);
         String metaSoreText = String.valueOf(movie.getMetaScore());
-        metaScore.setText(metaSoreText);
+        metaScore.setText(metaSoreText +"/100");
         manageEmptyTextfields(metaScoreHc, metaScore, metaSoreText, false);
 
 
@@ -310,6 +237,7 @@ public class MovieDetail extends Activity {
         TextView budget = (TextView) findViewById(R.id.tvBudget);
         TextView budgetHc = (TextView) findViewById(R.id.tvBudgetHC);
         String budgetText = movie.getBudget();
+        //Decode the budget
         if(budgetText.contains("E")){
             BigDecimal myNumber = new BigDecimal(budgetText);
             long budgetLong = myNumber.longValue();
@@ -362,38 +290,23 @@ public class MovieDetail extends Activity {
             roles.setText(String.valueOf(movie.createTvOutOfList(roleList)));
         }
 
-
-
-
         TextView wikiAbstract = (TextView) findViewById(R.id.tvWikiAbstract);
-        String wikiAbstractText = movie.getWikiAbstract();
-        if(wikiAbstract.equals("")){
-            wikiAbstract.setVisibility(View.GONE);
-        }
-        else{
-            wikiAbstract.setVisibility(View.VISIBLE);
-            wikiAbstract.setText((String.valueOf(wikiAbstractText)));
-        }
-
+        wikiAbstract.setText(movie.getWikiAbstract());
         if(!"".equals(movie.getImdbId())) {
             btnImdbPage.setVisibility(View.VISIBLE);
         }
-
         if(!"".equals(movie.getWikiAbstract())) {
             btnSpoiler.setVisibility(View.VISIBLE);
         }
-
         try {
             picThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         setProgressBarIndeterminateVisibility(false);
     }
 
-
-    public void manageEmptyTextfields(TextView tvHc, TextView tv, String text, boolean doColorIt){
+    private void manageEmptyTextfields(TextView tvHc, TextView tv, String text, boolean doColorIt){
         if(!text.equals("") && !text.equals("N/A") &&  !text.equals("0")){
             tv.setVisibility(View.VISIBLE);
             tvHc.setVisibility(View.VISIBLE);
@@ -401,6 +314,49 @@ public class MovieDetail extends Activity {
                 colorIt(tvHc);
             }
         }
+    }
+
+    private void colorIt(TextView tv){
+        LinearLayout p = (LinearLayout) tv.getParent();
+        if(rowCount%2==0){
+            p.setBackgroundColor(Color.rgb(206,238,237));
+        }
+        else{
+            p.setBackgroundColor(Color.rgb(236,248,248));
+        }
+        rowCount++;
+    }
+
+
+    public void linkToImdb(View view){
+        String imdbUrl = "http://www.imdb.com/title/"+ movieDet.getImdbId()+"/";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(imdbUrl));
+        startActivity(browserIntent);
+    }
+
+    public void toActorList(View view) {
+        Intent intent = new Intent(that, ActorList.class);
+        intent.putStringArrayListExtra("actorList", movieDet.getActors());
+        startActivity(intent);
+    }
+
+    public void findRandomRelatedMovies(View view) {
+        Intent intent = new Intent(that, MovieList.class);
+        HashMap<String, Object> criteria = new HashMap<String, Object>();
+        Movie movie = new Movie(movieDet.getTitle(), 0, "");
+        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
+        criteria.put("isRandomRelated", true);
+        criteria.put("relatedMovie", movie);
+        intent.putExtra("criteria", criteria);
+        startActivity(intent);
+    }
+
+    public void findRelatedMovies(View view) {
+        Intent intent = new Intent(that, RelationList.class);
+        Movie movie = new Movie(movieDet.getTitle(), 0, "");
+        movie.setDBPmovieResource(movieDet.getDBPmovieResource());
+        intent.putExtra("movie", movie);
+        startActivity(intent);
     }
 
     private class queryForMovieData extends AsyncTask<MovieDet, String, MovieDet> {
@@ -437,13 +393,6 @@ public class MovieDetail extends Activity {
                                 }}catch (Exception e) {
                                 Log.d("movieDetail Problem ", e.toString());
                             }
-                            /*try {
-                                if (soln.getLiteral("rN") != null) {
-                                    movie.addRole(soln.getLiteral("rN").getString());
-                                }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
-                            }*/
-
                             try {
                             if (soln.getLiteral("dN") != null) {
                                 movie.addDirector(soln.getLiteral("dN").getString());
@@ -557,8 +506,7 @@ public class MovieDetail extends Activity {
 //TODO Testing
 //TODO Detail Daten richtig darstellen Runtime/metascore/rating  prio 2: budget
 //TODO style listviews drawables, title text color
-
-//TODO Delete unnötigen und auskommentierten code
-//TODO Add erklärende Kommentare
+//TODO Wenn nur ein movie in der list gehe direkt weiter zu movieDetail (Muss nicht sein)
+//TODO Add erklärende Kommentare (angefangen)
 //TODO Licenses sichtbar machen oder so
 

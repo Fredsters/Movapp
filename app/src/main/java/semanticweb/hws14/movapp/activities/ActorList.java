@@ -7,12 +7,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,56 +19,59 @@ import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.fragments.ActorListAdapter;
-import semanticweb.hws14.movapp.helper.InputCleaner;
-import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
+//Contains a list of actors
 public class ActorList extends Activity {
-
+    //Statics, so that if the user goes back and again on actor list, it is not neccessary to load the data again
     private static ArrayList<String> staticActorList;
     private static HashMap<String, Object> staticCriteria;
     private ActorListAdapter alAdapter;
     private Activity that = this;
     private HashMap<String, Object> actorCriteria;
-    private queryForActors q;
+    private queryForActors q; //private inner class for asyncTask
     private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //For Progress Bar
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_actor_list);
+        //Remove Back Button
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
+        //Get the list
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.actorList);
         ArrayList<String> actorList = new ArrayList<String>();
-        String city = "";
+
+        //if actorList is already available (coming from movieDetail) we do not need to load it again
         if(intent.hasExtra("actorList")) {
             actorList = intent.getStringArrayListExtra("actorList");
-        } else if(intent.hasExtra("criteria")) {
+        } else if(intent.hasExtra("criteria")) { //From Actor criteria
             actorCriteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         }
 
+        //set the already available actorlist
         if(intent.hasExtra("actorList")) {
             this.alAdapter = new ActorListAdapter(this,R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
         } else if(actorCriteria.equals(staticCriteria)){
+            //if the criteria for the query are the same as the last time, we do not need to load again
             this.alAdapter = new ActorListAdapter (this, R.layout.listview_item_actor, actorList);
             listView.setAdapter(alAdapter);
             alAdapter.addAll(staticActorList);
         } else {
+            //load the data
+            checkCriteria();
             staticCriteria = actorCriteria;
             q = new queryForActors();
             q.execute(actorCriteria);
@@ -81,6 +81,7 @@ public class ActorList extends Activity {
 
         final ArrayList<String> finalActorList = actorList;
 
+        //ListItem click Listener
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -93,26 +94,7 @@ public class ActorList extends Activity {
         listView.setOnItemClickListener(clickListen);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.actor_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    //Ends asyncTask when Activity is left while asyncTask is running
     @Override
     protected void onStop () {
         super.onStop();
@@ -120,19 +102,33 @@ public class ActorList extends Activity {
             q.cancel(true);
         }
     }
-
-
+    private void checkCriteria() {
+        if(!actorCriteria.containsKey("isMovie")) {
+            actorCriteria.put("isMovie", false);
+        }
+        if(!actorCriteria.containsKey("isPartName")) {
+            actorCriteria.put("isPartName", false);
+        }
+        if(!actorCriteria.containsKey("isTime")) {
+            actorCriteria.put("isTime", false);
+        }
+        if(!actorCriteria.containsKey("isState")) {
+            actorCriteria.put("isState", false);
+        }
+        if(!actorCriteria.containsKey("isCity")) {
+            actorCriteria.put("isCity", false);
+        }
+    }
+    //private inner class for ayncTask query the data
     private class queryForActors extends AsyncTask<HashMap<String, Object>, String, ArrayList<String>> {
 
         @Override
         protected ArrayList<String> doInBackground(HashMap<String, Object>... criterias) {
             HashMap<String, Object> actorCriteria = criterias[0];
             final SparqlQueries sparqler = new SparqlQueries(actorCriteria);
-
             final ArrayList<String> actorList = new ArrayList<String>();
 
-
-            /* LMDB */
+            //LMDB  Query its a extra thread that lmdb and dbpedia query can query at the same time
             Thread tLMDB = new Thread(new Runnable()
             {
                 public void run()
@@ -162,12 +158,12 @@ public class ActorList extends Activity {
             });
 
 
+            //Only use LMDB when the criteria contains data that lmdb can use
             if(!((Boolean) actorCriteria.get("isTime") || (Boolean) actorCriteria.get("isCity") || (Boolean) actorCriteria.get("isState"))) {
                 tLMDB.start();
             }
 
-        /* DPBEDIA */
-
+            //DBpedia query
             String dbPediaSparqlQueryString = sparqler.DBPEDIAActorQuery();
             Query query = QueryFactory.create(dbPediaSparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
@@ -190,7 +186,7 @@ public class ActorList extends Activity {
             }
             qexec.close();
 
-
+            //Only use LMDB when the criteria contains data that lmdb can use
             if(!((Boolean) actorCriteria.get("isTime") || (Boolean) actorCriteria.get("isCity") || (Boolean) actorCriteria.get("isState"))) {
                 try {
                     tLMDB.join();
@@ -200,8 +196,6 @@ public class ActorList extends Activity {
             }
 
         /* Eliminate doublicates */
-
- //           ArrayList indexArray = new ArrayList();
             for (int i = 0; i < actorList.size(); i++) {
                 for (int j = i + 1; j < actorList.size(); j++) {
                     if (actorList.get(i).equals(actorList.get(j))) {
@@ -223,7 +217,7 @@ public class ActorList extends Activity {
         }
 
         public void onPostExecute(ArrayList<String> actorList) {
-
+            //when there are actors, show those and if there is only one go directy to actorDetail
             if (actorList.size() > 0) {
                 Collections.sort(actorList);
                 alAdapter.addAll(actorList);
@@ -233,6 +227,7 @@ public class ActorList extends Activity {
                     listView.performItemClick(listView.getAdapter().getView(0, null, null), 0, 0);
                 }
             } else {
+                //if there are no actors show dialog with this message
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No actors found!");
                 ad.setCancelable(false); // This blocks the 'BACK' button
@@ -247,6 +242,5 @@ public class ActorList extends Activity {
                 setProgressBarIndeterminateVisibility(false);
             }
         }
-
     }
 }

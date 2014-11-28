@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -28,14 +27,12 @@ import semanticweb.hws14.movapp.fragments.ActorCriteria;
 import semanticweb.hws14.movapp.fragments.CriteriaPagerAdapter;
 import semanticweb.hws14.movapp.fragments.MovieCriteria;
 
-
+//is a tab view and contains the actor and movie fragment
 public class Criteria extends FragmentActivity {
 
     private Criteria that;
-
     private LocationManager locMgr;
     private LocationListener locListner;
-
     private CriteriaPagerAdapter criteriaPagerAdapter;
     private ViewPager mViewPager;
     private int tabPosition;
@@ -48,47 +45,39 @@ public class Criteria extends FragmentActivity {
         that = this;
         initCriteriaView();
 
+        //Get the Tabpager
         criteriaPagerAdapter = new CriteriaPagerAdapter(getSupportFragmentManager());
-
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(criteriaPagerAdapter);
-
-
         mViewPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
                     @Override
                     public void onPageSelected(int position) {
-                        // When swiping between pages, select the
-                        // corresponding tab.
                         getActionBar().setSelectedNavigationItem(position);
                     }
                 });
         ActionBar actionBar = getActionBar();
-
-        // Specify that tabs should be displayed in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Create a tab listener that is called when the user changes tabs.
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
             public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
                 mViewPager.setCurrentItem(tab.getPosition());
                 tabPosition = tab.getPosition();
             }
-
             public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // hide the given tab
             }
-
             public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
                 // probably ignore this event
             }
         };
-
+        //add the two tabs
         actionBar.addTab(actionBar.newTab().setText("Movies").setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab().setText("Actors").setTabListener(tabListener));
     }
 
+    //Show the GPS Button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.criteria, menu);
@@ -97,9 +86,6 @@ public class Criteria extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.gps_location_button) {
             getGpsLocation();
@@ -109,34 +95,25 @@ public class Criteria extends FragmentActivity {
     }
 
     private void initCriteriaView(){
-
-        //Init geo location
-
+        //Init the location stuff
         locMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
         locListner = new LocationListener() {
-            public void onProviderEnabled(String provider) {
-                Log.d("onProviderEnabled", provider.toString());
-            }
-            public void onProviderDisabled(String provider) {
-                Log.d("onProviderDisabled", provider.toString());
-            }
-
             public void onLocationChanged(Location location) {
                 useLocationData(location);
             }
-
+            //standard methods
+            public void onProviderEnabled(String provider) {
+            }
+            public void onProviderDisabled(String provider) {
+            }
             public void onStatusChanged(String provider, int status,
                                         Bundle extras) {
-                Log.d("onStatusChanged", provider.toString());
-                Log.d("onStatusChanged", ""+status);
-                Log.d("onStatusChanged", extras.toString());
-
             }
         };
     }
 
     private void useLocationData (Location location) {
+        //Receive the location Data
         AlertDialog ad = new AlertDialog.Builder(that).create();
         ad.setCancelable(false); // This blocks the 'BACK' button
         Geocoder geocoder = new Geocoder(that, Locale.ENGLISH);
@@ -200,8 +177,8 @@ public class Criteria extends FragmentActivity {
         setProgressBarIndeterminateVisibility(true);
         locMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locListner);
     }
-
-    public Fragment getFragmentByPosition(int pos) {
+    //get the fragmnet
+    private Fragment getFragmentByPosition(int pos) {
         String tag = "android:switcher:" + mViewPager.getId() + ":" + pos;
         return getSupportFragmentManager().findFragmentByTag(tag);
     }

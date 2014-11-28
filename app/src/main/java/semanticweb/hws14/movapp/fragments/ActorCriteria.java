@@ -28,6 +28,7 @@ import semanticweb.hws14.movapp.model.TimePeriod;
 public class ActorCriteria extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private ActorCriteria that;
+
     private int selectedFromDate;
     private int selectedToDate;
     private String selectedState;
@@ -234,7 +235,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         spState.setOnItemSelectedListener(this);
     }
 
-
     public void submitSearch(View view) {
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
@@ -274,7 +274,6 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             criteria.put("isCity", false);
         }
         if(activeState) {
-            //String state = cleanCityStateInput(selectedState);
             String state = selectedState;
             criteria.put("state", state);
             criteria.put("isState", true);
@@ -370,5 +369,4 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         }
     }
-
 }

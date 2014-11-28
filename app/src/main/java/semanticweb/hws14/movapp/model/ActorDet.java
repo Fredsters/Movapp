@@ -1,6 +1,5 @@
 package semanticweb.hws14.movapp.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -8,25 +7,23 @@ import java.util.ArrayList;
  */
 public class ActorDet {
 
-    private String wikiAbstract;  //dbpedia-owl:abstract domain
-    private String birthName; //dbpedia-owl:birthName domain
-    private String birthDate; //dbpedia-owl:birthDate domain
-    private String name; //foaf:name domain rdfs:label domain
-    private ArrayList<String> birthPlace;  //dbpedia-owl:birthPlace domain ressoruce //rdfs:label or foaf:name         // dbpprop:birthPlace
-    private String nationality; // dbpedia-owl:nationality // foaf:name
-    private String occupation; //dbpedia-owl:occupation //dbpedia-owl:title    //dbpprop:occupation
-    private String pictureURL; //dbpedia-owl:thumbnail
-    private int children; //dbpprop:children
-    private int activeYear; //dbpprop:years dbpprop:yearsActive
-    private String homepage;   //foaf:homepage domain
-    private ArrayList<String> movies;  //dbpedia-owl:starring range
-    private String partner; //dbpedia-owl:partner
-    private ArrayList<String> parent; //dbpedia-owl:parent range
+    private String wikiAbstract;
+    private String birthName;
+    private String birthDate;
+    private String name;
+    private ArrayList<String> birthPlace;
+    private String nationality;
+    private String occupation;
+    private String pictureURL;
+    private int children;
+    private int activeYear;
+    private String homepage;
+    private ArrayList<String> movies;
+    private String partner;
+    private ArrayList<String> parent;
     private ArrayList<String> roles;
-   // String spouse; //dbpprop:spouse
 
     private EventActorListener eventActorListener = null;
-
 
     public ActorDet(String wikiAbstract, String birthName, String birthDate, String name, ArrayList<String> birthPlace, String nationality, String occupation, String pictureURL, int children, int activeYear, String homepage, ArrayList<String> movies, String partner, ArrayList<String> parent, ArrayList<String> roles) {
         this.wikiAbstract = wikiAbstract;

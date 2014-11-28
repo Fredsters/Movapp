@@ -5,32 +5,27 @@ import java.util.ArrayList;
 /**
  * Created by Frederik on 07.11.2014.
  */
+//movie class for detail view
 public class MovieDet extends Movie{
 
-    //omdb
-    String awards; //OMDB
-    String poster; //OMDB
-    String plot; //OMDB
-    String rated; //OMDB
-    String wikiAbstract; //DBP
+    String awards;
+    String poster;
+    String plot;
+    String rated;
+    String wikiAbstract;
+    String voteCount;
+    int metaScore;
+    String budget;
+    String runtime;
 
-    String voteCount; //OMDB
-    int metaScore; //OMDB
-
-    String budget; //DBP
-
-    String runtime; //LMDB //DBP
-    ArrayList<String> actors; //LMDB  //DBP
-    ArrayList<String> directors; //LMDB //DBP
-    ArrayList<String> writers; //LDMB //DBP
-    ArrayList<String> genres; //Alle
+    ArrayList<String> actors;
+    ArrayList<String> directors;
+    ArrayList<String> writers;
+    ArrayList<String> genres;
     ArrayList<String> roles;
 
+    //used to garantee that an actor has its particular role on the same index in the role arraylist
     private int actorRoleCount;
-
-    //Noch nicht
-    //distributor 20th centruy fox //DBP or LMDB
-    //Based near  //LMDB or DBP
 
     public MovieDet(String title, int releaseYear, String genre) {
         super(title, releaseYear, genre);

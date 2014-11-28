@@ -11,19 +11,13 @@ import android.os.Handler;
 import android.os.Looper;
 
 public class GeoLocation {
-    // Timer timer1;
     LocationManager lm;
     LocationResult locationResult;
     boolean gps_enabled=false;
     boolean network_enabled=false;
     AsyncTask<Context, Void, Void> mtask;
 
-    public GeoLocation() {
-
-    }
-
-    public boolean getLocation(Context context, LocationResult result)
-    {
+    public boolean getLocation(Context context, LocationResult result) {
         //I use LocationResult callback class to pass location value from MyLocation to user code.
         locationResult=result;
         if(lm==null)
@@ -75,25 +69,18 @@ public class GeoLocation {
     private Context mContext;
     public GeoLocation(Context c) { this.mContext = c; }
 
-
-    class GetLastLocation extends AsyncTask<Context, Void, Void>
-    {
+    class GetLastLocation extends AsyncTask<Context, Void, Void> {
 
         ProgressDialog dialog = new ProgressDialog(mContext);
 
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             dialog.setMessage("Searching....");
             dialog.show();
         }
 
-        protected Void doInBackground(Context... params)
-        {
+        protected Void doInBackground(Context... params) {
             Handler mHandler = new Handler(Looper.getMainLooper());
 
-
-
-            // ...
             mHandler.post(new Runnable() {
                 public void run() {
                     lm.removeUpdates(locationListenerGps);
@@ -125,21 +112,14 @@ public class GeoLocation {
                     locationResult.gotLocation(null);
                 }
             });
-            // ...
-
 
             return null;
         }
-
         protected void onPostExecute(final Void unused)
         {
             dialog.dismiss();
         }
     }
-
-
-
-
 
     public static abstract class LocationResult{
         public abstract void gotLocation(Location location);

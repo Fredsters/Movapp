@@ -31,8 +31,6 @@ import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
 
 public class MovieCriteria extends Fragment implements AdapterView.OnItemSelectedListener{
 
-
-
     private MovieCriteria that;
     private int selectedFromDate;
     private int selectedToDate;
@@ -83,7 +81,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         that = this;
-
     }
 
     @Override
@@ -92,83 +89,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         View movieCriteriaView = inflater.inflate(R.layout.fragment_movie_criteria, container, false);
         initCriteriaView(movieCriteriaView);
         return movieCriteriaView;
-    }
-
-    public void submitSearch(View view) {
-        HashMap<String, Object> criteria = new HashMap<String, Object>();
-
-        String actorName = tfActorName.getText().toString();
-        String directorName = tfDirectorName.getText().toString();
-        String partName = tfPartName.getText().toString();
-
-        if(activeActor && !actorName.equals("")){
-            actorName = InputCleaner.cleanName(actorName);
-            criteria.put("actorName", actorName);
-            criteria.put("isActor", true);
-        } else{
-            criteria.put("isActor", false);
-        }
-
-        if(activePartName && !partName.equals("")){
-            partName = InputCleaner.cleanName(partName);
-            criteria.put("partName", partName);
-            criteria.put("isPartName", true);
-        } else{
-            criteria.put("isPartName", false);
-        }
-
-        if(activeYear){
-            int dateFrom = selectedFromDate;
-            int dateTo = selectedToDate;
-            criteria.put("timePeriod", new TimePeriod(dateFrom, dateTo));
-            criteria.put("isTime", true);
-        } else{
-            criteria.put("isTime", false);
-        }
-
-        if(activeGenre){
-            String genre = selectedGenre;
-            criteria.put("genreName", genre);
-            criteria.put("isGenre", true);
-        } else{
-            criteria.put("isGenre", false);
-        }
-
-        if(activeDirector && !directorName.equals("")){
-            directorName = InputCleaner.cleanName(directorName);
-            criteria.put("directorName", directorName);
-            criteria.put("isDirector", true);
-        } else {
-            criteria.put("isDirector", false);
-        }
-
-        if(activeCity) {
-            String city = cleanCityStateInput(selectedCity);
-            String setShot = regionKind;
-            criteria.put("city", city);
-            criteria.put("isCity", true);
-            criteria.put("regionKind", setShot);
-        } else {
-            criteria.put("isCity", false);
-        }
-        if(activeState) {
-            String state = cleanCityStateInput(selectedState);
-            String setShot = regionKind;
-            criteria.put("state", state);
-            criteria.put("isState", true);
-            criteria.put("regionKind", setShot);
-        } else {
-            criteria.put("isState", false);
-        }
-        if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState || (activePartName && !partName.equals(""))){
-            Activity criteriaActivity = getActivity();
-            Intent intent = new Intent(criteriaActivity, MovieList.class);
-            intent.putExtra("criteria", criteria);
-            startActivity(intent);
-        }
-        else{
-            Toast.makeText(getActivity(), "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void initCriteriaView(View view){
@@ -262,7 +182,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 panelRegion.setVisibility(View.VISIBLE);
             }
         });
-
 
         tfActorName.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -378,7 +297,83 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 that.submitSearch(v);
             }
         });
+    }
 
+    public void submitSearch(View view) {
+        HashMap<String, Object> criteria = new HashMap<String, Object>();
+
+        String actorName = tfActorName.getText().toString();
+        String directorName = tfDirectorName.getText().toString();
+        String partName = tfPartName.getText().toString();
+
+        if(activeActor && !actorName.equals("")){
+            actorName = InputCleaner.cleanName(actorName);
+            criteria.put("actorName", actorName);
+            criteria.put("isActor", true);
+        } else{
+            criteria.put("isActor", false);
+        }
+
+        if(activePartName && !partName.equals("")){
+            partName = InputCleaner.cleanName(partName);
+            criteria.put("partName", partName);
+            criteria.put("isPartName", true);
+        } else{
+            criteria.put("isPartName", false);
+        }
+
+        if(activeYear){
+            int dateFrom = selectedFromDate;
+            int dateTo = selectedToDate;
+            criteria.put("timePeriod", new TimePeriod(dateFrom, dateTo));
+            criteria.put("isTime", true);
+        } else{
+            criteria.put("isTime", false);
+        }
+
+        if(activeGenre){
+            String genre = selectedGenre;
+            criteria.put("genreName", genre);
+            criteria.put("isGenre", true);
+        } else{
+            criteria.put("isGenre", false);
+        }
+
+        if(activeDirector && !directorName.equals("")){
+            directorName = InputCleaner.cleanName(directorName);
+            criteria.put("directorName", directorName);
+            criteria.put("isDirector", true);
+        } else {
+            criteria.put("isDirector", false);
+        }
+
+        if(activeCity) {
+            String city = cleanCityStateInput(selectedCity);
+            String setShot = regionKind;
+            criteria.put("city", city);
+            criteria.put("isCity", true);
+            criteria.put("regionKind", setShot);
+        } else {
+            criteria.put("isCity", false);
+        }
+        if(activeState) {
+            String state = cleanCityStateInput(selectedState);
+            String setShot = regionKind;
+            criteria.put("state", state);
+            criteria.put("isState", true);
+            criteria.put("regionKind", setShot);
+        } else {
+            criteria.put("isState", false);
+        }
+        if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState || (activePartName && !partName.equals(""))){
+            Activity criteriaActivity = getActivity();
+            Intent intent = new Intent(criteriaActivity, MovieList.class);
+            intent.putExtra("criteria", criteria);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(getActivity(), "Please choose at least one valid criteria!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setupSpinnerYearFrom(View view){
@@ -421,7 +416,6 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         spState.setAdapter(adapterState);
         spState.setOnItemSelectedListener(this);
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -502,7 +496,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
-    protected void setTfKeyListener(final EditText tf, final Switch sw ) {
+    private void setTfKeyListener(final EditText tf, final Switch sw ) {
         tf.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

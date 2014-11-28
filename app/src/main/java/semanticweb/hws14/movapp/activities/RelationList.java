@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -50,8 +48,7 @@ public class RelationList extends Activity {
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.relationList);
         ArrayList<String> relationList = new ArrayList<String>();
-        Movie movie = (Movie) intent.getParcelableExtra("movie");
-
+        Movie movie = intent.getParcelableExtra("movie");
 
         if(intent.hasExtra("movie")) {
             if (movie.equals(staticMovie)) {
@@ -68,7 +65,6 @@ public class RelationList extends Activity {
         }
 
         final ArrayList<String> finalRelationList = relationList;
-
         AdapterView.OnItemClickListener clickListen = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,25 +88,6 @@ public class RelationList extends Activity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.relation_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     private class queryForRelations extends AsyncTask<Movie, String, ArrayList<String>> {
 
         @Override
@@ -120,8 +97,7 @@ public class RelationList extends Activity {
             final SparqlQueries sparqler = new SparqlQueries();
             final ArrayList<String> relationList = new ArrayList<String>();
 
-        /* DPBEDIA */
-
+            /* DPBEDIA */
             String dbPediaSparqlQueryString = sparqler.DBPEDIARelationQuery(movie);
             Query query = QueryFactory.create(dbPediaSparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
@@ -180,6 +156,5 @@ public class RelationList extends Activity {
                 setProgressBarIndeterminateVisibility(false);
             }
         }
-
     }
 }

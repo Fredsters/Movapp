@@ -31,7 +31,6 @@ public class CriteriaPagerAdapter extends FragmentPagerAdapter {
                 return null;
             }
         }
-
     }
 
     @Override

@@ -33,8 +33,6 @@ public class HttpRequestQueueSingleton {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            // getApplicationContext() is key, it keeps you from leaking the
-            // Activity or BroadcastReceiver if someone passes one in.
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
@@ -45,15 +43,6 @@ public class HttpRequestQueueSingleton {
     }
 
     public void cancelPendingRequests(Object tag) {
-   //     Log.d("mRequestQueue", mRequestQueue.toString());
-    /*    if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
-                @Override
-                public boolean apply(Request<?> request) {
-                    return true;
-                }
-            });
-        } */
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }

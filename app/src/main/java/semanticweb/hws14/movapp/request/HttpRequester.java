@@ -45,8 +45,7 @@ public class HttpRequester {
                         }
 
                         if (response) {
-
-                            //TIME  //Not neccessary when we kick out all the 0 dates out before
+                            //TIME
                             try {
                                 if (isTime && (isActor || isDirector || isGenre || isPartName)) {
                                     if (0 == movie.getReleaseYear()) {

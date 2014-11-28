@@ -12,13 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
@@ -28,7 +24,6 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -36,11 +31,9 @@ import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.fragments.MovieListAdapter;
 import semanticweb.hws14.movapp.helper.InputCleaner;
 import semanticweb.hws14.movapp.model.Movie;
-import semanticweb.hws14.movapp.model.MovieComparator;
 import semanticweb.hws14.movapp.request.HttpRequestQueueSingleton;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
-
 
 public class MovieList extends Activity {
 
@@ -57,7 +50,6 @@ public class MovieList extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("onCreate", "onCreate");
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -68,8 +60,6 @@ public class MovieList extends Activity {
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         listView = (ListView) findViewById(R.id.movieList);
-
-
 
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
         if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
@@ -102,17 +92,12 @@ public class MovieList extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_list, menu);
-
         imdbButton =  menu.findItem(R.id.imdb_rating_button).setVisible(false);
-
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.imdb_rating_button) {
             queryForImdbRating();
@@ -121,22 +106,7 @@ public class MovieList extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-  /*  protected void onResume() {
-        super.onResume();
-        Log.d("onResume", "onResume");
-    }
-
-    protected void onStart() {
-        super.onStart();
-        Log.d("onStart", "onStart");
-    }
-
-
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("onDestroy", "onDestroy");
-    }*/
-
+    //Stops async Task and async HttpRequester
     @Override
     protected void onStop () {
         super.onStop();
@@ -181,9 +151,7 @@ public class MovieList extends Activity {
         if(!criteria.containsKey("isRelated")) {
             criteria.put("isRelated", false);
         }
-
     }
-
 
     private class queryForMovies extends AsyncTask<HashMap<String, Object>, String, ArrayList<Movie>> {
 
@@ -349,13 +317,7 @@ public class MovieList extends Activity {
                             movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
                             indexArray.add(movieList.get(j));
                         }
-                    }/* else if (movieList.get(i).getTitle().contains(movieList.get(j).getTitle())) {
-                        movieList.get(i).setMovieResource(movieList.get(j).getMovieResource());
-                        indexArray.add(movieList.get(j));
-                    } else if (movieList.get(j).getTitle().contains(movieList.get(i).getTitle())) {
-                        movieList.get(j).setMovieResource(movieList.get(i).getMovieResource());
-                        indexArray.add(movieList.get(i));
-                    }*/
+                    }
                 }
             }
             movieList.removeAll(indexArray);
@@ -395,13 +357,7 @@ public class MovieList extends Activity {
                     }
                 }
 
-          /*      if(movieList.size() == 1) {
-                    imdbButton.setVisible(true);
-                    mlAdapter.addAll(movieList);
-                    that.setProgressBarIndeterminateVisibility(false);
-                    MovieList.staticMovieList = movieList;
-                    //listView.performItemClick(listView.getAdapter().getView(0, null, null), 0, 0);
-                } else */if(movieList.size() <= 200) {
+                if(movieList.size() <= 200) {
                     HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
                 } else {
                     imdbButton.setVisible(true);
@@ -424,6 +380,5 @@ public class MovieList extends Activity {
                 setProgressBarIndeterminateVisibility(false);
             }
         }
-
     }
 }

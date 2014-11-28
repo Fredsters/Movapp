@@ -22,11 +22,6 @@
         android:layout_height="wrap_content"
         />
 
-  <!--  <WebView
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></WebView> -->
-
     <TextView
         android:id="@+id/tvMovieTitle"
         android:text="movieTitle"
@@ -453,24 +448,12 @@
         android:visibility="gone"
         android:background="@drawable/button_background_accordion"
         android:textSize="15dp" />
-    <LinearLayout android:id="@+id/panelSpoiler"
-        android:orientation="vertical" android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFFFF">
-
         <TextView
             android:id="@+id/tvWikiAbstract"
-            android:text=""
-
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            />
-
-    </LinearLayout>
-
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/activity_vertical_margin"/>
 
 </LinearLayout>
-
 </ScrollView>

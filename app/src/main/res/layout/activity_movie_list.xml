@@ -11,6 +11,4 @@
         android:id="@+id/movieList"
 
       />
-
-    <!-- android:background="@drawable/list_item_odd" -->
 </RelativeLayout>

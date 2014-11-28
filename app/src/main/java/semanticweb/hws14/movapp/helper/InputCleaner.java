@@ -39,7 +39,6 @@ public class InputCleaner {
         } else {
             return 0;
         }
-
     }
 
     public static String cleanMovieTitle (Literal title) {
@@ -48,7 +47,6 @@ public class InputCleaner {
         } else {
             return "";
         }
-
     }
 
     public static String cleanImdbId(Resource url) {
