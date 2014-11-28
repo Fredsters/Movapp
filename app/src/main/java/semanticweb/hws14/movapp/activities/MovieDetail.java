@@ -513,6 +513,5 @@ public class MovieDetail extends Activity {
 //TODO Wenn nur ein movie in der list gehe direkt weiter zu movieDetail (Muss nicht sein)
 //TODO Add erklärende Kommentare (angefangen)
 //TODO Licenses sichtbar machen oder so
-//TODO Bug bei Peter Jackson und Orlando Bloom (das Problem ist: Title: The Hobbit, oder The Lord of the rings. ReleaseYear nicht bekannt. OMDB findet die Zeichentrickserien von 1977 und 1978 --> Falsches Rating und falsches Bild
 
 

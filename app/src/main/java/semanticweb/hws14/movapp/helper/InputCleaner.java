@@ -43,7 +43,9 @@ public class InputCleaner {
 
     public static String cleanMovieTitle (Literal title) {
         if(null != title && title.isLiteral()) {
-            return title.getString().replace("and", "&");
+            String returnString = title.getString().replace(" and ", " & ");
+            int index = returnString.indexOf("(");
+            return returnString.substring(0,index).trim();
         } else {
             return "";
         }

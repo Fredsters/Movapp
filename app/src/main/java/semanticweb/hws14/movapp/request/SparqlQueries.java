@@ -175,7 +175,7 @@ public class SparqlQueries {
                 queryString +=
                         "OPTIONAL{?m dbpprop:released ?y.}";
             }
-            queryString += "?m foaf:name ?t.";
+            queryString += "?m rdfs:label ?t. FILTER(langMatches(lang(?t), 'EN'))";
             queryString +=
                     "} LIMIT 400";
         return queryString;
@@ -194,7 +194,7 @@ public class SparqlQueries {
                             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
                             "select ?abs ?bu ?r ?aN ?dN ?wN where { " +
                             "?m rdf:type <http://schema.org/Movie>; "+
-                            "foaf:name \""+movie.getTitle()+"\"@en. "+
+                            "rdfs:label \""+movie.getTitle()+"\"@en. "+
                             "OPTIONAL {?m dbpedia-owl:abstract ?abs . FILTER(langMatches(lang(?abs ), 'EN'))} " +
                             "OPTIONAL {?m dbpedia-owl:budget ?bu .} " +
                             "OPTIONAL {?m dbpprop:runtime ?r.} "+
@@ -293,10 +293,11 @@ public class SparqlQueries {
         String movieResource = movie.getDBPmovieResource();
         String queryString =
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                        "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
-                        "PREFIX dcterms: <http://purl.org/dc/terms/> "+
-                        "PREFIX dbpprop: <http://dbpedia.org/property/> " +
-                        "select distinct ?m ?t ?y Where { ";
+                "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
+                "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+                "PREFIX dcterms: <http://purl.org/dc/terms/> "+
+                "PREFIX dbpprop: <http://dbpedia.org/property/> " +
+                "select distinct ?m ?t ?y Where { ";
         if("".equals(movieResource)) {
             queryString +="?uM rdf:type <http://schema.org/Movie>; foaf:name \"" + movie.getTitle() + "\"@en; dcterms:subject ?res. ";
         } else {
@@ -304,7 +305,7 @@ public class SparqlQueries {
         }
         queryString +=
                 "?m rdf:type <http://schema.org/Movie>; dcterms:subject  ?res. " +
-                        "?m foaf:name ?t. OPTIONAL{?m dbpprop:released ?y.}" +
+                        "?m rdfs:label ?t. FILTER(langMatches(lang(?t), 'EN')) OPTIONAL{?m dbpprop:released ?y.}" +
                         "} limit 800";
 
         return queryString;
@@ -337,7 +338,7 @@ public class SparqlQueries {
                         "select distinct ?m ?t ?y Where { " +
                         "?sub rdf:type skos:Concept; rdfs:label \""+relationName+"\"@en. " +
                         "?m rdf:type <http://schema.org/Movie>; dcterms:subject ?sub."+
-                        "?m foaf:name ?t. OPTIONAL{?m dbpprop:released ?y.}"+
+                        "?m rdfs:label ?t. FILTER(langMatches(lang(?t), 'EN')) OPTIONAL{?m dbpprop:released ?y.}"+
                         "} limit 800";
         return queryString;
     }
