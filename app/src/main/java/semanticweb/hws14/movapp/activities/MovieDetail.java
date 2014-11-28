@@ -554,13 +554,12 @@ public class MovieDetail extends Activity {
     }
 }
 
-//Can DO
+//TODO Testing
+//TODO button text, übertragugnstools
+//TODO Detail Daten richtig darstellen Runtime/metascore/rating  prio 2: budget
+//TODO style listviews drawables, title text color
+
 //TODO Delete unnötigen und auskommentierten code
 //TODO Add erklärende Kommentare
+//TODO Licenses sichtbar machen oder so
 
-//Must DO
-//TODO Testing
-//TODO better colors for listviews
-//TODO Das was du aufgeschrieben hast
-//TODO Namen auf button
-//TODO Check die aufnahme funktion und übertragung auf pc screen tools

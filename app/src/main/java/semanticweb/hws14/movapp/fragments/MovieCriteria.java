@@ -487,14 +487,19 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     public void setGPSLocation(String city) {
         swCity.setChecked(true);
         String[] cityArray = getResources().getStringArray(R.array.city_array);
-        int position = 0;
+        int position = -1;
         for(int i = 0 ; i < cityArray.length; i++) {
             if(city.equals(cityArray[i])) {
                 position = i;
                 break;
             }
         }
-        spCity.setSelection(position);
+        if(position == -1) {
+            Toast.makeText(getActivity(), "This city is not usable", Toast.LENGTH_SHORT).show();
+        } else {
+            spCity.setSelection(position);
+        }
+
     }
 
     protected void setTfKeyListener(final EditText tf, final Switch sw ) {
@@ -527,7 +532,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
                 btn.setText("Part of Title: "+ tfPartName.getText().toString());
             } else if(sw.equals(swCity)) {
                 btn.setText("City: "+ selectedCity);
-            }else if(sw.equals(btnRegion)) {
+            }else if(sw.equals(swState)) {
                 btn.setText("Country: "+ selectedState);
             }
         } else {

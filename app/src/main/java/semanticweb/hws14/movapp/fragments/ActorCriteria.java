@@ -156,11 +156,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeMovie=b;
-                if(b) {
-                    btnMovie.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnMovie.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swMovie, btnMovie, b );
             }
         });
 
@@ -168,11 +164,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activeYear = b;
-                if(b) {
-                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnYear.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swYear, btnYear, b );
             }
         });
 
@@ -183,11 +175,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swState.setChecked(false);
                 }
-                if(b || activeState) {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swCity, btnRegion, b || activeState );
             }
         });
 
@@ -198,11 +186,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 if(b) {
                     swCity.setChecked(false);
                 }
-                if(b || activeCity) {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnRegion.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swState, btnRegion, b || activeCity );
             }
         });
 
@@ -210,11 +194,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 activePartName=b;
-                if(b) {
-                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
-                } else {
-                    btnPartName.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
-                }
+                setButtonColorText(swPartName, btnPartName, b );
             }
         });
 
@@ -361,6 +341,34 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 return false;
             }
         });
+    }
+
+    private void setButtonColorText(Switch sw, Button btn, boolean sub) {
+        if(sub) {
+            btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));
+            if(sw.equals(swMovie)) {
+                btn.setText("Movie: "+ tfMovieName.getText().toString());
+            } else if(sw.equals(swYear)) {
+                btn.setText("Birth year: "+ selectedFromDate +" - "+ selectedToDate);
+            } else if(sw.equals(swPartName)) {
+                btn.setText("Actor name: "+ tfPartName.getText().toString());
+            } else if(sw.equals(swCity)) {
+                btn.setText("Birthplace: "+ tfActorCity.getText().toString());
+            }else if(sw.equals(swState)) {
+                btn.setText("Birthplace: "+ selectedState);
+            }
+        } else {
+            btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_accordion));
+            if(btn.equals(btnMovie)) {
+                btn.setText("Movie");
+            } else if(btn.equals(btnPartName)) {
+                btn.setText("Actor name");
+            } else if(btn.equals(btnYear)) {
+                btn.setText("Birth year");
+            } else if(btn.equals(btnRegion)) {
+                btn.setText("Birthplace");
+            }
+        }
     }
 
 }

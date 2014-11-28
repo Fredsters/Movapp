@@ -46,7 +46,7 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
             holder = new MovieHolder();
             holder.movieTitle = (TextView)row.findViewById(R.id.listItemTitle);
             holder.movieRating = (TextView)row.findViewById(R.id.listItemImdB);
-            holder.starRating = (RatingBar)row.findViewById(R.id.ratingBar);
+          //  holder.starRating = (RatingBar)row.findViewById(R.id.ratingBar);
             row.setTag(holder);
         }
         else
@@ -60,10 +60,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
         String imdbRating = movie.getImdbRating();
         if(imdbRating.startsWith("0")) {
             imdbRating = imdbRating.substring(2);
-            holder.starRating.setRating(0.0f);
-        } else {
-            float StarRating = Float.parseFloat(imdbRating)/2;
-            holder.starRating.setRating(StarRating);
         }
 
         holder.movieTitle.setText(movie.getTitle());
@@ -86,6 +82,6 @@ public class MovieListAdapter extends ArrayAdapter<Movie> {
     {
         TextView movieTitle;
         TextView movieRating;
-        RatingBar starRating;
+     //   RatingBar starRating;
     }
 }
