@@ -26,6 +26,7 @@ public class InputCleaner {
 
     public static int cleanReleaseYear(Literal year) {
         String yearString;
+        int yearInt = 0;
         if(year == null || "".equals(year.toString())) {
             yearString = "0";
         } else {
@@ -35,20 +36,22 @@ public class InputCleaner {
         Matcher m = p.matcher(yearString);
         if(m.find()) {
             yearString = m.group();
-            return Integer.parseInt(yearString);
-        } else {
-            return 0;
+            yearInt = Integer.parseInt(yearString);
         }
+        return yearInt;
     }
 
     public static String cleanMovieTitle (Literal title) {
+        String reTitle = "";
         if(null != title && title.isLiteral()) {
-            String returnString = title.getString().replace(" and ", " & ");
-            int index = returnString.indexOf("(");
-            return returnString.substring(0,index).trim();
-        } else {
-            return "";
+            reTitle = title.getString().replace(" and ", " & ");
+            if(reTitle.contains("(")) {
+                int index = reTitle.indexOf("(");
+                reTitle = reTitle.substring(0,index);
+                reTitle = reTitle.trim();
+            }
         }
+        return reTitle;
     }
 
     public static String cleanImdbId(Resource url) {
@@ -65,11 +68,11 @@ public class InputCleaner {
     }
 
     public static String cleanGenreName (Literal genreName) {
+        String genreString = "";
         if(null != genreName && genreName.isLiteral()) {
-            return genreName.getString();
-        } else {
-            return "";
+            genreString = genreName.getString();
         }
+        return genreString;
     }
 
     public static String cleanCityStateInput (String region) {
