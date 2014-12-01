@@ -348,7 +348,7 @@ public class MovieList extends Activity {
 
         public void onPostExecute(ArrayList<Movie> movieList) {
             if (movieList.size() > 0) {
-                if ((Boolean) criteria.get("isTime") && ((Boolean) criteria.get("isGenre") || (Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") ||(Boolean) criteria.get("isPartName"))) {
+                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
@@ -358,7 +358,7 @@ public class MovieList extends Activity {
                     }
                 }
 
-                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") ||(Boolean) criteria.get("isPartName"))) {
+                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();

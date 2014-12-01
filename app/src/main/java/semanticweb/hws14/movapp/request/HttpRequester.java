@@ -66,7 +66,7 @@ public class HttpRequester {
                             if (!(movieList.indexOf(movie) == -1)) {
                                 //Genre
                                 try {
-                                    if (isGenre && (isActor || isDirector || isPartName)) {
+                                    if (isGenre && (isActor || isDirector || isPartName ||isCity || isState || isTime)) {
                                         String genreName = r.getString("Genre");
                                         movie.setGenre(genreName);
                                         if (SparqlQueries.filterGenre(movie)) {

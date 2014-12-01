@@ -104,11 +104,6 @@ public class MovieDetail extends Activity {
         }
     }
 
-    @Override
-    protected void onDestroy () {
-        super.onDestroy();
-        Log.d("onDestroy", "MovieDetail");
-    }
     private void initDetailView(){
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
@@ -405,9 +400,9 @@ public class MovieDetail extends Activity {
                             QuerySolution soln = results.nextSolution();
                             try {
                             if (soln.getLiteral("run") != null && "".equals(movie.getRuntime())) {
-                                movie.setRuntime(soln.getLiteral("r").getString());
+                                movie.setRuntime(soln.getLiteral("run").getString());
                             }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
+                                Log.d("movieDetail LMDb run ", e.toString());
                             }
                             try {
                                 if (soln.getLiteral("aN") != null) {
@@ -417,25 +412,25 @@ public class MovieDetail extends Activity {
                                         movie.addActorRole(soln.getLiteral("aN").getString(), "");
                                     }
                                 }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
+                                Log.d("movieDetail LMDb aN ", e.toString());
                             }
                             try {
                             if (soln.getLiteral("dN") != null) {
                                 movie.addDirector(soln.getLiteral("dN").getString());
                             }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
+                                Log.d("movieDetail LMDb dN ", e.toString());
                             }
                             try {
                             if (soln.getLiteral("wN") != null) {
                                 movie.addWriter(soln.getLiteral("wN").getString());
                             }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
+                                Log.d("movieDetail LMDb wN ", e.toString());
                             }
                             try {
                             if (soln.getLiteral("gN") != null) {
                                 movie.addGenre(soln.getLiteral("gN").getString());
                             }}catch (Exception e) {
-                                Log.d("movieDetail Problem ", e.toString());
+                                Log.d("movieDetail LMDb gN ", e.toString());
                             }
                         }
                     } catch (Exception e) {
@@ -460,43 +455,43 @@ public class MovieDetail extends Activity {
                     if(soln.getLiteral("abs") != null && "".equals(movie.getWikiAbstract())) {
                         movie.setWikiAbstract(soln.getLiteral("abs").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP abs ", e.toString());
                     }
                     try {
                     if(soln.getLiteral("bu") != null && "".equals(movie.getBudget())) {
                         movie.setBudget(soln.getLiteral("bu").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP bu ", e.toString());
                     }
                     try {
                     if (soln.getLiteral("r") != null && "".equals(movie.getRuntime())) {
                         movie.setRuntime(soln.getLiteral("r").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP r ", e.toString());
                     }
                     try {
                     if (soln.getLiteral("aN") != null) {
                         movie.addActorRole(soln.getLiteral("aN").getString(), "");
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail  dbP aN ", e.toString());
                     }
                     try {
                     if (soln.getLiteral("dN") != null) {
                         movie.addDirector(soln.getLiteral("dN").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP dN ", e.toString());
                     }
                     try {
                     if (soln.getLiteral("wN") != null ) {
                         movie.addWriter(soln.getLiteral("wN").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP wN ", e.toString());
                     }
                     try {
                     if (soln.getLiteral("gN") != null ) {
                         movie.addGenre(soln.getLiteral("gN").getString());
                     }}catch (Exception e) {
-                        Log.d("movieDetail Problem ", e.toString());
+                        Log.d("movieDetail dbP gN ", e.toString());
                     }
                 }
             }catch (Exception e){
