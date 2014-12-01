@@ -112,6 +112,7 @@ public class HttpRequester {
                             listActivity.setProgressBarIndeterminateVisibility(false);
                             MovieList.staticMovieList = movieList;
                             MovieList.staticRequestCanceled = false;
+                            MovieList.imdbButton.setVisible(false);
                         }
                     }
                 }, new Response.ErrorListener() {

@@ -89,7 +89,6 @@ public class MovieDetail extends Activity {
                 staticRequestCanceled = false;
                 setData(movie);
             }
-
         });
     }
 

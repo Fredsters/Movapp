@@ -24,13 +24,17 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
 import semanticweb.hws14.activities.R;
 import semanticweb.hws14.movapp.fragments.MovieListAdapter;
 import semanticweb.hws14.movapp.helper.InputCleaner;
+import semanticweb.hws14.movapp.model.EventListener;
 import semanticweb.hws14.movapp.model.Movie;
+import semanticweb.hws14.movapp.model.MovieComparator;
+import semanticweb.hws14.movapp.model.MovieDet;
 import semanticweb.hws14.movapp.request.HttpRequestQueueSingleton;
 import semanticweb.hws14.movapp.request.HttpRequester;
 import semanticweb.hws14.movapp.request.SparqlQueries;
@@ -40,7 +44,7 @@ public class MovieList extends Activity {
     private MovieListAdapter mlAdapter;
     private Activity that = this;
     private HashMap<String, Object> criteria;
-    private MenuItem imdbButton;
+    public static  MenuItem imdbButton;
     private queryForMovies q;
     private ListView listView;
     public static boolean staticRequestCanceled;
@@ -60,16 +64,17 @@ public class MovieList extends Activity {
 
         criteria = (HashMap<String, Object>)intent.getSerializableExtra("criteria");
         listView = (ListView) findViewById(R.id.movieList);
-
+        staticRequestCanceled = false;
+        checkCriteria();
         //If staticCriteria equals criteria, the criteria did not change to the last time, so we dont need to query again.
-        if(criteria.equals(staticCriteria) && !staticRequestCanceled) {
+        if(criteria.equals(staticCriteria)) {
            this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
             listView.setAdapter(mlAdapter);
             mlAdapter.addAll(staticMovieList);
+
         } else {
             this.mlAdapter = new MovieListAdapter(this,R.layout.listview_item_movie, movieList);
-            checkCriteria();
-            staticRequestCanceled = true;
+
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
             staticCriteria = criteria;
@@ -86,6 +91,7 @@ public class MovieList extends Activity {
                 startActivity(intent);
             }
         };
+
         listView.setOnItemClickListener(clickListen);
     }
 
@@ -93,6 +99,9 @@ public class MovieList extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_list, menu);
         imdbButton =  menu.findItem(R.id.imdb_rating_button).setVisible(false);
+        if(null != staticMovieList && staticMovieList.size() >= 200) {
+            imdbButton.setVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -115,11 +124,13 @@ public class MovieList extends Activity {
         }
         if(staticRequestCanceled) {
             HttpRequestQueueSingleton.getInstance(this.getApplicationContext()).cancelPendingRequests("movieList");
+            that.setProgressBarIndeterminateVisibility(false);
         }
     }
 
     public void queryForImdbRating () {
         that.setProgressBarIndeterminateVisibility(true);
+        staticRequestCanceled = true;
         HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
     }
 
@@ -358,6 +369,8 @@ public class MovieList extends Activity {
                 }
 
                 if(movieList.size() <= 200) {
+                    staticRequestCanceled = true;
+                    //MovieList.staticCriteria = criteria;
                     HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
                 } else {
                     imdbButton.setVisible(true);
