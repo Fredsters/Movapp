@@ -229,7 +229,7 @@ public class MovieDetail extends Activity {
 
         TextView runtime = (TextView) findViewById(R.id.tvRuntime);
         TextView runTimeHc = (TextView) findViewById(R.id.tvRuntimeHC);
-        String runtimeText = String.valueOf(movie.getRuntime() + " minutes");
+        String runtimeText = runtimeComputation(Float.parseFloat(movie.getRuntime()));
         runtime.setText(runtimeText);
         manageEmptyTextfields(runTimeHc, runtime, runtimeText, true);
 
@@ -244,6 +244,7 @@ public class MovieDetail extends Activity {
             NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.US);
             budgetText = formatter.format(budgetLong);
             budgetText = String.valueOf(budgetText);
+            budgetText = budgetComputation(budgetText);
             budget.setText(budgetText);
             manageEmptyTextfields(budgetHc, budget, budgetText, true);
         }
@@ -325,6 +326,22 @@ public class MovieDetail extends Activity {
             p.setBackgroundColor(Color.rgb(236,248,248));
         }
         rowCount++;
+    }
+
+    private String runtimeComputation(float initRuntime){
+        int runtime = (int) initRuntime;
+        if(initRuntime>1000){
+            return runtime/60 + " minutes";
+        }
+        return runtime+" minutes";
+    }
+
+    private String budgetComputation(String budgetString){
+
+        int i=budgetString.indexOf(".");
+        budgetString = budgetString.substring(0,i);
+
+        return budgetString;
     }
 
 
@@ -505,9 +522,6 @@ public class MovieDetail extends Activity {
 
 //WICHTIG
 //TODO Testing
-//TODO Detail Daten richtig darstellen Runtime/ prio 2: budget
-//TODO style listviews drawables, title text color
-
 
 //UNWICHTIG
 //TODO Wenn nur ein movie in der list gehe direkt weiter zu movieDetail (Muss nicht sein)
