@@ -105,6 +105,11 @@ public class MovieDetail extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        Log.d("onDestroy", "MovieDetail");
+    }
     private void initDetailView(){
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
@@ -229,7 +234,12 @@ public class MovieDetail extends Activity {
 
         TextView runtime = (TextView) findViewById(R.id.tvRuntime);
         TextView runTimeHc = (TextView) findViewById(R.id.tvRuntimeHC);
-        String runtimeText = runtimeComputation(Float.parseFloat(movie.getRuntime()));
+        String runtimeText = "";
+        try {
+            runtimeText = runtimeComputation(Float.parseFloat(movie.getRuntime()));
+        } catch (Exception e) {
+            runtimeText = movie.getRuntime();
+        }
         runtime.setText(runtimeText);
         manageEmptyTextfields(runTimeHc, runtime, runtimeText, true);
 
@@ -331,9 +341,9 @@ public class MovieDetail extends Activity {
     private String runtimeComputation(float initRuntime){
         int runtime = (int) initRuntime;
         if(initRuntime>1000){
-            return runtime/60 + " minutes";
+            return runtime/60 + " min";
         }
-        return runtime+" minutes";
+        return runtime+" min";
     }
 
     private String budgetComputation(String budgetString){
