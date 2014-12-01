@@ -269,7 +269,7 @@ public class SparqlQueries {
                 "OPTIONAL{?ac dbpedia-owl:abstract ?wA. FILTER(langMatches(lang(?wA), 'EN'))} " +
                 "OPTIONAL{?ac dbpedia-owl:birthName ?birthN.} " +
                 "OPTIONAL{?ac dbpedia-owl:birthDate ?birthD.} " +
-                "OPTIONAL{?ac dbpedia-owl:birthPlace ?birthP. ?birthP foaf:name ?bPN.} " +
+                "OPTIONAL{?ac dbpedia-owl:birthPlace ?birthP. {?birthP foaf:name ?bPN.} UNION {?birthP rdfs:label ?bPN. FILTER(langMatches(lang(?bPN), 'EN'))}} " +
                 "OPTIONAL{?ac dbpprop:citizenship ?citS.} " +
                 "OPTIONAL{?ac dbpedia-owl:nationality ?n. ?n rdfs:label ?natN.} " +
                 "OPTIONAL{?ac dbpprop:occupation ?oC.} " +
