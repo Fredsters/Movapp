@@ -179,8 +179,10 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
                 activeCity = b;
                 if(b && tfActorCity.getText().toString().equals("")) {
                     swCity.setChecked(false);
-                } else if (b) {
-                    swState.setChecked(false);
+                } else {
+                    if (b) {
+                        swState.setChecked(false);
+                    }
                     setButtonColorText(swCity, btnRegion, b || activeState );
                 }
 
@@ -335,8 +337,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
     }
     public void setGPSLocation(String city) {
-        swCity.setChecked(true);
         tfActorCity.setText(city);
+        swCity.setChecked(true);
     }
 
     protected void setTfKeyListener(EditText tf, final Switch sw ){
