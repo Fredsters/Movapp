@@ -105,7 +105,7 @@ public class SparqlQueries {
         if ((Boolean)criteria.get("isPartName")) {
             queryString += "FILTER (REGEX(?aN, \""+criteria.get("partName")+"\", \"i\")) ";
         }
-        queryString += "} limit 1000";
+        queryString += "} limit 800";
         return queryString;
     }
 
@@ -151,7 +151,7 @@ public class SparqlQueries {
             if ((Boolean) criteria.get("isPartName")) {
                 queryString += "?m rdfs:label ?mN.  FILTER(langMatches(lang(?mN), 'EN')) FILTER (REGEX(?mN, \"" + criteria.get("partName") + "\", \"i\")) ";
             }
-            if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector"))) {
+            if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                 queryString +=
                 "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gn. }";
             } else if ((Boolean) criteria.get("isGenre")) {
@@ -248,7 +248,7 @@ public class SparqlQueries {
         if((Boolean) criteria.get("isPartName")) {
             queryString += "FILTER (REGEX(?aN, \""+criteria.get("partName")+"\", \"i\")) ";
         }
-        queryString += "} limit 1000";
+        queryString += "} limit 800";
 
         return queryString;
     }

@@ -491,7 +491,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     }
 
     public void setGPSLocation(String city) {
-        swCity.setChecked(true);
+
         String[] cityArray = getResources().getStringArray(R.array.city_array);
         int position = -1;
         for(int i = 0 ; i < cityArray.length; i++) {
@@ -505,7 +505,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         } else {
             spCity.setSelection(position);
         }
-
+        swCity.setChecked(true);
     }
 
     private void setTfKeyListener(final EditText tf, final Switch sw ) {
