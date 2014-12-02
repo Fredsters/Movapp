@@ -504,6 +504,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             Toast.makeText(getActivity(), "This city is not usable", Toast.LENGTH_SHORT).show();
         } else {
             spCity.setSelection(position);
+            selectedCity = spCity.getSelectedItem().toString();
         }
         swCity.setChecked(true);
     }
