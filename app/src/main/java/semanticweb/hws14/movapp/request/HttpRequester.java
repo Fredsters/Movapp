@@ -1,6 +1,8 @@
 package semanticweb.hws14.movapp.request;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
@@ -26,10 +28,13 @@ import semanticweb.hws14.movapp.model.MovieDet;
  * Created by Frederik on 29.10.2014.
  */
 
+//This class handles the http requests to the webservice
 public class HttpRequester {
+    //this method is for getting the rating, time, genre in list view
     public static void addOmdbData(final Activity listActivity, final ArrayList<Movie> movieList, final ArrayAdapter<Movie> mlAdapter, final boolean isTime, final boolean isGenre, final boolean isActor, final boolean isDirector, final boolean isCity, final boolean isState, final boolean isPartName) {
 
             for (final Movie movie : movieList) {
+
 
                 String url = prepareURL(movie, false);
 
@@ -45,7 +50,10 @@ public class HttpRequester {
                         }
 
                         if (response) {
-                            //TIME
+                            //TIME is only needed here, when time is active and one of those (isActor, isDirector...)
+                            //Because if none of those is active, time attribute is not mandatory in sparql and we would only get movies that fit the constraints.
+                            //If one of those others is active, time is optional and needs to be filtered again, this time with data from the web service
+                            //--> get more correct movies
                             try {
                                 if (isTime && (isActor || isDirector || isGenre || isPartName)) {
                                     if (0 == movie.getReleaseYear()) {
@@ -64,7 +72,7 @@ public class HttpRequester {
                             }
 
                             if (!(movieList.indexOf(movie) == -1)) {
-                                //Genre
+                                //Genre: Same as for time
                                 try {
                                     if (isGenre && (isActor || isDirector || isPartName ||isCity || isState || isTime)) {
                                         String genreName = r.getString("Genre");
@@ -101,30 +109,73 @@ public class HttpRequester {
                                 }
                             }
                         } else {
-                            movie.setImdbRating("0 No Data");
+                            if (movieList.size() <= movieList.indexOf(movie) + 1) {
+                                lastMovie = true;
+                            }
+                            movieList.remove(movie);
                         }
 
                         if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
 
-                            mlAdapter.clear();
-                            Collections.sort(movieList, new MovieComparator());
-                            mlAdapter.addAll(movieList);
-                            listActivity.setProgressBarIndeterminateVisibility(false);
-                            MovieList.staticMovieList = movieList;
-                            MovieList.staticRequestCanceled = false;
-                            MovieList.imdbButton.setVisible(false);
+                            //adds movies to the list, sorts , and so on
+                            if (movieList.size() > 0) {
+                                mlAdapter.clear();
+                                Collections.sort(movieList, new MovieComparator());
+                                mlAdapter.addAll(movieList);
+                                listActivity.setProgressBarIndeterminateVisibility(false);
+                                MovieList.staticMovieList = movieList;
+                                MovieList.staticRequestCanceled = false;
+                                MovieList.imdbButton.setVisible(false);
+                                MovieList.staticRatingLoaded = true;
+                            } else {
+                                AlertDialog ad = new AlertDialog.Builder(listActivity).create();
+                                ad.setMessage("No movies found!");
+                                ad.setCancelable(false); // This blocks the 'BACK' button
+                                ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        listActivity.finish();
+                                    }
+                                });
+                                ad.show();
+                                listActivity.setProgressBarIndeterminateVisibility(false);
+                            }
+
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("JSONException", "RESPONSE FAILED");
-                        mlAdapter.clear();
-                        Collections.sort(movieList, new MovieComparator());
-                        mlAdapter.addAll(movieList);
-                        listActivity.setProgressBarIndeterminateVisibility(false);
-                        MovieList.staticMovieList = movieList;
-                        MovieList.staticRequestCanceled = false;
+                        boolean lastMovie = false;
+                        if (movieList.size() <= movieList.indexOf(movie) + 1) {
+                            lastMovie = true;
+                        }
+                        movieList.remove(movie);
+                        if (lastMovie || movieList.size() <= movieList.indexOf(movie) + 1) {
+                            if (movieList.size() > 0) {
+                                Log.e("JSONException", "RESPONSE FAILED");
+                                mlAdapter.clear();
+                                Collections.sort(movieList, new MovieComparator());
+                                mlAdapter.addAll(movieList);
+                                listActivity.setProgressBarIndeterminateVisibility(false);
+                                MovieList.staticMovieList = movieList;
+                                MovieList.staticRequestCanceled = false;
+                            } else {
+                                AlertDialog ad = new AlertDialog.Builder(listActivity).create();
+                                ad.setMessage("No movies found!");
+                                ad.setCancelable(false); // This blocks the 'BACK' button
+                                ad.setButton(DialogInterface.BUTTON_NEUTRAL, "OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        listActivity.finish();
+                                    }
+                                });
+                                ad.show();
+                                listActivity.setProgressBarIndeterminateVisibility(false);
+                            }
+                        }
                     }
                 });
                 jsObjRequest.setTag("movieList");
@@ -132,6 +183,7 @@ public class HttpRequester {
             }
         }
 
+    //This method gets data for the detail movie
     public static void loadWebServiceData (final Activity detailActivity, final MovieDet movie) {
         String url = prepareURL(movie, true);
 
@@ -245,6 +297,7 @@ public class HttpRequester {
         HttpRequestQueueSingleton.getInstance(detailActivity.getApplicationContext()).addToRequestQueue(jsObjRequest);
     }
 
+    //This method chooses the right URL and prepares those
     private static String prepareURL(Movie movie, boolean detail) {
         String url = "";
         String urlTitle = null;

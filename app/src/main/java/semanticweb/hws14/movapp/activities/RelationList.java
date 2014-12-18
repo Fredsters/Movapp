@@ -30,6 +30,7 @@ import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.request.SparqlQueries;
 
 public class RelationList extends Activity {
+    //This activity shows a list of the relations of a movie
 
     private ListView listView;
     private ActorListAdapter rlAdapter;
@@ -45,6 +46,7 @@ public class RelationList extends Activity {
         setContentView(R.layout.activity_relation_list);
         getActionBar().setDisplayHomeAsUpEnabled(false);
 
+        //Basicly works as the other list activities
         Intent intent = getIntent();
         listView = (ListView) findViewById(R.id.relationList);
         ArrayList<String> relationList = new ArrayList<String>();
@@ -87,7 +89,7 @@ public class RelationList extends Activity {
             q.cancel(true);
         }
     }
-
+    //Inner class for the async task
     private class queryForRelations extends AsyncTask<Movie, String, ArrayList<String>> {
 
         @Override
@@ -97,6 +99,7 @@ public class RelationList extends Activity {
             final SparqlQueries sparqler = new SparqlQueries();
             final ArrayList<String> relationList = new ArrayList<String>();
 
+            //Only dbpedia, because lmdb has nor relations
             /* DPBEDIA */
             String dbPediaSparqlQueryString = sparqler.DBPEDIARelationQuery(movie);
             Query query = QueryFactory.create(dbPediaSparqlQueryString);

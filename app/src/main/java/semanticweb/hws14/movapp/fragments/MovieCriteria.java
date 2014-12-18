@@ -29,8 +29,11 @@ import semanticweb.hws14.movapp.model.TimePeriod;
 
 import static semanticweb.hws14.movapp.helper.InputCleaner.cleanCityStateInput;
 
+//This is a fragment
+//This is the movie tab on the criteria activity
 public class MovieCriteria extends Fragment implements AdapterView.OnItemSelectedListener{
 
+    //Some class variables
     private MovieCriteria that;
     private int selectedFromDate;
     private int selectedToDate;
@@ -92,6 +95,8 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void initCriteriaView(View view){
+
+        //init all the components and add the listeners
 
         tfActorName = (EditText) view.findViewById(R.id.tfActorName);
         tfDirectorName = (EditText) view.findViewById(R.id.tfDirectorName);
@@ -183,21 +188,13 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         });
 
-        tfActorName.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    swActor.setChecked(true);
-                    return true;
-                }
-                return false;
-            }
-        });
+        setTfKeyListener(tfActorName, swActor);
+        setTfKeyListener(tfDirectorName, swDirector);
+        setTfKeyListener(tfPartName, swPartName);
 
-        setTfKeyListener(tfActorName,swActor);
-        setTfKeyListener(tfDirectorName,swDirector);
-        setTfKeyListener(tfPartName,swPartName);
+        setTfFocusChangeListener(tfActorName, swActor, btnActor);
+        setTfFocusChangeListener(tfDirectorName, swDirector, btnActor);
+        setTfFocusChangeListener(tfPartName, swPartName, btnPartName);
 
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
@@ -311,6 +308,49 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         });
     }
 
+    private void setupSpinnerYearFrom(View view){
+        spYearFrom = (Spinner) view.findViewById(R.id.spYearFrom);
+        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(getActivity(), R.array.year_array, android.R.layout.simple_spinner_item);
+        adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spYearFrom.setAdapter(adapterFrom);
+        spYearFrom.setSelection(20);
+        spYearFrom.setOnItemSelectedListener(this);
+    }
+
+    private void setupSpinnerYearTo(View view){
+        spYearTo = (Spinner) view.findViewById(R.id.spYearTo);
+        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(getActivity(), R.array.year_array,android.R.layout.simple_spinner_item);
+        adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spYearTo.setAdapter(adapterTo);
+        spYearTo.setOnItemSelectedListener(this);
+    }
+
+    private void setupSpinnerGenre(View view){
+        spGenre = (Spinner) view.findViewById(R.id.spGenre);
+        ArrayAdapter<CharSequence> adapterGenre = ArrayAdapter.createFromResource(getActivity(),R.array.genre_array,android.R.layout.simple_spinner_item);
+        adapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGenre.setAdapter(adapterGenre);
+        spGenre.setOnItemSelectedListener(this);
+    }
+
+    private void setupSpinnerCity(View view){
+        spCity = (Spinner) view.findViewById(R.id.spCity);
+        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(getActivity(),R.array.city_array,android.R.layout.simple_spinner_item);
+        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCity.setAdapter(adapterCity);
+        spCity.setOnItemSelectedListener(this);
+    }
+
+    private void setupSpinnerState(View view){
+        spState = (Spinner) view.findViewById(R.id.spState);
+        ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(getActivity(),R.array.state_array,android.R.layout.simple_spinner_item);
+        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spState.setAdapter(adapterState);
+        spState.setOnItemSelectedListener(this);
+    }
+
+
+
     public void submitSearch(View view) {
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
@@ -377,6 +417,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         } else {
             criteria.put("isState", false);
         }
+        //Sends the criteria hashmap via intent to movieList activity
         if( (activeActor && !actorName.equals("")) || activeYear || activeGenre || (activeDirector && !directorName.equals("")) || activeCity || activeState || (activePartName && !partName.equals(""))){
             Activity criteriaActivity = getActivity();
             Intent intent = new Intent(criteriaActivity, MovieList.class);
@@ -388,47 +429,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
     }
 
-    private void setupSpinnerYearFrom(View view){
-        spYearFrom = (Spinner) view.findViewById(R.id.spYearFrom);
-        ArrayAdapter<CharSequence> adapterFrom = ArrayAdapter.createFromResource(getActivity(), R.array.year_array, android.R.layout.simple_spinner_item);
-        adapterFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spYearFrom.setAdapter(adapterFrom);
-        spYearFrom.setSelection(20);
-        spYearFrom.setOnItemSelectedListener(this);
-    }
-
-    private void setupSpinnerYearTo(View view){
-        spYearTo = (Spinner) view.findViewById(R.id.spYearTo);
-        ArrayAdapter<CharSequence> adapterTo = ArrayAdapter.createFromResource(getActivity(), R.array.year_array,android.R.layout.simple_spinner_item);
-        adapterTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spYearTo.setAdapter(adapterTo);
-        spYearTo.setOnItemSelectedListener(this);
-    }
-
-    private void setupSpinnerGenre(View view){
-        spGenre = (Spinner) view.findViewById(R.id.spGenre);
-        ArrayAdapter<CharSequence> adapterGenre = ArrayAdapter.createFromResource(getActivity(),R.array.genre_array,android.R.layout.simple_spinner_item);
-        adapterGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spGenre.setAdapter(adapterGenre);
-        spGenre.setOnItemSelectedListener(this);
-    }
-
-    private void setupSpinnerCity(View view){
-        spCity = (Spinner) view.findViewById(R.id.spCity);
-        ArrayAdapter<CharSequence> adapterCity = ArrayAdapter.createFromResource(getActivity(),R.array.city_array,android.R.layout.simple_spinner_item);
-        adapterCity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCity.setAdapter(adapterCity);
-        spCity.setOnItemSelectedListener(this);
-    }
-
-    private void setupSpinnerState(View view){
-        spState = (Spinner) view.findViewById(R.id.spState);
-        ArrayAdapter<CharSequence> adapterState = ArrayAdapter.createFromResource(getActivity(),R.array.state_array,android.R.layout.simple_spinner_item);
-        adapterState.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spState.setAdapter(adapterState);
-        spState.setOnItemSelectedListener(this);
-    }
-
+    //Spinner select event
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item =  adapterView.getItemAtPosition(i).toString();
@@ -437,13 +438,15 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedGenre=item;
             if(spGenreCount>0){
                 swGenre.setChecked(true);
+                setButtonColorText(swGenre, btnGenre, true);
             }
-           spGenreCount++;
+            spGenreCount++;
         }
         else if(adapterView.getId() == spYearFrom.getId()){
             selectedFromDate=Integer.parseInt(item);
             if(spYearFromCount>0) {
                 swYear.setChecked(true);
+                setButtonColorText(swYear, btnYear, true);
             }
             spYearFromCount++;
         }
@@ -451,6 +454,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedToDate =Integer.parseInt(item);
             if(spYearToCount>0) {
                 swYear.setChecked(true);
+                setButtonColorText(swYear, btnYear, true);
             }
             spYearToCount++;
         }
@@ -459,6 +463,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
             if(spCityCount>0) {
                 swCity.setChecked(true);
+                setButtonColorText(swCity, btnRegion, true);
             }
             spCityCount++;
         }
@@ -466,6 +471,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedState=item;
             if(spStateCount>0) {
                 swState.setChecked(true);
+                setButtonColorText(swState, btnRegion, true);
             }
             spStateCount++;
         }
@@ -476,6 +482,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
 
     }
 
+    //choose between movie shot and movie set
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch(view.getId()) {
@@ -490,6 +497,7 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
     }
 
+    //use location data
     public void setGPSLocation(String city) {
 
         String[] cityArray = getResources().getStringArray(R.array.city_array);
@@ -509,19 +517,34 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         swCity.setChecked(true);
     }
 
+    //EditText listener
+
     private void setTfKeyListener(final EditText tf, final Switch sw ) {
         tf.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if(tf.isDirty())
+                    if (tf.isDirty())
                         sw.setChecked(true);
                 }
                 return false;
             }
         });
     }
+    //EditText listener
+    private void setTfFocusChangeListener(final EditText tf, final Switch sw, final Button btn ) {
+        tf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && sw.isChecked()) {
+                    setButtonColorText(sw, btn, true);
+                }
 
+            }
+        });
+    }
+
+    //coloring and changing of texts ob the buttons
     private void setButtonColorText(Switch sw, Button btn, boolean sub) {
         if(sub) {
             btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));

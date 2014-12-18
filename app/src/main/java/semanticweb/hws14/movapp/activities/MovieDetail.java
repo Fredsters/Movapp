@@ -104,6 +104,7 @@ public class MovieDetail extends Activity {
         }
     }
 
+
     private void initDetailView(){
         btnSpoiler = (Button) findViewById(R.id.btnSpoiler);
         btnActorList =  (Button) findViewById(R.id.btnToActorList);
@@ -125,6 +126,7 @@ public class MovieDetail extends Activity {
         });
     }
 
+    //This method sets all the data, it receives the movie object from the handler function "setOnFinishedEventListener" which is called from the HTTP Requester after all data has arrived
     private void setData(final MovieDet movie) {
         Thread picThread = new Thread(new Runnable() {
             public void run() {
@@ -311,6 +313,7 @@ public class MovieDetail extends Activity {
         setProgressBarIndeterminateVisibility(false);
     }
 
+    //If a field would be empty, hide it
     private void manageEmptyTextfields(TextView tvHc, TextView tv, String text, boolean doColorIt){
         if(!text.equals("") && !text.equals("N/A") &&  !text.equals("0")){
             tv.setVisibility(View.VISIBLE);
@@ -348,7 +351,7 @@ public class MovieDetail extends Activity {
         return budgetString;
     }
 
-
+//Button Functions
     public void linkToImdb(View view){
         String imdbUrl = "http://www.imdb.com/title/"+ movieDet.getImdbId()+"/";
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(imdbUrl));
@@ -380,6 +383,7 @@ public class MovieDetail extends Activity {
         startActivity(intent);
     }
 
+    //Async Task to query for the data
     private class queryForMovieData extends AsyncTask<MovieDet, String, MovieDet> {
 
         @Override
@@ -518,18 +522,14 @@ public class MovieDetail extends Activity {
             setProgressBarIndeterminateVisibility(true);
 
         }
+        //Load additional data from the web service
         public void onPostExecute(MovieDet movie) {
             HttpRequester.loadWebServiceData(that, movie);
         }
     }
 }
 
-//WICHTIG
 //TODO Testing
-
-//UNWICHTIG
-//TODO Wenn nur ein movie in der list gehe direkt weiter zu movieDetail (Muss nicht sein)
-//TODO Add erklärende Kommentare (angefangen)
-//TODO Licenses sichtbar machen oder so
+//TODO Add License
 
 

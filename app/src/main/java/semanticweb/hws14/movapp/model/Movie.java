@@ -144,6 +144,9 @@ public class Movie implements Parcelable {
         this.DBPmovieResource = DBPmovieResource;
     }
 
+    //Theses methods help to save data of doublicates before removing them
+
+
     public void setMovieResource (String movieResource) {
         if(!"".equals(movieResource)) {
             Pattern p = Pattern.compile("linkedmdb");

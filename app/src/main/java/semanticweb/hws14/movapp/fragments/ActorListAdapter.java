@@ -14,6 +14,9 @@ import semanticweb.hws14.activities.R;
 /**
  * Created by Frederik on 25.11.2014.
  */
+
+//This is the adapter for the actorlist
+    //It is mainly used for customized layout and styling
 public class ActorListAdapter extends ArrayAdapter<String> {
     Context context;
     int layoutResourceId;

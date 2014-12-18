@@ -27,6 +27,9 @@ import semanticweb.hws14.movapp.model.TimePeriod;
 
 public class ActorCriteria extends Fragment implements AdapterView.OnItemSelectedListener {
 
+    //The actor tab on the criteria actitivy
+    //this is a fragment
+
     private ActorCriteria that;
 
     private int selectedFromDate;
@@ -76,6 +79,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
     }
 
     private void initCriteriaView(View view) {
+//Init all the components
+        //Add all the listeners
 
         tfMovieName = (EditText) view.findViewById(R.id.tfMovieName);
         tfActorCity = (EditText) view.findViewById(R.id.tfActorCity);
@@ -103,6 +108,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
 
         final View panelPartName = view.findViewById(R.id.panelTitle);
         panelPartName.setVisibility(View.GONE);
+
 
         btnMovie.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,9 +151,13 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         });
 
 
-        setTfKeyListener(tfActorCity,swCity);
-        setTfKeyListener(tfMovieName,swMovie);
-        setTfKeyListener(tfPartName,swPartName);
+        setTfKeyListener(tfActorCity, swCity);
+        setTfKeyListener(tfMovieName, swMovie);
+        setTfKeyListener(tfPartName, swPartName);
+
+        setTfFocusChangeListener(tfActorCity, swCity, btnRegion);
+        setTfFocusChangeListener(tfMovieName, swMovie, btnMovie);
+        setTfFocusChangeListener(tfPartName, swPartName, btnPartName);
 
         setupSpinnerYearFrom(view);
         setupSpinnerYearTo(view);
@@ -248,6 +258,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         spState.setOnItemSelectedListener(this);
     }
 
+    //Submit the search
     public void submitSearch(View view) {
         HashMap<String, Object> criteria = new HashMap<String, Object>();
 
@@ -292,7 +303,9 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             criteria.put("isState", true);
         } else {
             criteria.put("isState", false);
+
         }
+        //Send the intent with the criteria to actorlist
         if( (activeMovie && !movieName.equals("")) || activeYear || activeCity || activeState || (activePartName && !partName.equals(""))){
             Activity criteriaActivity = getActivity();
             Intent intent = new Intent(criteriaActivity, ActorList.class);
@@ -304,6 +317,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         }
     }
 
+    //Spinner listener
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         String item =  adapterView.getItemAtPosition(i).toString();
@@ -312,6 +326,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedFromDate=Integer.parseInt(item);
             if(spYearFromCount>0) {
                 swYear.setChecked(true);
+                setButtonColorText(swYear, btnYear, true);
             }
             spYearFromCount++;
         }
@@ -319,6 +334,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedToDate =Integer.parseInt(item);
             if(spYearToCount>0) {
                 swYear.setChecked(true);
+                setButtonColorText(swYear, btnYear, true);
             }
             spYearToCount++;
         }
@@ -326,6 +342,7 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             selectedState=item;
             if(spStateCount>0) {
                 swState.setChecked(true);
+                setButtonColorText(swState, btnRegion, true);
             }
             spStateCount++;
 
@@ -341,7 +358,8 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
         swCity.setChecked(true);
     }
 
-    protected void setTfKeyListener(EditText tf, final Switch sw ){
+    //EditText listener for "ok"
+    private void setTfKeyListener(EditText tf, final Switch sw ){
         tf.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
@@ -354,7 +372,20 @@ public class ActorCriteria extends Fragment implements AdapterView.OnItemSelecte
             }
         });
     }
+    //EditText listener for losing focus
+    private void setTfFocusChangeListener(final EditText tf, final Switch sw, final Button btn ) {
+        tf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus && sw.isChecked()) {
+                    setButtonColorText(sw, btn, true);
+                }
 
+            }
+        });
+    }
+
+    //coloring and text changing of the buttons
     private void setButtonColorText(Switch sw, Button btn, boolean sub) {
         if(sub) {
             btn.setBackground(that.getResources().getDrawable(R.drawable.button_background_submit));

@@ -439,6 +439,7 @@ public class ActorDetail extends Activity {
 
         @Override
         protected void onProgressUpdate (String... values) {
+            //Make some messages during loading
             Toast.makeText(that, values[0], Toast.LENGTH_SHORT).show();
         }
 

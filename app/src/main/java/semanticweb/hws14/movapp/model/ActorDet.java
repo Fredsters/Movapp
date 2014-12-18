@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * Created by Frederik on 14.11.2014.
  */
 public class ActorDet {
+//the data class for actor in detail page
 
     private String wikiAbstract;
     private String birthName;

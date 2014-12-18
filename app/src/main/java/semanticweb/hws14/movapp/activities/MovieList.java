@@ -46,6 +46,7 @@ public class MovieList extends Activity {
     private HashMap<String, Object> criteria;
     public static  MenuItem imdbButton;
     private queryForMovies q;
+    public static boolean staticRatingLoaded;
     private ListView listView;
     public static boolean staticRequestCanceled;
 
@@ -78,6 +79,7 @@ public class MovieList extends Activity {
             listView.setAdapter(mlAdapter);
             //Executes SPARQL Queries, Private class queryForMovies is called.
             staticCriteria = criteria;
+            staticRatingLoaded = false;
             q = new queryForMovies();
             q.execute(criteria);
         }
@@ -98,8 +100,9 @@ public class MovieList extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.movie_list, menu);
+        //Only show the imdbButton if needed
         imdbButton =  menu.findItem(R.id.imdb_rating_button).setVisible(false);
-        if(null != staticMovieList && staticMovieList.size() >= 200) {
+        if(null != staticMovieList && staticMovieList.size() >= 200 && !staticRatingLoaded) {
             imdbButton.setVisible(true);
         }
         return super.onCreateOptionsMenu(menu);
@@ -116,6 +119,7 @@ public class MovieList extends Activity {
     }
 
     //Stops async Task and async HttpRequester
+    //Wipe all working tasks if the activity is stopped, otherwise app is threatened to crash
     @Override
     protected void onStop () {
         super.onStop();
@@ -127,13 +131,14 @@ public class MovieList extends Activity {
             that.setProgressBarIndeterminateVisibility(false);
         }
     }
-
+        //query manually for imdb rating
     public void queryForImdbRating () {
         that.setProgressBarIndeterminateVisibility(true);
         staticRequestCanceled = true;
         HttpRequester.addOmdbData(that, MovieList.staticMovieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
     }
 
+    //Clean all the criteria, so if a criteria is not available it will be set to default false. --> No need to always set them, to call this activity
     private void checkCriteria() {
         if(!criteria.containsKey("isPartName")) {
             criteria.put("isPartName", false);
@@ -164,6 +169,7 @@ public class MovieList extends Activity {
         }
     }
 
+    //Inner class for the async task
     private class queryForMovies extends AsyncTask<HashMap<String, Object>, String, ArrayList<Movie>> {
 
         @Override
@@ -175,6 +181,7 @@ public class MovieList extends Activity {
            final ArrayList<Movie> movieList = new ArrayList<Movie>();
 
             /* LMDB */
+            //Get the lmdb movies
             Thread tLMDB = new Thread(new Runnable()
             {
                 public void run()
@@ -185,7 +192,7 @@ public class MovieList extends Activity {
                     ResultSet results;
                     try {
                         results = qexec.execSelect();
-
+//Each with a try catch, so that we get still data, when one fails
                         for (; results.hasNext(); ) {
                             QuerySolution soln = results.nextSolution();
                             String movieResource = "";
@@ -234,6 +241,7 @@ public class MovieList extends Activity {
                   }
               });
 
+            //LMDB is not always useful, in particular criteria combinations, we don't need lmdb
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                 tLMDB.start();
@@ -242,6 +250,7 @@ public class MovieList extends Activity {
 
             String dbPediaSparqlQueryString = "";
         /* DPBEDIA */
+            //Choose the right dbpedia query
             if((Boolean) criteria.get("isRelated")) {
                 dbPediaSparqlQueryString = sparqler.relatedDBPEDIAQuery((String)criteria.get("relation"));
             } else if((Boolean)criteria.get("isRandomRelated")) {
@@ -249,7 +258,7 @@ public class MovieList extends Activity {
             } else {
                 dbPediaSparqlQueryString = sparqler.DBPEDIAQuery();
             }
-
+//Get the DBpedia movies
             Query query = QueryFactory.create(dbPediaSparqlQueryString);
             QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
             ResultSet results;
@@ -295,7 +304,7 @@ public class MovieList extends Activity {
             }
             qexec.close();
 
-
+            //if lmdb thread did not start, we don't need to join it
             if(!((Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isRandomRelated") || (Boolean) criteria.get("isRelated"))) {
                 if(!((Boolean) criteria.get("isTime") && !((Boolean) criteria.get("isActor")) && !((Boolean) criteria.get("isDirector")) && !((Boolean) criteria.get("isGenre")) && !((Boolean)criteria.get("isPartName")))) {
                     try {
@@ -311,6 +320,8 @@ public class MovieList extends Activity {
                 publishProgress("Maximum Number of Movies reached. There might be some movies missing. Please specify your search");
             }
 
+            //Removies Doublicates
+            //Before removing a movie, all the data will be saved in the one with same title
             ArrayList indexArray = new ArrayList();
             for (int i = 0; i < movieList.size(); i++) {
                 for (int j = i + 1; j < movieList.size(); j++) {
@@ -347,8 +358,10 @@ public class MovieList extends Activity {
         }
 
         public void onPostExecute(ArrayList<Movie> movieList) {
+            //If time criteria was used as OPTIONAL in the SPARQL, it needs to be filtered afterwards. On this way we get better results, because the date is worse maintained in the databases
+            //If it is still 0, we might get a time from the web service. So keep those
             if (movieList.size() > 0) {
-                if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
+                if ((Boolean) criteria.get("isTime") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
                         Movie movie = i.next();
@@ -357,7 +370,7 @@ public class MovieList extends Activity {
                         }
                     }
                 }
-
+        //same for genre
                 if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                     Iterator<Movie> i = movieList.iterator();
                     while (i.hasNext()) {
@@ -368,17 +381,20 @@ public class MovieList extends Activity {
                     }
                 }
 
+                //If we have over 200 movies we don't load the imdb rating immediately
                 if(movieList.size() <= 200) {
                     staticRequestCanceled = true;
-                    //MovieList.staticCriteria = criteria;
+                    //Now load the rating and additional times or genres
                     HttpRequester.addOmdbData(that, movieList, mlAdapter, (Boolean) criteria.get("isTime"), (Boolean) criteria.get("isGenre"), (Boolean) criteria.get("isActor"), (Boolean) criteria.get("isDirector"), (Boolean) criteria.get("isCity"), (Boolean) criteria.get("isState"), (Boolean) criteria.get("isPartName"));
                 } else {
+                    //Add the movies to the list and hide the progress indicator
                     imdbButton.setVisible(true);
                     mlAdapter.addAll(movieList);
                     that.setProgressBarIndeterminateVisibility(false);
                     MovieList.staticMovieList = movieList;
                 }
             } else {
+                //If no movies are found, make a dialog box for this
                 AlertDialog ad = new AlertDialog.Builder(that).create();
                 ad.setMessage("No movies found!");
                 ad.setCancelable(false); // This blocks the 'BACK' button

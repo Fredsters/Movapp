@@ -17,6 +17,8 @@ public class GeoLocation {
     boolean network_enabled=false;
     AsyncTask<Context, Void, Void> mtask;
 
+    //this class gets the location
+
     public boolean getLocation(Context context, LocationResult result) {
         //I use LocationResult callback class to pass location value from MyLocation to user code.
         locationResult=result;

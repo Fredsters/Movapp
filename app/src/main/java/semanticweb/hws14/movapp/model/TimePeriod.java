@@ -6,6 +6,8 @@ import android.os.Parcelable;
 /**
  * Created by Frederik on 04.11.2014.
  */
+
+//This class simply saves from and to year
 public class TimePeriod implements Parcelable {
     private int from;
     private int to;

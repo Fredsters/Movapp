@@ -102,6 +102,7 @@ public class ActorList extends Activity {
             q.cancel(true);
         }
     }
+    //Set all unset criteria to false, so that it is not neccessary to always set them
     private void checkCriteria() {
         if(!actorCriteria.containsKey("isMovie")) {
             actorCriteria.put("isMovie", false);

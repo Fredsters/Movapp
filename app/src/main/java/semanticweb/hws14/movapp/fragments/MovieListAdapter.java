@@ -17,6 +17,9 @@ import semanticweb.hws14.movapp.model.Movie;
 /**
  * Created by Frederik on 25.11.2014.
  */
+
+//This is the adapter for the movielist
+//It is mainly used for customized layout and styling
 public class MovieListAdapter extends ArrayAdapter<Movie> {
     Context context;
     int layoutResourceId;

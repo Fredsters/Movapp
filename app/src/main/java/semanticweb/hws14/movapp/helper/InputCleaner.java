@@ -11,6 +11,10 @@ import java.util.regex.Pattern;
  */
 public class InputCleaner {
 
+    //This class cleans all the inputs and data we get, so that we can predict what we get, when nothing is set.
+
+
+    //make the words first letter upper case, rest lower case and remove unneccessary spaces
     public static String cleanName(String actorName) {
         actorName = actorName.trim();
         final StringBuilder result = new StringBuilder(actorName.length());
@@ -24,6 +28,7 @@ public class InputCleaner {
         return result.toString();
     }
 
+    //Returns the year of a date, because the rest ist not important. If the format is completely spoiled or useless, sets the year to 0
     public static int cleanReleaseYear(Literal year) {
         String yearString;
         int yearInt = 0;
@@ -41,6 +46,7 @@ public class InputCleaner {
         return yearInt;
     }
 
+    //removes stuff standing in brackets and replaces and by &
     public static String cleanMovieTitle (Literal title) {
         String reTitle = "";
         if(null != title && title.isLiteral()) {
@@ -54,6 +60,8 @@ public class InputCleaner {
         return reTitle;
     }
 
+
+    //gets the imdbId out of the imdb-page which we get from lmdb
     public static String cleanImdbId(Resource url) {
         String imdbId = "";
         if(!(url == null)) {
@@ -74,7 +82,7 @@ public class InputCleaner {
         }
         return genreString;
     }
-
+//makes space to _
     public static String cleanCityStateInput (String region) {
         region = region.trim();
         region = region.replace(" ", "_");

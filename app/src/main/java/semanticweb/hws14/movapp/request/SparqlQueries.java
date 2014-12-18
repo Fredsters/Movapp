@@ -8,6 +8,8 @@ import semanticweb.hws14.movapp.model.ActorDet;
 import semanticweb.hws14.movapp.model.Movie;
 import semanticweb.hws14.movapp.model.TimePeriod;
 
+
+//All the SPARQL. Only in this class you can find SPARQL
 public class SparqlQueries {
 
     static HashMap<String, Object> criteria;
@@ -45,6 +47,8 @@ public class SparqlQueries {
             }
             if((Boolean)criteria.get("isGenre") && ((Boolean)criteria.get("isActor") || (Boolean)criteria.get("isDirector") ||(Boolean)criteria.get("isPartName"))) {
                 queryString +=
+                        //If one of those criteria (isActor, isDirector...) is true, we only get Genre optional, otherwise not. If we would not to this, we would rarely get movies if genre is true.
+                        //if we make it optional we have the chance to get the right genre from the web service
                 "OPTIONAL {?g movie:film_genre_name ?gn. " +
                 "?m movie:genre ?g.}" ;
             } else if((Boolean)criteria.get("isGenre")){
@@ -56,6 +60,7 @@ public class SparqlQueries {
         queryString +=
             "?m movie:filmid ?i; " +
             "rdfs:label ?t. " +
+                    //Since it is not possible in lmdb to filter for the date. Date is always optional
             "OPTIONAL {?m movie:initial_release_date ?y.} "+
             "OPTIONAL {?m foaf:page ?p. FILTER (REGEX(STR(?p), 'imdb.com/title'))}" +
             "} LIMIT 400";
@@ -64,6 +69,7 @@ public class SparqlQueries {
     }
 
     //LMDB Movie Detail
+    //if we have the movie resource, use it, otherwise do it by name
     public String LMDBDetailQuery(Movie movie) {
         String movieResource = movie.getLMDBmovieResource();
         String queryString ="";
@@ -73,6 +79,7 @@ public class SparqlQueries {
                             "PREFIX movie: <http://data.linkedmdb.org/resource/movie/> " +
                             "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "+
                             "SELECT ?run ?aN ?rN ?dN ?wN ?gN WHERE { ?m rdf:type movie:film; rdfs:label \""+movie.getTitle()+"\" " +
+                            //UNION, because characters are not well maintained. So often they are empty. If we use UNION we still got the well maintained data for actor_name, but don't get the performances of course
                             "OPTIONAL {{?m movie:performance ?p. ?p movie:performance_actor ?aN. ?p movie:film_character ?r. ?r movie:film_character_name ?rN .} UNION {?m movie:actor ?a. ?a movie:actor_name ?aN}} "+
                             "OPTIONAL {?m movie:director ?d. ?d movie:director_name ?dN.} "+
                             "OPTIONAL {?m movie:writer ?w. ?w movie:writer_name ?wN.} "+
@@ -93,6 +100,7 @@ public class SparqlQueries {
     }
 
     //LMDB Actor List
+    //In lmdb is not much data about actors, only their movies and performances(roles)
     public String LMDBActorQuery() {
         String queryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> " +
@@ -151,6 +159,7 @@ public class SparqlQueries {
             if ((Boolean) criteria.get("isPartName")) {
                 queryString += "?m rdfs:label ?mN.  FILTER(langMatches(lang(?mN), 'EN')) FILTER (REGEX(?mN, \"" + criteria.get("partName") + "\", \"i\")) ";
             }
+        //Like in lmdb genre is most of the times only optional. Except for when only genre, or only genre and time are active
             if ((Boolean) criteria.get("isGenre") && ((Boolean) criteria.get("isActor") || (Boolean) criteria.get("isDirector") || (Boolean) criteria.get("isCity") || (Boolean) criteria.get("isState") || (Boolean) criteria.get("isTime") || (Boolean) criteria.get("isPartName"))) {
                 queryString +=
                 "OPTIONAL {?m dbpprop:genre ?g. ?g rdfs:label ?gn. }";
@@ -159,6 +168,7 @@ public class SparqlQueries {
                 "?g rdfs:label \"" + criteria.get("genreName") + "\". " +
                 "?m dbpprop:genre ?g.";
             }
+        //Either city or state, both is not possible
             if((Boolean) criteria.get("isCity")) {
                 queryString +=
                 "?m dcterms:subject category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("city")+". ";
@@ -167,6 +177,7 @@ public class SparqlQueries {
                         "UNION {category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_state skos:broader ?states. ?m dcterms:subject ?states } " +
                         "UNION {?cities skos:broader  category:Films_"+criteria.get("regionKind")+"_in_"+criteria.get("state")+"_by_city . ?m dcterms:subject ?cities} ";
              }
+        //time is only optional when isActor or isDirector are active. It is still better maintained than genre
             if ((Boolean) criteria.get("isTime") && !(Boolean) criteria.get("isActor") && !(Boolean) criteria.get("isDirector")) {
                 queryString +=
                         "?m dbpprop:released ?y. " +
@@ -182,6 +193,7 @@ public class SparqlQueries {
     }
 
     //DBpedia Movie Detail
+
     public String DBPEDIADetailQuery(Movie movie) {
         String movieResource = movie.getDBPmovieResource();
         String queryString ="";
@@ -222,6 +234,7 @@ public class SparqlQueries {
     }
 
     //DBpedia Actor List
+    //data for actor is pretty well consistent. So everything is mandatory
     public String DBPEDIAActorQuery() {
         String queryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
@@ -254,6 +267,8 @@ public class SparqlQueries {
     }
 
     //Dbpedia Actor Detail
+    //very much actor detail data.
+    //of course everything optional, because no entity can have all the properties
     public String DBPEDIAActorDetailQuery(ActorDet actorDet) {
         String queryString =
                 "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "+
@@ -288,6 +303,7 @@ public class SparqlQueries {
         return queryString;
     }
 
+    //Get the list of movies with a particular subject
     //DBpedia Related Movie Movie List
     public String randomRelatedDBPEDIAQuery (Movie movie) {
         String movieResource = movie.getDBPmovieResource();
@@ -311,6 +327,7 @@ public class SparqlQueries {
         return queryString;
     }
 
+    //Get the list of subjects of a movie
     //DBpedia Related Movie Relation List
     public String DBPEDIARelationQuery(Movie movie) {
         String queryString=
@@ -326,6 +343,7 @@ public class SparqlQueries {
         return queryString;
     }
 
+    //Get movie list with one particular subject
     //DBpedia Related Movie from Relation List to Movie List
     public String relatedDBPEDIAQuery (String relationName) {
         String queryString =
@@ -344,6 +362,7 @@ public class SparqlQueries {
     }
 
 
+    //Filter for release date, for checking when year was optional
     public static boolean filterReleaseDate(Movie movie) {
         int from = ((TimePeriod) criteria.get("timePeriod")).getFrom();
         int to = ((TimePeriod) criteria.get("timePeriod")).getTo();
@@ -354,6 +373,7 @@ public class SparqlQueries {
         }
     }
 
+    //filter for genre, for checking when genre was optional
     public static boolean filterGenre(Movie movie) {
         String genre = movie.getGenre();
         String genreNameFilter = (String) criteria.get("genreName");

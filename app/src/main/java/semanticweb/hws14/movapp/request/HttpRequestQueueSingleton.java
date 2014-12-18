@@ -13,6 +13,8 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by Frederik on 29.10.2014.
  */
+
+//This class is the RequestQueue for the HttpRequester, we need this because we have a lot of http requests, and it would be a less performant without a singleton request queue
 public class HttpRequestQueueSingleton {
 
     private static HttpRequestQueueSingleton mInstance;

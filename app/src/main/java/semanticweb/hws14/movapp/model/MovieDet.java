@@ -58,6 +58,7 @@ public class MovieDet extends Movie{
         }
     }
 
+    //Sets role and actor on the same index in two arraylists, so they are on the same level
     public void addActorRole (String actor, String role) {
         if(!actor.contains("actor")) {
             if(!this.actors.contains(actor)) {

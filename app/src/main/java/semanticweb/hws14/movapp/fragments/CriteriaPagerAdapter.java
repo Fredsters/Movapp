@@ -9,6 +9,8 @@ import android.util.Log;
 /**
  * Created by Frederik on 18.11.2014.
  */
+
+//this class handles the tabs
 public class CriteriaPagerAdapter extends FragmentPagerAdapter {
     public CriteriaPagerAdapter(FragmentManager fm) {
         super(fm);
