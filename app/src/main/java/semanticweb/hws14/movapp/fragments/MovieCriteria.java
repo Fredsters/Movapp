@@ -536,7 +536,10 @@ public class MovieCriteria extends Fragment implements AdapterView.OnItemSelecte
         tf.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus && sw.isChecked()) {
+                if (!hasFocus && sw.isChecked() && "".equals(tf.getText().toString())) {
+                    setButtonColorText(sw, btn, false);
+                    sw.setChecked(false);
+                } else if (!hasFocus && sw.isChecked()) {
                     setButtonColorText(sw, btn, true);
                 }
 
