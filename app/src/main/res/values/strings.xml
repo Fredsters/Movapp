@@ -22,6 +22,12 @@
     <string name="title_activity_actor_list"></string>
     <string name="title_activity_actor_detail"></string>
 
+    <string name="LinkedMDBLicense">&#8226; <a href="http://www.linkedmdb.org/">LinkedMDb</a> content is licensed under the Creative Commons Attributions License (<a href="http://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a>).</string>
+
+    <string name="OMDbApiLicense">&#8226; <a href="http://www.omdbapi.com/">OMDb API</a> content is licensed under the Creative Commons Attributions License (<a href="http://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>).</string>
+
+    <string name="DBpediaLicense">&#8226; <a href="http://dbpedia.org/About">DBpedia</a> content is licensed under the terms of the <a href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License">Creative Commons Attribution-ShareAlike 3.0</a> license and the <a href="http://en.wikipedia.org/wiki/Wikipedia:Text_of_the_GNU_Free_Documentation_License">GNU Free Documentation License</a>.</string>
+
     <string-array name="year_array">
         <item>2016</item>
         <item>2015</item>
@@ -209,8 +215,6 @@
         <item>Vienna</item>
         <item>Warsaw</item>
         <item>Washington, D.C.</item>
-
-
     </string-array>
     <string-array name="state_array">
         <item>Afghanistan</item>
@@ -315,5 +319,6 @@
 
     <string name="title_activity_relation_list">RelationList</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_license">license</string>
 
 </resources>
