@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="semanticweb.hws14.movapp.activities.License">
+
+    <TextView
+        android:text="Licensing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:text="MovApp provides content from sources and under licensing conditions listed below:"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/LinkedMDBLicense"
+        android:id="@+id/LinkedMDBLicense"
+        android:layout_marginBottom="20dp"
+        android:linksClickable="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/OMDbApiLicense"
+        android:id="@+id/OMDbApiLicense"
+        android:layout_marginBottom="20dp"
+        android:linksClickable="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/DBpediaLicense"
+        android:id="@+id/DBpediaLicense"
+        android:layout_marginBottom="20dp"
+        android:linksClickable="true"/>
+
+
+
+
+
+</LinearLayout>
