@@ -4,4 +4,7 @@
     <item android:id="@+id/gps_location_button"
         android:title="Location"
         android:showAsAction="ifRoom"/>
+    <item android:id="@+id/license_button"
+        android:title="License"
+        android:showAsAction="ifRoom"/>
 </menu>
