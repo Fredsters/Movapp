@@ -63,6 +63,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="semanticweb.hws14.movapp.activities.MovieDetail" />
         </activity>
+        <activity
+            android:name="semanticweb.hws14.movapp.activities.License"
+            android:label="@string/title_activity_license"
+            android:parentActivityName="semanticweb.hws14.movapp.activities.Criteria" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="semanticweb.hws14.movapp.activities.Criteria" />
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
