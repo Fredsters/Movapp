@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -89,6 +90,10 @@ public class Criteria extends FragmentActivity {
         int id = item.getItemId();
         if (id == R.id.gps_location_button) {
             getGpsLocation();
+            return true;
+        } else if (id == R.id.license_button) {
+            Intent intent = new Intent(that, License.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
